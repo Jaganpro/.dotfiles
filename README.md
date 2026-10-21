@@ -264,18 +264,6 @@ everything in it is installed.
 
 ## Credits
 
-- **[dmmulroy/.dotfiles](https://github.com/dmmulroy/.dotfiles)** by Dillon
-  Mulroy: the overall design of this repo. The `home/` folder mirroring `~`
-  with GNU Stow, `packages/Brewfile`, the `dot` command with `init`, `doctor`
-  and `update`, `AGENTS.md`, the global git ignore, the ripgrep config and
-  several git settings all follow his setup. The code here is written from
-  scratch for zsh and macOS's bash 3.2.
-- **[starship](https://starship.rs) Gruvbox Rainbow preset**: the base of the
-  prompt's look.
-- **Claude Code status line projects** such as
-  [kcchien/claude-code-statusline](https://github.com/kcchien/claude-code-statusline)
-  (gradient context bar) and
-  [sirmalloc/ccstatusline](https://github.com/sirmalloc/ccstatusline):
-  ideas for what to show.
-- **[fff](https://github.com/dmtrKovalenko/fff.nvim)** by Dmitriy Kovalenko:
-  fast file search for Claude Code and Pi.
+- Repo layout and the `dot` command are inspired by
+  [dmmulroy/.dotfiles](https://github.com/dmmulroy/.dotfiles) by Dillon Mulroy.
+- File search for Claude Code and Pi: [fff](https://github.com/dmtrKovalenko/fff.nvim).
