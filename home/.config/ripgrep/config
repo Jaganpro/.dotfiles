@@ -1,0 +1,6 @@
+# ripgrep defaults (RIPGREP_CONFIG_PATH in ~/.zprofile points here)
+# Search hidden files (.github/, .zshrc, ...) but never inside .git/
+--hidden
+--glob=!.git/
+# Skip huge files (logs, data dumps, binaries)
+--max-filesize=5M

@@ -22,14 +22,15 @@ each one into place. Built from scratch in October 2026, one tool at a time.
 
 | File (in `~`, linked from `home/`) | What it holds |
 |---|---|
-| `~/.zprofile` | Homebrew and `~/.local/bin` on PATH; `JAVA_HOME`; points `brew bundle --global` at `packages/Brewfile` |
+| `~/.zprofile` | Homebrew and `~/.local/bin` on PATH; `JAVA_HOME`; points `brew bundle --global` at `packages/Brewfile`; `RIPGREP_CONFIG_PATH` |
 | `~/.zshrc` | History, Gruvbox colours, fnm, fzf, eza shortcuts, direnv, autosuggestions, starship, fastfetch, syntax highlighting |
 | `~/.config/fastfetch/config.jsonc` | Compact, private fastfetch layout |
 | `~/.config/starship.toml` | Gruvbox powerline prompt |
 | `~/.config/starship/sf-org.sh` | Finds the Salesforce target org for the prompt |
 | `~/.config/zsh/worktree.zsh` | `gwa` / `gwr` git worktree helpers (loaded by `.zshrc`) |
+| `~/.config/ripgrep/config` | ripgrep defaults: search hidden files, skip `.git/` and files over 5 MB |
 | `~/.config/git/ignore` | Global git ignore for every repo: `.DS_Store`, personal Claude files, `.env*` / `.envrc` (except `.env.example`) |
-| `~/.config/ghostty/config.ghostty` | Ghostty: Gruvbox Dark, font 14, Option-as-Alt, Quick Terminal, shortcuts |
+| `~/.config/ghostty/config.ghostty` | Ghostty: Gruvbox Dark, font 14, Option-as-Alt, Quick Terminal, shortcuts, SSH terminfo, balanced padding |
 | `~/.npmrc` | npm installs only versions at least 3 days old (supply-chain cooldown) |
 | `~/.pi/agent/npm/.npmrc` | No cooldown for Pi extensions (they all install in this folder) |
 | `~/.claude/statusline.sh` | Claude Code status line (one line): ✨ model (effort) ⚡ │ 📁 path 🌿 git │ gradient context bar + tokens │ 💰 cost │ 🔥/❄️ prompt cache │ 🏷️ session │ 📦 version |

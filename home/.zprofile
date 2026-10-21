@@ -9,3 +9,6 @@ export JAVA_HOME="$(/usr/libexec/java_home -v 21 2>/dev/null)"
 
 # Brewfile lives in the dotfiles repo; `brew bundle --global` uses it from anywhere
 export HOMEBREW_BUNDLE_FILE_GLOBAL="$HOME/.dotfiles/packages/Brewfile"
+
+# ripgrep reads its default options from here
+export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/config"

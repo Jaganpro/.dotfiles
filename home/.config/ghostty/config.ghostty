@@ -37,3 +37,10 @@ keybind = cmd+k=clear_screen
 
 # Ctrl+C copies when text is selected; otherwise it interrupts as usual
 keybind = performable:ctrl+c=copy_to_clipboard
+
+# SSH: copy Ghostty's terminal info to servers and pass a working TERM,
+# so colours and keys work on remote hosts (other integration features stay on)
+shell-integration-features = ssh-env,ssh-terminfo
+
+# Spread the padding evenly around the text grid
+window-padding-balance = true
