@@ -10,6 +10,7 @@ each one into place. Built from scratch in October 2026, one tool at a time.
 ~/.dotfiles/
 ├── home/                 mirrors ~ (linked by Stow; edit ~/.zshrc = edit the repo)
 ├── packages/Brewfile     every Homebrew tool and app
+├── packages/app-skills   agent skills installed by apps (checked by dot doctor, not stored here)
 ├── scripts/macos-defaults.sh
 ├── scripts/hooks/pre-commit   gitleaks blocks commits containing secrets
 ├── skills/               agent skills for Pi (via its settings) and Claude Code (linked into ~/.claude/skills)
@@ -267,6 +268,29 @@ runs it; it's safe to run again on its own after editing a line.
    ```bash
    claude mcp add --scope user fff -- /opt/homebrew/bin/fff-mcp
    ```
+
+10. **App-installed agent skills** (listed in `packages/app-skills`). Do this
+    **after** Claude Code and Pi are installed, so every agent gets a copy:
+
+    - **tldraw offline:** open the app and choose **Install Agent Skills** from
+      its menu. It installs the `tldraw-offline` skill for Claude Code
+      (`~/.claude/skills`) and Pi (`~/.pi/agent/skills`), plus helper scripts
+      in `~/skills/tldraw-offline/`.
+    - It also rewrites the SubagentStart hook in `~/.claude/settings.json` to a
+      fixed path (`node '/Users/<you>/skills/tldraw-offline/...'`). That's
+      expected: accept it and commit the change.
+    - These files aren't stored in this repo: tldraw offline is not open source,
+      and this repo is public. `dot doctor` checks they exist and prints the fix.
+
+## Installed by apps
+
+Some agent skills come from the apps themselves. This repo records **which**
+skills to expect and **how** to install them (`packages/app-skills`), not the
+files. `dot init` reminds you; `dot doctor` warns when one is missing.
+
+| Skill | Installed by | Where |
+|---|---|---|
+| `tldraw-offline` | tldraw offline → **Install Agent Skills** | `~/.claude/skills`, `~/.pi/agent/skills`, `~/skills/tldraw-offline` |
 
 ## Everyday use
 

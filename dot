@@ -80,6 +80,12 @@ install_skill_deps() {
   done
 }
 
+# Agent skills installed by apps (packages/app-skills): "name|paths|how" per line
+app_skills() {
+  grep -v -E '^[[:space:]]*(#|$)' "$DOTFILES/packages/app-skills" 2>/dev/null |
+    sed -E 's/[[:space:]]*\|[[:space:]]*/|/g'
+}
+
 cmd_init() {
   command -v brew >/dev/null || { bad "Install Homebrew first: https://brew.sh"; exit 1; }
 
@@ -106,6 +112,11 @@ cmd_init() {
     step "macOS settings"
     "$DOTFILES/scripts/macos-defaults.sh"
   fi
+
+  local name paths how
+  while IFS='|' read -r name paths how; do
+    warn "install by hand: $name skill: $how"
+  done < <(app_skills)
 
   printf '\nDone. Open a new terminal to load the shell config, then run: dot doctor\n'
 }
@@ -172,6 +183,14 @@ cmd_doctor() {
     if [[ "$HOME/.claude/commands/$n" -ef "$f" ]]; then ok "prompt /${n%.md} shared with Claude Code"
     else bad "prompt /${n%.md} not linked into ~/.claude/commands (run: dot stow)"; problems=$((problems + 1)); fi
   done
+
+  step "App-installed skills (packages/app-skills)"
+  local name paths how path missing
+  while IFS='|' read -r name paths how; do
+    missing=""
+    for path in $paths; do [[ -e ${path/#\~/$HOME} ]] || missing+=" $path"; done
+    if [[ -z $missing ]]; then ok "$name"; else warn "$name missing:$missing"; printf '    fix: %s\n' "$how"; fi
+  done < <(app_skills)
 
   step "Repo"
   if [[ $(git -C "$DOTFILES" config --get core.hooksPath || true) == scripts/hooks ]]; then

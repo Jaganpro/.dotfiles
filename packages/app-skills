@@ -1,0 +1,6 @@
+# Agent skills installed by apps, not stored here (their licenses don't allow
+# copying them into this public repo). `dot doctor` checks they exist;
+# `dot init` reminds you to install them.
+#
+# name | paths that must exist | how to install
+tldraw-offline | ~/.claude/skills/tldraw-offline ~/.pi/agent/skills/tldraw-offline | open tldraw offline and choose "Install Agent Skills" from its menu (after Claude Code and Pi are installed)

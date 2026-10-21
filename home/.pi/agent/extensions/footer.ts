@@ -8,6 +8,7 @@ import { truncateToWidth, visibleWidth } from "@earendil-works/pi-tui";
 
 const BAR_CELLS = 10;
 const GAP = 2;
+const INSET = 2;
 
 type UsageColor = "dim" | "warning" | "error";
 
@@ -118,7 +119,7 @@ function joinStats(
 	let line = `${contextBar(theme, percent)}  ${theme.fg(usageColor(percent), formatPercent(percent))}`;
 	if (showWindow && window > 0) {
 		const used = tokens === null ? "?" : formatWindow(tokens);
-		line += theme.fg("dim", `  ${used}/${formatWindow(window)}`);
+		line += theme.fg("dim", ` · ${used}/${formatWindow(window)}`);
 	}
 	if (showAuto && auto) line += theme.fg("dim", " · auto");
 	return line;
@@ -131,6 +132,19 @@ function modelLine(theme: Theme, modelId: string | undefined, thinking: Thinking
 		line += theme.fg("dim", " · ") + theme.getThinkingBorderColor(thinking)(thinking);
 	}
 	return line;
+}
+
+function insets(width: number): { left: number; right: number; inner: number } {
+	const left = Math.min(INSET, width);
+	const right = Math.min(INSET, Math.max(0, width - left));
+	return { left, right, inner: Math.max(0, width - left - right) };
+}
+
+function padLine(line: string, width: number): string {
+	if (width <= 0) return "";
+	const { left, right, inner } = insets(width);
+	const body = visibleWidth(line) > inner ? truncateToWidth(line, inner) : line;
+	return " ".repeat(left) + body + " ".repeat(Math.max(0, inner - visibleWidth(body))) + " ".repeat(right);
 }
 
 function renderPath(theme: Theme, width: number, cwd: string, branch: string | null, sessionName: string | undefined): string {
@@ -196,18 +210,22 @@ export default function (pi: ExtensionAPI) {
 					if (width <= 0) return [];
 					try {
 						const usage = ctx.getContextUsage();
+						const inner = insets(width).inner;
 						const lines = [
-							renderPath(theme, width, ctx.sessionManager.getCwd(), footerData.getGitBranch(), ctx.sessionManager.getSessionName()),
-							renderStats(
-								theme,
+							padLine(renderPath(theme, inner, ctx.sessionManager.getCwd(), footerData.getGitBranch(), ctx.sessionManager.getSessionName()), width),
+							padLine(
+								renderStats(
+									theme,
+									inner,
+									usage?.percent ?? null,
+									usage?.tokens ?? null,
+									usage?.contextWindow ?? ctx.model?.contextWindow ?? 0,
+									pi.getSettings().compaction?.enabled !== false,
+									ctx.model?.id,
+									ctx.thinkingLevel ?? pi.getThinkingLevel(),
+									ctx.model?.reasoning === true,
+								),
 								width,
-								usage?.percent ?? null,
-								usage?.tokens ?? null,
-								usage?.contextWindow ?? ctx.model?.contextWindow ?? 0,
-								pi.getSettings().compaction?.enabled !== false,
-								ctx.model?.id,
-								ctx.thinkingLevel ?? pi.getThinkingLevel(),
-								ctx.model?.reasoning === true,
 							),
 						];
 						const statuses = Array.from(footerData.getExtensionStatuses().entries())
@@ -215,7 +233,7 @@ export default function (pi: ExtensionAPI) {
 							.map(([, text]) => sanitizeStatus(text))
 							.filter(Boolean);
 						if (statuses.length > 0) {
-							lines.push(truncateToWidth(statuses.join(" "), width, theme.fg("dim", "…")));
+							lines.push(padLine(truncateToWidth(statuses.join(" "), inner, theme.fg("dim", "…")), width));
 						}
 						return lines;
 					} catch {

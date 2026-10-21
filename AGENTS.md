@@ -27,6 +27,8 @@ third_party/             licenses of code taken from other repos
 - **Code from other repos:** only from openly licensed repos. Keep the
   original notice in a header comment, say what was changed, and add the
   license text to `third_party/`.
+- **App-installed skills** (e.g. tldraw's `tldraw-offline`) are not open source:
+  never copy them into this repo. List them in `packages/app-skills` instead.
 - **Never track secrets or app state:** tokens, `auth.json`, `~/.claude.json`,
   `~/.config/gh/hosts.yml`, history, caches. Keys belong in the macOS Keychain.
 
