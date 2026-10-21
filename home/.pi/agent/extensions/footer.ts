@@ -1,5 +1,5 @@
 // Quiet two-line footer: accented folder, context bar, model on the right.
-// Line 1: ~/path ⎇ branch · session   Line 2: ▰▰▰░░ 42% · 1M · auto   ✦ model · thinking
+// Line 1: ~/path ⎇ branch · session   Line 2: ██░░░ 42% · 1M · auto   ✦ model · thinking
 // Written with Pi using the setFooter API from Pi's examples/extensions/custom-footer.ts.
 import { isAbsolute, relative, resolve, sep } from "node:path";
 import type { ThinkingLevel } from "@earendil-works/pi-agent-core";
@@ -101,7 +101,7 @@ function contextBar(theme: Theme, percent: number | null): string {
 	const filled = filledCells(percent);
 	let bar = "";
 	for (let i = 0; i < BAR_CELLS; i++) {
-		bar += i < filled ? theme.fg(segmentColor(i), "\u25a0") : theme.fg("dim", "\u25a0");
+		bar += i < filled ? theme.fg(segmentColor(i), "\u2588") : theme.fg("dim", "\u2591");
 	}
 	return bar;
 }

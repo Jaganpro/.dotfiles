@@ -49,7 +49,7 @@ each one into place. Built from scratch in October 2026, one tool at a time.
 | `~/.pi/agent/extensions/footer.ts` | Pi's footer: `~/path ⎇ branch · session` and a context bar with %, window size and model (written with Pi) |
 | `~/.pi/agent/extensions/speed.ts` | After each Pi run: `⚡ tokens/sec · ⏱ time · ✍️ written · 📖 read · 💾 from cache` (adapted from earendil-works/pi tps.ts) |
 | `~/.pi/agent/extensions/todos.ts` | `todo` tool and `/todos` screen: to-dos as Markdown files in a project's `.pi/todos/` (from mitsuhiko/agent-stuff, unmodified) |
-| `~/.pi/agent/AGENTS.md` | Global instructions shared by Pi and Claude Code (Claude imports it from `~/.claude/CLAUDE.md`): use `uv` for Python |
+| `~/.pi/agent/AGENTS.md` | Global instructions shared by Pi and Claude Code (Claude imports it from `~/.claude/CLAUDE.md`): use `uv` for Python; ponytail rules for code (smallest complete change, reuse, no slop) |
 
 Never tracked: logins, tokens and app state (`~/.config/gh/hosts.yml`,
 `~/.pi/agent/auth.json`, `~/.claude.json`, shell history, caches).
@@ -309,5 +309,6 @@ everything in it is installed.
 - `web.ts` ideas: [badlogic/pi-skills](https://github.com/badlogic/pi-skills) brave-search, [tian.zuo/pi-web-search](https://www.npmjs.com/package/@tian.zuo/pi-web-search), [dmmulroy/pi-web-tools](https://github.com/dmmulroy/pi-web-tools), [pi-lab/websearch](https://www.npmjs.com/package/@pi-lab/websearch) (written from scratch).
 - Pi command aliases idea: [xRyul/pi-aliases](https://github.com/xRyul/pi-aliases).
 - `/deslop` and `/ship` prompts, `speed.ts`: adapted from [earendil-works/pi](https://github.com/earendil-works/pi) (MIT).
+- Coding rules in `AGENTS.md`: adapted from [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) (MIT).
 
 License texts for the copied code are in `third_party/`.
