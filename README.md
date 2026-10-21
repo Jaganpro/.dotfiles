@@ -31,7 +31,7 @@ each one into place. Built from scratch in October 2026, one tool at a time.
 | `~/.config/starship/sf-org.sh` | Finds the Salesforce target org for the prompt |
 | `~/.config/zsh/worktree.zsh` | `gwa` / `gwr` git worktree helpers (loaded by `.zshrc`) |
 | `~/.config/ripgrep/config` | ripgrep defaults: search hidden files, skip `.git/` and files over 5 MB |
-| `~/.config/git/ignore` | Global git ignore for every repo: `.DS_Store`, personal Claude files, `.env*` / `.envrc` (except `.env.example`) |
+| `~/.config/git/ignore` | Global git ignore for every repo: `.DS_Store`, personal Claude files, `.env*` / `.envrc` (except `.env.example`), Pi's `.pi/todos/` |
 | `~/.config/ghostty/config.ghostty` | Ghostty: Gruvbox Dark, font 14, Option-as-Alt, Quick Terminal, shortcuts, SSH terminfo, balanced padding, medium split dimming |
 | `~/.npmrc` | npm installs only versions at least 3 days old (supply-chain cooldown) |
 | `~/.pi/agent/npm/.npmrc` | No cooldown for Pi extensions (they all install in this folder) |
@@ -41,6 +41,7 @@ each one into place. Built from scratch in October 2026, one tool at a time.
 | `~/.claude/settings.json` | Claude Code preferences, hooks, status line; no commit/PR attribution |
 | `~/.pi/agent/settings.json` | Pi default model, the fff package, and the path to `skills/youtube-transcript` |
 | `~/.pi/agent/extensions/notify.ts` | Desktop notification when Pi finishes (from mitsuhiko/agent-stuff, unmodified) |
+| `~/.pi/agent/extensions/todos.ts` | `todo` tool and `/todos` screen: to-dos as Markdown files in a project's `.pi/todos/` (from mitsuhiko/agent-stuff, unmodified) |
 | `~/.pi/agent/AGENTS.md` | Global instructions shared by Pi and Claude Code (Claude imports it from `~/.claude/CLAUDE.md`): use `uv` for Python |
 
 Never tracked: logins, tokens and app state (`~/.config/gh/hosts.yml`,
@@ -100,7 +101,7 @@ GitHub is used through `gh` only.
 | Tool | Notes |
 |---|---|
 | Claude Code | Settings tracked here; fff registered as an MCP server |
-| Pi | fff search; **notify** extension (desktop notification when Pi finishes); **youtube-transcript** skill (`skills/youtube-transcript`, timestamps fixed) |
+| Pi | fff search; **notify** extension (desktop notification when Pi finishes); **todos** extension (`/todos`, task list in `.pi/todos/`); **youtube-transcript** skill (`skills/youtube-transcript`, timestamps fixed) |
 
 fff only works when Claude Code or Pi is started inside a project folder.
 It refuses to index the home folder on purpose.
@@ -273,7 +274,7 @@ everything in it is installed.
 - Repo layout and the `dot` command are inspired by
   [dmmulroy/.dotfiles](https://github.com/dmmulroy/.dotfiles) by Dillon Mulroy.
 - File search for Claude Code and Pi: [fff](https://github.com/dmtrKovalenko/fff.nvim).
-- Pi notify extension: [mitsuhiko/agent-stuff](https://github.com/mitsuhiko/agent-stuff) (Apache-2.0).
+- Pi notify and todos extensions: [mitsuhiko/agent-stuff](https://github.com/mitsuhiko/agent-stuff) (Apache-2.0).
 - YouTube transcript skill: [badlogic/pi-skills](https://github.com/badlogic/pi-skills) (MIT).
 
 License texts for both are in `third_party/`.

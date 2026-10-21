@@ -14,3 +14,6 @@
 .env
 .env.*
 !.env.example
+
+# Pi's todos extension: per-project working notes, kept on this Mac
+.pi/todos/
