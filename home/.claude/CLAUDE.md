@@ -10,3 +10,5 @@ inside the current git repository:
 - Read more of a file only when the returned lines need more context.
 
 If `fff` isn't connected, use the built-in tools as usual.
+
+@~/.pi/agent/AGENTS.md

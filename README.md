@@ -12,6 +12,8 @@ each one into place. Built from scratch in October 2026, one tool at a time.
 ├── packages/Brewfile     every Homebrew tool and app
 ├── scripts/macos-defaults.sh
 ├── scripts/hooks/pre-commit   gitleaks blocks commits containing secrets
+├── skills/               agent skills with their own dependencies (not linked; Pi points here)
+├── third_party/          licenses for code taken from other repos
 ├── dot                   the `dot` command: init, doctor, update, stow, add
 ├── AGENTS.md             how AI agents (Claude Code, Pi) should work in this repo
 ├── CLAUDE.md             points Claude Code at AGENTS.md
@@ -37,7 +39,9 @@ each one into place. Built from scratch in October 2026, one tool at a time.
 | `~/.gitconfig` | Name/email (GitHub noreply), `gh` login, delta pager, pull = rebase, prune on fetch, newest branches first, rerere, `git fomo`, `git nuke` |
 | `~/.claude/CLAUDE.md` | Instructions for every Claude Code session: prefer fff for file search |
 | `~/.claude/settings.json` | Claude Code preferences, hooks, status line; no commit/PR attribution |
-| `~/.pi/agent/settings.json` | Pi default model and packages |
+| `~/.pi/agent/settings.json` | Pi default model, the fff package, and the path to `skills/youtube-transcript` |
+| `~/.pi/agent/extensions/notify.ts` | Desktop notification when Pi finishes (from mitsuhiko/agent-stuff, unmodified) |
+| `~/.pi/agent/AGENTS.md` | Global instructions shared by Pi and Claude Code (Claude imports it from `~/.claude/CLAUDE.md`): use `uv` for Python |
 
 Never tracked: logins, tokens and app state (`~/.config/gh/hosts.yml`,
 `~/.pi/agent/auth.json`, `~/.claude.json`, shell history, caches).
@@ -96,7 +100,7 @@ GitHub is used through `gh` only.
 | Tool | Notes |
 |---|---|
 | Claude Code | Settings tracked here; fff registered as an MCP server |
-| Pi | Settings tracked here; `pi-fff` extension listed in its packages |
+| Pi | fff search; **notify** extension (desktop notification when Pi finishes); **youtube-transcript** skill (`skills/youtube-transcript`, timestamps fixed) |
 
 fff only works when Claude Code or Pi is started inside a project folder.
 It refuses to index the home folder on purpose.
@@ -221,11 +225,13 @@ runs it; it's safe to run again on its own after editing a line.
    sf autocomplete --refresh-cache   # Tab completion for sf; rerun after sf updates
    ```
 
-7. **Pi** and its fff extension:
+7. **Pi.** The notify extension and the YouTube skill come from this repo
+   (`dot init` installs the skill's dependencies); `pi update --extensions`
+   installs the fff package listed in the tracked settings.
 
    ```bash
    curl -fsSL https://pi.dev/install.sh | sh
-   pi install npm:@ff-labs/pi-fff
+   pi update --extensions
    ```
 
 8. **Claude Code: register fff** (lives in `~/.claude.json`, which isn't tracked):
@@ -267,3 +273,7 @@ everything in it is installed.
 - Repo layout and the `dot` command are inspired by
   [dmmulroy/.dotfiles](https://github.com/dmmulroy/.dotfiles) by Dillon Mulroy.
 - File search for Claude Code and Pi: [fff](https://github.com/dmtrKovalenko/fff.nvim).
+- Pi notify extension: [mitsuhiko/agent-stuff](https://github.com/mitsuhiko/agent-stuff) (Apache-2.0).
+- YouTube transcript skill: [badlogic/pi-skills](https://github.com/badlogic/pi-skills) (MIT).
+
+License texts for both are in `third_party/`.

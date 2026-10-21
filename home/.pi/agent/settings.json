@@ -4,5 +4,8 @@
   "defaultModel": "grok-4.7",
   "packages": [
     "npm:@ff-labs/pi-fff"
+  ],
+  "skills": [
+    "~/.dotfiles/skills/youtube-transcript"
   ]
 }

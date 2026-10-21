@@ -10,6 +10,8 @@ home/                    mirrors ~ ; GNU Stow links each file into ~ (--no-foldi
 packages/Brewfile        every Homebrew tool and app (brew bundle --global reads it)
 scripts/macos-defaults.sh
 dot                      the `dot` command: init, doctor, update, stow, add
+skills/                  agent skills with npm deps (not stowed; Pi settings point here)
+third_party/             licenses of code taken from other repos
 ```
 
 ## Editing rules
@@ -22,6 +24,9 @@ dot                      the `dot` command: init, doctor, update, stow, add
   whole folders like `~/.claude` (sessions, history) end up in git.
 - **New Homebrew tool:** add a commented line to `packages/Brewfile` and a row
   to the matching README table.
+- **Code from other repos:** only from openly licensed repos. Keep the
+  original notice in a header comment, say what was changed, and add the
+  license text to `third_party/`.
 - **Never track secrets or app state:** tokens, `auth.json`, `~/.claude.json`,
   `~/.config/gh/hosts.yml`, history, caches. Keys belong in the macOS Keychain.
 

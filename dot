@@ -46,6 +46,17 @@ link_home() {
   ok "home/ linked into ~"
 }
 
+install_skill_deps() {
+  # Agent skills in skills/ that ship a package.json need their node_modules
+  local pkg dir
+  for pkg in "$DOTFILES"/skills/*/package.json; do
+    [[ -e $pkg ]] || continue
+    dir=$(dirname "$pkg")
+    step "Skill dependencies: skills/$(basename "$dir")"
+    (cd "$dir" && npm ci --no-fund --no-audit --loglevel=error)
+  done
+}
+
 cmd_init() {
   command -v brew >/dev/null || { bad "Install Homebrew first: https://brew.sh"; exit 1; }
 
@@ -61,6 +72,8 @@ cmd_init() {
   mkdir -p "$HOME/.local/bin"
   ln -sf "$DOTFILES/dot" "$HOME/.local/bin/dot"
   ok "dot command available as ~/.local/bin/dot"
+
+  install_skill_deps
 
   step "Git hook: gitleaks blocks commits containing secrets"
   git -C "$DOTFILES" config core.hooksPath scripts/hooks
@@ -119,6 +132,12 @@ cmd_doctor() {
     problems=$((problems + 1))
   fi
 
+  for f in "$DOTFILES"/skills/*/package.json; do
+    [[ -e $f ]] || continue
+    if [[ -d $(dirname "$f")/node_modules ]]; then ok "skills/$(basename "$(dirname "$f")") dependencies installed"
+    else bad "skills/$(basename "$(dirname "$f")") dependencies missing (run: dot init --no-macos)"; problems=$((problems + 1)); fi
+  done
+
   step "Repo"
   if [[ $(git -C "$DOTFILES" config --get core.hooksPath || true) == scripts/hooks ]]; then
     ok "gitleaks pre-commit hook active"
@@ -144,6 +163,7 @@ cmd_update() {
   brew update
   brew bundle --file "$DOTFILES/packages/Brewfile" --no-upgrade
   brew upgrade
+  install_skill_deps
   step "Links"
   link_home
 }
