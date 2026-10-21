@@ -1,0 +1,16 @@
+# Global git ignore: applies to every repo on this Mac
+# (git reads ~/.config/git/ignore automatically)
+
+# macOS clutter
+.DS_Store
+
+# Personal Claude Code files, never meant to be shared
+**/.claude/settings.local.json
+**/CLAUDE.local.md
+
+# Local environment files (direnv, dotenv) can hold secrets.
+# To commit one on purpose: git add -f <file>
+.envrc
+.env
+.env.*
+!.env.example

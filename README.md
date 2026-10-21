@@ -28,6 +28,7 @@ each one into place. Built from scratch in October 2026, one tool at a time.
 | `~/.config/starship.toml` | Gruvbox powerline prompt |
 | `~/.config/starship/sf-org.sh` | Finds the Salesforce target org for the prompt |
 | `~/.config/zsh/worktree.zsh` | `gwa` / `gwr` git worktree helpers (loaded by `.zshrc`) |
+| `~/.config/git/ignore` | Global git ignore for every repo: `.DS_Store`, personal Claude files, `.env*` / `.envrc` (except `.env.example`) |
 | `~/.config/ghostty/config.ghostty` | Ghostty: Gruvbox Dark, font 14, Option-as-Alt, Quick Terminal, shortcuts |
 | `~/.npmrc` | npm installs only versions at least 3 days old (supply-chain cooldown) |
 | `~/.pi/agent/npm/.npmrc` | No cooldown for Pi extensions (they all install in this folder) |
