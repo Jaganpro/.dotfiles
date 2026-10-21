@@ -150,6 +150,7 @@ Shared by Claude Code and Pi from `prompts/`.
 | Command | Does |
 |---|---|
 | `/deslop [focus]` | Simplify finished work without changing what it does; defaults to uncommitted changes, asks before bigger removals |
+| `/ship [hint]` | Commit this session's work (files staged by name, checks first, never `--no-verify`) and push; reports every git command used with a plain explanation |
 
 ## History and colours
 
@@ -287,6 +288,6 @@ everything in it is installed.
 - Pi notify and todos extensions: [mitsuhiko/agent-stuff](https://github.com/mitsuhiko/agent-stuff) (Apache-2.0).
 - YouTube transcript skill: [badlogic/pi-skills](https://github.com/badlogic/pi-skills) (MIT).
 - Pi command aliases idea: [xRyul/pi-aliases](https://github.com/xRyul/pi-aliases).
-- `/deslop` prompt: adapted from [earendil-works/pi](https://github.com/earendil-works/pi) (MIT).
+- `/deslop` and `/ship` prompts: adapted from [earendil-works/pi](https://github.com/earendil-works/pi) (MIT).
 
 License texts for the copied code are in `third_party/`.
