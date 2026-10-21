@@ -1,0 +1,2 @@
+# Keep the Brewfile (Ruby syntax) out of GitHub's language stats
+packages/Brewfile linguist-detectable=false
