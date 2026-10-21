@@ -41,6 +41,7 @@ each one into place. Built from scratch in October 2026, one tool at a time.
 | `~/.claude/CLAUDE.md` | Instructions for every Claude Code session: prefer fff for file search |
 | `~/.claude/settings.json` | Claude Code preferences, hooks, status line; no commit/PR attribution |
 | `~/.pi/agent/settings.json` | Pi default model, the fff package, and the path to `skills/youtube-transcript` |
+| `~/.pi/agent/extensions/web.ts` | Pi `web_search` (Brave → Parallel → TinyFish, falls back on errors/quota; freshness, country, result age, optional page text) and `web_fetch` (free direct download first, main content as Markdown); keys from the macOS Keychain; `/web` shows status |
 | `~/.pi/agent/extensions/git-guard.ts` | Pi: blocks commands that skip git hooks (`--no-verify`, `git commit -n`) and stops git opening an editor |
 | `~/.claude/hooks/git-guard.sh` | Claude Code: the same hook-skipping block, as a PreToolUse hook (registered in `settings.json`, which also sets `GIT_EDITOR=true`) |
 | `~/.pi/agent/extensions/notify.ts` | Desktop notification when Pi finishes (from mitsuhiko/agent-stuff, unmodified) |
@@ -250,7 +251,18 @@ runs it; it's safe to run again on its own after editing a line.
    pi update --extensions
    ```
 
-8. **Claude Code: register fff** (lives in `~/.claude.json`, which isn't tracked):
+8. **Web search keys for Pi** (optional; any of the three). Brave's free plan:
+   sign up at <https://api-dashboard.search.brave.com>, create a **Free AI**
+   subscription (asks for a card, not charged), then create a key. Each command
+   below asks for the key in a hidden prompt and stores it in the macOS Keychain:
+
+   ```bash
+   security add-generic-password -s web-brave    -a "$USER" -w
+   security add-generic-password -s web-parallel -a "$USER" -w
+   security add-generic-password -s web-tinyfish -a "$USER" -w
+   ```
+
+9. **Claude Code: register fff** (lives in `~/.claude.json`, which isn't tracked):
 
    ```bash
    claude mcp add --scope user fff -- /opt/homebrew/bin/fff-mcp
@@ -294,6 +306,7 @@ everything in it is installed.
 - Pi notify and todos extensions: [mitsuhiko/agent-stuff](https://github.com/mitsuhiko/agent-stuff) (Apache-2.0).
 - YouTube transcript skill: [badlogic/pi-skills](https://github.com/badlogic/pi-skills) (MIT).
 - git-guard idea: dmmulroy's git-interceptor (written from scratch).
+- `web.ts` ideas: [badlogic/pi-skills](https://github.com/badlogic/pi-skills) brave-search, [tian.zuo/pi-web-search](https://www.npmjs.com/package/@tian.zuo/pi-web-search), [dmmulroy/pi-web-tools](https://github.com/dmmulroy/pi-web-tools), [pi-lab/websearch](https://www.npmjs.com/package/@pi-lab/websearch) (written from scratch).
 - Pi command aliases idea: [xRyul/pi-aliases](https://github.com/xRyul/pi-aliases).
 - `/deslop` and `/ship` prompts, `speed.ts`: adapted from [earendil-works/pi](https://github.com/earendil-works/pi) (MIT).
 
