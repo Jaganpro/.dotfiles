@@ -44,3 +44,6 @@ shell-integration-features = ssh-env,ssh-terminfo
 
 # Spread the padding evenly around the text grid
 window-padding-balance = true
+
+# Inactive splits: medium dimming (Ghostty default 0.7 is strong)
+unfocused-split-opacity = 0.85
