@@ -43,6 +43,8 @@ each one into place. Built from scratch in October 2026, one tool at a time.
 | `~/.pi/agent/settings.json` | Pi default model, the fff package, and the path to `skills/youtube-transcript` |
 | `~/.pi/agent/extensions/notify.ts` | Desktop notification when Pi finishes (from mitsuhiko/agent-stuff, unmodified) |
 | `~/.pi/agent/extensions/aliases.ts` | Claude Code command names in Pi: `/clear`, `/exit`, `/context`, `/rename`, `/effort` (our own, inspired by xRyul/pi-aliases) |
+| `~/.pi/agent/extensions/footer.ts` | Pi's footer: `~/path ⎇ branch · session` and a context bar with %, window size and model (written with Pi) |
+| `~/.pi/agent/extensions/speed.ts` | After each Pi run: `⚡ tokens/sec · ⏱ time · ✍️ written · 📖 read · 💾 from cache` (adapted from earendil-works/pi tps.ts) |
 | `~/.pi/agent/extensions/todos.ts` | `todo` tool and `/todos` screen: to-dos as Markdown files in a project's `.pi/todos/` (from mitsuhiko/agent-stuff, unmodified) |
 | `~/.pi/agent/AGENTS.md` | Global instructions shared by Pi and Claude Code (Claude imports it from `~/.claude/CLAUDE.md`): use `uv` for Python |
 
@@ -103,7 +105,7 @@ GitHub is used through `gh` only.
 | Tool | Notes |
 |---|---|
 | Claude Code | Settings tracked here; fff registered as an MCP server |
-| Pi | fff search; **notify** extension (desktop notification when Pi finishes); **todos** extension (`/todos`, task list in `.pi/todos/`); **aliases** (`/clear`, `/exit`, `/context`, `/rename`, `/effort`); **youtube-transcript** skill (`skills/youtube-transcript`, timestamps fixed; also linked into `~/.claude/skills/` for Claude Code) |
+| Pi | fff search; **notify** extension (desktop notification when Pi finishes); **todos** extension (`/todos`, task list in `.pi/todos/`); **aliases** (`/clear`, `/exit`, `/context`, `/rename`, `/effort`); **footer** (path, branch, context bar, model); **speed** (tokens/sec after each run); **youtube-transcript** skill (`skills/youtube-transcript`, timestamps fixed; also linked into `~/.claude/skills/` for Claude Code) |
 
 fff only works when Claude Code or Pi is started inside a project folder.
 It refuses to index the home folder on purpose.
@@ -288,6 +290,6 @@ everything in it is installed.
 - Pi notify and todos extensions: [mitsuhiko/agent-stuff](https://github.com/mitsuhiko/agent-stuff) (Apache-2.0).
 - YouTube transcript skill: [badlogic/pi-skills](https://github.com/badlogic/pi-skills) (MIT).
 - Pi command aliases idea: [xRyul/pi-aliases](https://github.com/xRyul/pi-aliases).
-- `/deslop` and `/ship` prompts: adapted from [earendil-works/pi](https://github.com/earendil-works/pi) (MIT).
+- `/deslop` and `/ship` prompts, `speed.ts`: adapted from [earendil-works/pi](https://github.com/earendil-works/pi) (MIT).
 
 License texts for the copied code are in `third_party/`.
