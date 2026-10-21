@@ -58,6 +58,15 @@ link_home() {
     fi
   done
   ok "skills/ shared with Claude Code (~/.claude/skills)"
+
+  # Share every prompt in prompts/ with Claude Code as a /command
+  local prompt
+  mkdir -p "$HOME/.claude/commands"
+  for prompt in "$DOTFILES"/prompts/*.md; do
+    [[ -e $prompt ]] || continue
+    ln -sf "$prompt" "$HOME/.claude/commands/$(basename "$prompt")"
+  done
+  ok "prompts/ shared with Claude Code (~/.claude/commands)"
 }
 
 install_skill_deps() {
@@ -156,6 +165,12 @@ cmd_doctor() {
     n=$(basename "$(dirname "$f")")
     if [[ "$HOME/.claude/skills/$n" -ef "$(dirname "$f")" ]]; then ok "skills/$n shared with Claude Code"
     else bad "skills/$n not linked into ~/.claude/skills (run: dot stow)"; problems=$((problems + 1)); fi
+  done
+  for f in "$DOTFILES"/prompts/*.md; do
+    [[ -e $f ]] || continue
+    n=$(basename "$f")
+    if [[ "$HOME/.claude/commands/$n" -ef "$f" ]]; then ok "prompt /${n%.md} shared with Claude Code"
+    else bad "prompt /${n%.md} not linked into ~/.claude/commands (run: dot stow)"; problems=$((problems + 1)); fi
   done
 
   step "Repo"

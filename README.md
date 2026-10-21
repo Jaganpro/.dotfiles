@@ -13,6 +13,7 @@ each one into place. Built from scratch in October 2026, one tool at a time.
 ├── scripts/macos-defaults.sh
 ├── scripts/hooks/pre-commit   gitleaks blocks commits containing secrets
 ├── skills/               agent skills for Pi (via its settings) and Claude Code (linked into ~/.claude/skills)
+├── prompts/              slash commands for Pi (via its settings) and Claude Code (linked into ~/.claude/commands)
 ├── third_party/          licenses for code taken from other repos
 ├── dot                   the `dot` command: init, doctor, update, stow, add
 ├── AGENTS.md             how AI agents (Claude Code, Pi) should work in this repo
@@ -141,6 +142,14 @@ own branch: work on two branches at once, or give an AI agent a sandbox.
 `gwr` refuses, before changing anything, if the worktree has uncommitted
 changes (including new files) or the branch has commits not merged into the
 main checkout's current branch.
+
+## Prompts (slash commands)
+
+Shared by Claude Code and Pi from `prompts/`.
+
+| Command | Does |
+|---|---|
+| `/deslop [focus]` | Simplify finished work without changing what it does; defaults to uncommitted changes, asks before bigger removals |
 
 ## History and colours
 
@@ -278,5 +287,6 @@ everything in it is installed.
 - Pi notify and todos extensions: [mitsuhiko/agent-stuff](https://github.com/mitsuhiko/agent-stuff) (Apache-2.0).
 - YouTube transcript skill: [badlogic/pi-skills](https://github.com/badlogic/pi-skills) (MIT).
 - Pi command aliases idea: [xRyul/pi-aliases](https://github.com/xRyul/pi-aliases).
+- `/deslop` prompt: adapted from [earendil-works/pi](https://github.com/earendil-works/pi) (MIT).
 
 License texts for the copied code are in `third_party/`.
