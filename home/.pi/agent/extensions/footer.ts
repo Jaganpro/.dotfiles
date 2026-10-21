@@ -91,27 +91,35 @@ function pathLine(
 	return line;
 }
 
-function barFill(percent: number | null): "accent" | "warning" | "error" | undefined {
-	if (percent === null || percent <= 0) return undefined;
-	if (percent > 90) return "error";
-	if (percent > 70) return "warning";
-	return "accent";
+function segmentColor(index: number): "success" | "warning" | "error" {
+	if (index >= 8) return "error";
+	if (index >= 6) return "warning";
+	return "success";
 }
 
 function contextBar(theme: Theme, percent: number | null): string {
 	const filled = filledCells(percent);
-	const empty = BAR_CELLS - filled;
-	const track = theme.colors.border;
-	const fill = barFill(percent);
-	const emptyBar = empty > 0 ? theme.style(" ".repeat(empty), { bg: track }) : "";
-	if (!fill || filled === 0) return theme.style(" ".repeat(BAR_CELLS), { bg: track });
-	return theme.style(" ".repeat(filled), { bg: theme.colors[fill] }) + emptyBar;
+	let bar = "";
+	for (let i = 0; i < BAR_CELLS; i++) {
+		bar += i < filled ? theme.fg(segmentColor(i), "\u25a0") : theme.fg("dim", "\u25a0");
+	}
+	return bar;
 }
 
-function joinStats(theme: Theme, percent: number | null, window: number, auto: boolean, showWindow: boolean, showAuto: boolean): string {
-	const color = usageColor(percent);
-	let line = `${contextBar(theme, percent)}  ${theme.fg(color, formatPercent(percent))}`;
-	if (showWindow && window > 0) line += theme.fg("dim", ` · ${formatWindow(window)}`);
+function joinStats(
+	theme: Theme,
+	percent: number | null,
+	tokens: number | null,
+	window: number,
+	auto: boolean,
+	showWindow: boolean,
+	showAuto: boolean,
+): string {
+	let line = `${contextBar(theme, percent)}  ${theme.fg(usageColor(percent), formatPercent(percent))}`;
+	if (showWindow && window > 0) {
+		const used = tokens === null ? "?" : formatWindow(tokens);
+		line += theme.fg("dim", `  ${used}/${formatWindow(window)}`);
+	}
 	if (showAuto && auto) line += theme.fg("dim", " · auto");
 	return line;
 }
@@ -142,6 +150,7 @@ function renderStats(
 	theme: Theme,
 	width: number,
 	percent: number | null,
+	tokens: number | null,
 	window: number,
 	auto: boolean,
 	modelId: string | undefined,
@@ -150,9 +159,9 @@ function renderStats(
 ): string {
 	const ellipsis = theme.fg("dim", "…");
 	const lefts = [
-		joinStats(theme, percent, window, auto, true, true),
-		joinStats(theme, percent, window, auto, true, false),
-		joinStats(theme, percent, window, auto, false, false),
+		joinStats(theme, percent, tokens, window, auto, true, true),
+		joinStats(theme, percent, tokens, window, auto, true, false),
+		joinStats(theme, percent, tokens, window, auto, false, false),
 	];
 	const rights = reasoning
 		? [modelLine(theme, modelId, thinking, true), modelLine(theme, modelId, thinking, false)]
@@ -193,6 +202,7 @@ export default function (pi: ExtensionAPI) {
 								theme,
 								width,
 								usage?.percent ?? null,
+								usage?.tokens ?? null,
 								usage?.contextWindow ?? ctx.model?.contextWindow ?? 0,
 								pi.getSettings().compaction?.enabled !== false,
 								ctx.model?.id,

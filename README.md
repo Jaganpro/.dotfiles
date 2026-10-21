@@ -41,6 +41,8 @@ each one into place. Built from scratch in October 2026, one tool at a time.
 | `~/.claude/CLAUDE.md` | Instructions for every Claude Code session: prefer fff for file search |
 | `~/.claude/settings.json` | Claude Code preferences, hooks, status line; no commit/PR attribution |
 | `~/.pi/agent/settings.json` | Pi default model, the fff package, and the path to `skills/youtube-transcript` |
+| `~/.pi/agent/extensions/git-guard.ts` | Pi: blocks commands that skip git hooks (`--no-verify`, `git commit -n`) and stops git opening an editor |
+| `~/.claude/hooks/git-guard.sh` | Claude Code: the same hook-skipping block, as a PreToolUse hook (registered in `settings.json`, which also sets `GIT_EDITOR=true`) |
 | `~/.pi/agent/extensions/notify.ts` | Desktop notification when Pi finishes (from mitsuhiko/agent-stuff, unmodified) |
 | `~/.pi/agent/extensions/aliases.ts` | Claude Code command names in Pi: `/clear`, `/exit`, `/context`, `/rename`, `/effort` (our own, inspired by xRyul/pi-aliases) |
 | `~/.pi/agent/extensions/footer.ts` | Pi's footer: `~/path ⎇ branch · session` and a context bar with %, window size and model (written with Pi) |
@@ -260,6 +262,8 @@ Files in `~` are links into the repo, so editing `~/.zshrc` edits
 `~/.dotfiles/home/.zshrc` directly. Apps that save their own settings (Claude
 Code, Pi) write through the links too. Every commit is scanned by gitleaks
 (`scripts/hooks/pre-commit`); a commit containing a secret is refused.
+Agents can't skip that check: git-guard blocks `--no-verify` and `git commit -n`
+in both Claude Code and Pi.
 
 ### The `dot` command
 
@@ -289,6 +293,7 @@ everything in it is installed.
 - File search for Claude Code and Pi: [fff](https://github.com/dmtrKovalenko/fff.nvim).
 - Pi notify and todos extensions: [mitsuhiko/agent-stuff](https://github.com/mitsuhiko/agent-stuff) (Apache-2.0).
 - YouTube transcript skill: [badlogic/pi-skills](https://github.com/badlogic/pi-skills) (MIT).
+- git-guard idea: dmmulroy's git-interceptor (written from scratch).
 - Pi command aliases idea: [xRyul/pi-aliases](https://github.com/xRyul/pi-aliases).
 - `/deslop` and `/ship` prompts, `speed.ts`: adapted from [earendil-works/pi](https://github.com/earendil-works/pi) (MIT).
 

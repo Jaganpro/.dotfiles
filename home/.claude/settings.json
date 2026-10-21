@@ -3,7 +3,10 @@
   "env": {
     "DISABLE_TELEMETRY": "1",
     "DISABLE_ERROR_REPORTING": "1",
-    "BASH_DEFAULT_TIMEOUT_MS": "300000"
+    "BASH_DEFAULT_TIMEOUT_MS": "300000",
+    "GIT_EDITOR": "true",
+    "GIT_SEQUENCE_EDITOR": "true",
+    "GIT_MERGE_AUTOEDIT": "no"
   },
   "attribution": {
     "commit": "",
@@ -19,6 +22,17 @@
           {
             "type": "command",
             "command": "node \"$HOME/skills/tldraw-offline/inject-server-context.mjs\" SubagentStart"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/git-guard.sh"
           }
         ]
       }
