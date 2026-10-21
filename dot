@@ -44,6 +44,20 @@ link_home() {
   # --no-folding: link files only, never whole folders (keeps app data out of git)
   stow --no-folding --restow --dir "$DOTFILES" --target "$HOME" home
   ok "home/ linked into ~"
+
+  # Share every skill in skills/ with Claude Code (Pi finds them via its settings)
+  local skill name
+  mkdir -p "$HOME/.claude/skills"
+  for skill in "$DOTFILES"/skills/*/; do
+    [[ -f $skill/SKILL.md ]] || continue
+    name=$(basename "$skill")
+    if [[ -e "$HOME/.claude/skills/$name" && ! -L "$HOME/.claude/skills/$name" ]]; then
+      warn "~/.claude/skills/$name is a real folder; not replacing it"
+    else
+      ln -sfn "${skill%/}" "$HOME/.claude/skills/$name"
+    fi
+  done
+  ok "skills/ shared with Claude Code (~/.claude/skills)"
 }
 
 install_skill_deps() {
@@ -136,6 +150,12 @@ cmd_doctor() {
     [[ -e $f ]] || continue
     if [[ -d $(dirname "$f")/node_modules ]]; then ok "skills/$(basename "$(dirname "$f")") dependencies installed"
     else bad "skills/$(basename "$(dirname "$f")") dependencies missing (run: dot init --no-macos)"; problems=$((problems + 1)); fi
+  done
+  for f in "$DOTFILES"/skills/*/SKILL.md; do
+    [[ -e $f ]] || continue
+    n=$(basename "$(dirname "$f")")
+    if [[ "$HOME/.claude/skills/$n" -ef "$(dirname "$f")" ]]; then ok "skills/$n shared with Claude Code"
+    else bad "skills/$n not linked into ~/.claude/skills (run: dot stow)"; problems=$((problems + 1)); fi
   done
 
   step "Repo"

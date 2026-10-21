@@ -3,7 +3,7 @@ name: youtube-transcript
 description: Fetch transcripts from YouTube videos for summarization and analysis.
 ---
 
-<!-- From badlogic/pi-skills (MIT, Copyright (c) 2024 Mario Zechner); see third_party/badlogic-pi-skills.LICENSE. transcript.js modified to fix timestamps. -->
+<!-- From badlogic/pi-skills (MIT, Copyright (c) 2024 Mario Zechner); see third_party/badlogic-pi-skills.LICENSE. Modified: timestamps fixed in transcript.js; paths made absolute so Claude Code can use it too. -->
 
 # YouTube Transcript
 
@@ -11,15 +11,12 @@ Fetch transcripts from YouTube videos.
 
 ## Setup
 
-```bash
-cd {baseDir}
-npm install
-```
+Dependencies are installed by `dot init` (it runs `npm ci` in this folder).
 
 ## Usage
 
 ```bash
-{baseDir}/transcript.js <video-id-or-url>
+~/.dotfiles/skills/youtube-transcript/transcript.js <video-id-or-url>
 ```
 
 Accepts video ID or full URL:

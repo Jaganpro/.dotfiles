@@ -12,7 +12,7 @@ each one into place. Built from scratch in October 2026, one tool at a time.
 ├── packages/Brewfile     every Homebrew tool and app
 ├── scripts/macos-defaults.sh
 ├── scripts/hooks/pre-commit   gitleaks blocks commits containing secrets
-├── skills/               agent skills with their own dependencies (not linked; Pi points here)
+├── skills/               agent skills for Pi (via its settings) and Claude Code (linked into ~/.claude/skills)
 ├── third_party/          licenses for code taken from other repos
 ├── dot                   the `dot` command: init, doctor, update, stow, add
 ├── AGENTS.md             how AI agents (Claude Code, Pi) should work in this repo
@@ -102,7 +102,7 @@ GitHub is used through `gh` only.
 | Tool | Notes |
 |---|---|
 | Claude Code | Settings tracked here; fff registered as an MCP server |
-| Pi | fff search; **notify** extension (desktop notification when Pi finishes); **todos** extension (`/todos`, task list in `.pi/todos/`); **aliases** (`/clear`, `/exit`, `/context`, `/rename`, `/effort`); **youtube-transcript** skill (`skills/youtube-transcript`, timestamps fixed) |
+| Pi | fff search; **notify** extension (desktop notification when Pi finishes); **todos** extension (`/todos`, task list in `.pi/todos/`); **aliases** (`/clear`, `/exit`, `/context`, `/rename`, `/effort`); **youtube-transcript** skill (`skills/youtube-transcript`, timestamps fixed; also linked into `~/.claude/skills/` for Claude Code) |
 
 fff only works when Claude Code or Pi is started inside a project folder.
 It refuses to index the home folder on purpose.
