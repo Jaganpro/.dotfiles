@@ -1,0 +1,19 @@
+// Compact, private system info: no username, hostname or IP address.
+{
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/master/doc/json_schema.json",
+  "modules": [
+    "os",
+    "host",
+    "uptime",
+    "packages",
+    "shell",
+    "terminal",
+    "cpu",
+    "gpu",
+    "memory",
+    { "type": "disk", "key": "Disk" },
+    { "type": "battery", "key": "Battery" },
+    "break",
+    "colors"
+  ]
+}

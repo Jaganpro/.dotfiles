@@ -1,0 +1,39 @@
+# Ghostty config (in ~/.dotfiles, linked by Stow)
+# Reload: Cmd+Shift+, | Check: ghostty +validate-config
+
+# Look: Gruvbox Dark to match starship, bat, delta and LS_COLORS.
+# Font: Ghostty's built-in JetBrains Mono, which includes Nerd Font icons.
+theme = Gruvbox Dark
+font-size = 14
+background-opacity = 0.98
+background-blur = true
+cursor-style = block
+cursor-style-blink = false
+
+# Left Option acts as Alt (fzf's Alt-C); right Option still types é, ü, ...
+macos-option-as-alt = left
+
+# Windows and tabs
+window-save-state = always
+window-inherit-working-directory = true
+window-inherit-font-size = true
+confirm-close-surface = true
+
+# Scrollback is measured in bytes: up to 100 MB
+scrollback-limit = 100000000
+
+# Finished command in a background tab: sound, tab title and Dock attention
+bell-features = audio,title,attention
+
+# Quick Terminal: Cmd+` from any app drops a terminal from the top
+keybind = global:cmd+grave_accent=toggle_quick_terminal
+quick-terminal-position = top
+quick-terminal-size = 50%
+quick-terminal-animation-duration = 0.1
+quick-terminal-autohide = false
+
+# Cmd+K clears the screen and scrollback
+keybind = cmd+k=clear_screen
+
+# Ctrl+C copies when text is selected; otherwise it interrupts as usual
+keybind = performable:ctrl+c=copy_to_clipboard

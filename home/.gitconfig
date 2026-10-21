@@ -1,0 +1,35 @@
+[credential "https://github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[user]
+	name = Jag Valaiyapathy
+	email = 2145211+Jaganpro@users.noreply.github.com
+[core]
+	pager = delta
+	fsmonitor = true
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true
+	line-numbers = true
+	syntax-theme = gruvbox-dark
+[pull]
+	rebase = true
+[fetch]
+	prune = true
+[branch]
+	sort = -committerdate
+[column]
+	ui = auto
+[init]
+	defaultBranch = main
+[rerere]
+	enabled = true
+[rebase]
+	updateRefs = true
+[alias]
+	fomo = "!f() { b=$(git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null || echo origin/main); git fetch origin \"${b#origin/}\" && git rebase \"$b\" --autostash; }; f"
+	nuke = !git add --all && git stash && git stash drop

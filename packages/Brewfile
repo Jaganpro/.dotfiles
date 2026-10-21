@@ -1,0 +1,45 @@
+# CLI tools
+brew "ast-grep"  # structural code search (sg)
+brew "bat"       # cat with syntax highlighting
+brew "btop"      # CPU, memory and process monitor
+brew "stow"      # links ~/.dotfiles/home into ~
+brew "direnv"    # per-folder environment variables (.envrc)
+brew "eza"       # modern ls
+brew "fastfetch" # system info splash in new terminals
+brew "fd"        # fast find
+brew "ffmpeg"    # convert, trim and compress audio/video
+brew "fnm"       # Node version manager
+brew "fzf"       # fuzzy finder (Ctrl-R history, Ctrl-T files)
+brew "gh"        # GitHub CLI
+brew "git-delta" # readable git diffs (used as git's pager)
+brew "gitleaks"  # scan repos for committed secrets
+brew "gum"       # styled output and prompts for gwa/gwr
+brew "jq"        # JSON processor (newer than macOS's built-in)
+brew "ripgrep"   # fast code search (rg)
+brew "shellcheck" # finds bugs in shell scripts
+brew "tree"      # folder tree (tree is aliased to eza --tree; use command tree)
+brew "uv"        # Python versions, packages and tools (uv, uvx)
+brew "vivid"     # LS_COLORS themes (Gruvbox Dark)
+brew "yq"        # YAML/XML/TOML processor, like jq
+brew "dmtrkovalenko/fff/fff-mcp" # fast file search for Claude Code (MCP)
+
+# Shell look and feel
+brew "starship"                     # prompt
+brew "fzf-tab"                      # Tab completion menu in fzf, with previews
+brew "zsh-autosuggestions"          # history suggestions as you type
+brew "zsh-completions"              # extra completion definitions
+brew "zsh-fast-syntax-highlighting" # command colouring as you type
+
+# Apps
+cask "1password"     # password manager
+cask "claude"        # Claude desktop app
+cask "cleanshot"     # screenshots and screen recording
+cask "ghostty"       # terminal
+cask "google-chrome" # browser
+cask "granola"       # meeting notes
+cask "grok-bot"      # Grok Bot
+cask "notion"        # notes and docs
+cask "slack"         # chat
+cask "temurin@21"    # Java 21 (JDK) for Salesforce tooling; installer asks for password
+cask "tldraw"        # tldraw offline
+cask "vorssaint"     # menu bar: keep-awake, system monitor, volume mixer
