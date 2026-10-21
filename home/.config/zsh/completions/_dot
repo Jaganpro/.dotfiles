@@ -1,0 +1,5 @@
+#compdef dot
+# Tab completion for the dot command (~/.dotfiles/dot)
+_arguments \
+  '1:command:((init\:"set up this Mac" doctor\:"check links, packages, repo" update\:"pull, upgrade, relink" stow\:"relink home/ into ~" add\:"move files into the repo" help\:"show help"))' \
+  '*::file:_files'

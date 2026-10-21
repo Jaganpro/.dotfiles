@@ -9,7 +9,7 @@ Gruvbox Dark everywhere. README.md is the human guide; keep it in sync.
 home/                    mirrors ~ ; GNU Stow links each file into ~ (--no-folding)
 packages/Brewfile        every Homebrew tool and app (brew bundle --global reads it)
 scripts/macos-defaults.sh
-install.sh               brew bundle -> stow -> macOS settings; safe to rerun
+dot                      the `dot` command: init, doctor, update, stow, add
 ```
 
 ## Editing rules
@@ -17,8 +17,8 @@ install.sh               brew bundle -> stow -> macOS settings; safe to rerun
 - **Edit files under `home/`, never the links in `~`.** `~/.zshrc` is a link to
   `home/.zshrc`; writing a new file over the link breaks it. Same file, so
   edit `~/.dotfiles/home/<path>`.
-- **New config file:** move it into the same path under `home/`, then run
-  `./install.sh --no-macos` to link it. Never stow without `--no-folding`, or
+- **New config file:** `dot add <file>` moves it into `home/` and links it.
+  `dot doctor` checks every link afterwards. Never stow without `--no-folding`, or
   whole folders like `~/.claude` (sessions, history) end up in git.
 - **New Homebrew tool:** add a commented line to `packages/Brewfile` and a row
   to the matching README table.
@@ -40,7 +40,8 @@ install.sh               brew bundle -> stow -> macOS settings; safe to rerun
 
 ```bash
 zsh -n home/.zshrc                       # syntax
-shellcheck install.sh scripts/*.sh home/.claude/statusline.sh home/.config/starship/*.sh
+shellcheck dot scripts/*.sh home/.claude/statusline.sh home/.config/starship/*.sh
+dot doctor                               # links, packages, hook
 env -i HOME="$HOME" USER="$USER" TERM=xterm-256color zsh -lic exit   # fresh login shell
 gitleaks dir --redact .                  # no secrets (the pre-commit hook also checks)
 ```

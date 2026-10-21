@@ -1,5 +1,5 @@
 #!/bin/bash
-# macOS preferences, applied with `defaults write`. Run by install.sh (or on its
+# macOS preferences, applied with `defaults write`. Run by `dot init` (or on its
 # own any time); safe to run again. Edit a line here and rerun to change one.
 set -euo pipefail
 

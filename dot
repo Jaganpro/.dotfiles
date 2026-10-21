@@ -1,0 +1,184 @@
+#!/bin/bash
+# shellcheck disable=SC2088  # "~/" in messages is display text, not a path
+# dot: manage this Mac's setup from ~/.dotfiles.
+# Command layout inspired by dmmulroy/.dotfiles (https://github.com/dmmulroy/.dotfiles).
+# Written for macOS's /bin/bash 3.2.
+set -euo pipefail
+
+DOTFILES="${DOTFILES:-$HOME/.dotfiles}"
+HOME_PKG="$DOTFILES/home"
+TILDE="~"   # bash 3.2 prints \~ literally inside ${var/pattern/\~}
+
+ok()   { printf '\033[32m✓\033[0m %s\n' "$*"; }
+warn() { printf '\033[33m!\033[0m %s\n' "$*"; }
+bad()  { printf '\033[31m✗\033[0m %s\n' "$*"; }
+step() { printf '\n\033[1m==> %s\033[0m\n' "$*"; }
+
+usage() {
+  cat <<'EOF'
+Usage: dot <command>
+
+  init [--no-macos]  Set up this Mac: packages, links, git hook, macOS settings
+  doctor             Check that everything is linked, installed and committed
+  update             Pull the repo, upgrade Homebrew packages, relink
+  stow               Relink home/ into ~ (after adding or renaming files)
+  add <file>...      Move files from ~ into the repo and link them back
+  help               Show this help
+EOF
+}
+
+# Every file in home/, as a path relative to ~ (e.g. .config/git/ignore)
+tracked_files() { (cd "$HOME_PKG" && find . -type f | sed 's|^\./||' | sort); }
+
+link_home() {
+  # A real file where a link should go is moved to a backup, never overwritten
+  local backup f
+  backup="$HOME/.dotfiles-backup/$(date +%Y%m%d-%H%M%S)"
+  while IFS= read -r f; do
+    if [[ -e "$HOME/$f" && ! -L "$HOME/$f" ]]; then
+      mkdir -p "$backup/$(dirname "$f")"
+      mv "$HOME/$f" "$backup/$f"
+      warn "backed up ~/$f to ${backup/#$HOME/$TILDE}"
+    fi
+  done < <(tracked_files)
+  # --no-folding: link files only, never whole folders (keeps app data out of git)
+  stow --no-folding --restow --dir "$DOTFILES" --target "$HOME" home
+  ok "home/ linked into ~"
+}
+
+cmd_init() {
+  command -v brew >/dev/null || { bad "Install Homebrew first: https://brew.sh"; exit 1; }
+
+  step "Packages (packages/Brewfile)"
+  brew bundle --file "$DOTFILES/packages/Brewfile" --no-upgrade
+
+  step "Let zsh trust Homebrew's completion folders"
+  chmod go-w "$(brew --prefix)/share"
+  chmod -R go-w "$(brew --prefix)/share/zsh"
+
+  step "Links"
+  link_home
+  mkdir -p "$HOME/.local/bin"
+  ln -sf "$DOTFILES/dot" "$HOME/.local/bin/dot"
+  ok "dot command available as ~/.local/bin/dot"
+
+  step "Git hook: gitleaks blocks commits containing secrets"
+  git -C "$DOTFILES" config core.hooksPath scripts/hooks
+  ok "pre-commit hook active"
+
+  if [[ ${1:-} != --no-macos ]]; then
+    step "macOS settings"
+    "$DOTFILES/scripts/macos-defaults.sh"
+  fi
+
+  printf '\nDone. Open a new terminal to load the shell config, then run: dot doctor\n'
+}
+
+cmd_doctor() {
+  local problems=0 f target n_links=0 n_plain=0 n_missing=0 n_other=0 broken l
+
+  step "Tools"
+  for f in brew stow git gitleaks; do
+    if command -v "$f" >/dev/null; then ok "$f"; else bad "$f not installed"; problems=$((problems + 1)); fi
+  done
+  if [[ $(command -v dot || true) == "$HOME/.local/bin/dot" ]]; then ok "dot on PATH"; else warn "dot not on PATH (run: dot init)"; fi
+
+  step "Links (home/ -> ~)"
+  while IFS= read -r f; do
+    target="$HOME/$f"
+    if [[ -L $target ]]; then
+      if [[ $target -ef "$HOME_PKG/$f" ]]; then   # -ef: the link resolves to the repo file
+        n_links=$((n_links + 1))
+      else
+        bad "~/$f links somewhere else: $(readlink "$target")"; n_other=$((n_other + 1))
+      fi
+    elif [[ -e $target ]]; then
+      bad "~/$f is a plain file, not a link (an app may have replaced it)"
+      printf '    fix: compare with home/%s, keep the right one in home/, delete ~/%s, run: dot stow\n' "$f" "$f"
+      n_plain=$((n_plain + 1))
+    else
+      bad "~/$f is missing (run: dot stow)"; n_missing=$((n_missing + 1))
+    fi
+  done < <(tracked_files)
+  problems=$((problems + n_plain + n_missing + n_other))
+  [[ $n_links -gt 0 ]] && ok "$n_links files linked"
+
+  broken=0
+  while IFS= read -r l; do
+    bad "broken link: ${l/#$HOME/$TILDE} -> $(readlink "$l")"; broken=$((broken + 1))
+  done < <(find "$HOME" -maxdepth 6 -type l -lname '*dotfiles/home/*' ! -exec test -e {} \; -print 2>/dev/null)
+  problems=$((problems + broken))
+  [[ $broken -eq 0 ]] && ok "no broken links"
+
+  step "Packages"
+  if brew bundle check --file "$DOTFILES/packages/Brewfile" --no-upgrade >/dev/null 2>&1; then
+    ok "everything in the Brewfile is installed"
+  else
+    bad "Brewfile items missing:"
+    brew bundle check --file "$DOTFILES/packages/Brewfile" --no-upgrade --verbose 2>&1 | grep '→' | sed 's/^/    /'
+    problems=$((problems + 1))
+  fi
+
+  step "Repo"
+  if [[ $(git -C "$DOTFILES" config --get core.hooksPath || true) == scripts/hooks ]]; then
+    ok "gitleaks pre-commit hook active"
+  else
+    bad "pre-commit hook off (run: dot init --no-macos)"; problems=$((problems + 1))
+  fi
+  n=$(git -C "$DOTFILES" status --porcelain | wc -l | tr -d ' ')
+  if [[ $n -eq 0 ]]; then ok "no uncommitted changes"; else warn "$n uncommitted change(s): cd ~/.dotfiles && git status"; fi
+  git -C "$DOTFILES" fetch -q 2>/dev/null || true
+  n=$(git -C "$DOTFILES" rev-list --count '@{u}..HEAD' 2>/dev/null || echo 0)
+  [[ $n -gt 0 ]] && warn "$n commit(s) not pushed: cd ~/.dotfiles && git push"
+  n=$(git -C "$DOTFILES" rev-list --count 'HEAD..@{u}' 2>/dev/null || echo 0)
+  [[ $n -gt 0 ]] && warn "$n new commit(s) on GitHub: dot update"
+
+  echo
+  if [[ $problems -eq 0 ]]; then ok "All good."; else bad "$problems problem(s) found."; exit 1; fi
+}
+
+cmd_update() {
+  step "Repo"
+  git -C "$DOTFILES" pull --ff-only
+  step "Homebrew"
+  brew update
+  brew bundle --file "$DOTFILES/packages/Brewfile" --no-upgrade
+  brew upgrade
+  step "Links"
+  link_home
+}
+
+cmd_add() {
+  [[ $# -gt 0 ]] || { bad "Usage: dot add <file>..."; exit 1; }
+  # Check first: if another link is already broken, stow would refuse and the
+  # moved files would be left unlinked
+  if ! stow --no-folding --restow --simulate --dir "$DOTFILES" --target "$HOME" home 2>/dev/null; then
+    bad "Some existing links need fixing first. Nothing was moved. Run: dot doctor"
+    exit 1
+  fi
+  local p abs rel
+  for p in "$@"; do
+    if [[ ! -e $p && ! -L $p ]]; then bad "$p: not found"; continue; fi
+    abs="$(cd "$(dirname "$p")" && pwd -P)/$(basename "$p")"
+    rel="${abs#"$HOME"/}"
+    if [[ $abs != "$HOME"/* ]]; then bad "$p: only files inside ~ can be added"; continue; fi
+    if [[ -L $abs ]]; then bad "$p: already a link"; continue; fi
+    if [[ ! -f $abs ]]; then bad "$p: not a file (add the files inside a folder one by one)"; continue; fi
+    if [[ -e "$HOME_PKG/$rel" ]]; then bad "$p: home/$rel already exists in the repo"; continue; fi
+    mkdir -p "$HOME_PKG/$(dirname "$rel")"
+    mv "$abs" "$HOME_PKG/$rel"
+    ok "moved ~/$rel into home/$rel"
+  done
+  stow --no-folding --restow --dir "$DOTFILES" --target "$HOME" home
+  ok "linked. Review and commit: cd ~/.dotfiles && git status"
+}
+
+case "${1:-help}" in
+  init)   shift; cmd_init "$@" ;;
+  doctor) cmd_doctor ;;
+  update) cmd_update ;;
+  stow)   link_home ;;
+  add)    shift; cmd_add "$@" ;;
+  help|-h|--help) usage ;;
+  *) bad "Unknown command: $1"; echo; usage; exit 1 ;;
+esac

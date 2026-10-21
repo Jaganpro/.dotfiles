@@ -34,9 +34,9 @@ tree() { if _tty; then eza --tree "$@"; else command tree "$@"; fi }   # classic
 # Git worktree helpers: gwa <branch>, gwr
 source ~/.config/zsh/worktree.zsh
 
-# Tab completion: Homebrew tools, zsh-completions and the Salesforce CLI
+# Tab completion: my own (dot), Homebrew tools, zsh-completions and the Salesforce CLI
 # (after sf updates: sf autocomplete --refresh-cache)
-fpath=(/opt/homebrew/share/zsh-completions ~/Library/Caches/sf/autocomplete/functions/zsh $fpath)
+fpath=(~/.config/zsh/completions /opt/homebrew/share/zsh-completions ~/Library/Caches/sf/autocomplete/functions/zsh $fpath)
 autoload -Uz compinit
 _zcompdump=~/.cache/zsh/zcompdump
 [[ -d ${_zcompdump:h} ]] || mkdir -p ${_zcompdump:h}

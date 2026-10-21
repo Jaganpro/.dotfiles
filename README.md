@@ -12,7 +12,7 @@ each one into place. Built from scratch in October 2026, one tool at a time.
 ├── packages/Brewfile     every Homebrew tool and app
 ├── scripts/macos-defaults.sh
 ├── scripts/hooks/pre-commit   gitleaks blocks commits containing secrets
-├── install.sh            packages -> links -> macOS settings (safe to rerun)
+├── dot                   the `dot` command: init, doctor, update, stow, add
 ├── AGENTS.md             how AI agents (Claude Code, Pi) should work in this repo
 ├── CLAUDE.md             points Claude Code at AGENTS.md
 └── README.md
@@ -48,7 +48,7 @@ Never tracked: logins, tokens and app state (`~/.config/gh/hosts.yml`,
 
 | Tool | Use | Try |
 |---|---|---|
-| stow | Links `~/.dotfiles/home` into `~` | `./install.sh` |
+| stow | Links `~/.dotfiles/home` into `~` (driven by `dot`) | `dot stow` |
 | gh | GitHub from the terminal; also handles git login | `gh repo list` |
 | fnm | Node version manager; switches version per project | `fnm list` |
 | Java (Temurin 21) | JDK for Salesforce tooling (Apex language server, Code Analyzer) | `java -version` |
@@ -69,7 +69,7 @@ Never tracked: logins, tokens and app state (`~/.config/gh/hosts.yml`,
 | direnv | Loads a folder's `.envrc` (e.g. `export SF_TARGET_ORG=dev`) on `cd`, unloads on leave | `direnv allow` |
 | ast-grep | Search code by structure, not text | `sg -p 'console.log($A)'` |
 | btop | CPU, memory, disk and process monitor | `btop` |
-| shellcheck | Finds bugs in shell scripts | `shellcheck install.sh` |
+| shellcheck | Finds bugs in shell scripts | `shellcheck ~/.dotfiles/dot` |
 | fff-mcp | Fast file search for Claude Code (MCP server) | used by Claude automatically |
 
 ### Shell
@@ -160,7 +160,7 @@ other special characters.
 
 ## macOS settings
 
-`scripts/macos-defaults.sh` sets these with `defaults write`. `install.sh`
+`scripts/macos-defaults.sh` sets these with `defaults write`. `dot init`
 runs it; it's safe to run again on its own after editing a line.
 
 | Area | Setting |
@@ -187,11 +187,13 @@ runs it; it's safe to run again on its own after editing a line.
    gh repo clone Jaganpro/.dotfiles ~/.dotfiles
    ```
 
-3. **Run the installer** (Brewfile, links, macOS settings):
+3. **Set up everything** (Brewfile, links, git hook, macOS settings):
 
    ```bash
-   ~/.dotfiles/install.sh
+   ~/.dotfiles/dot init
    ```
+
+   After this, `dot` works from anywhere. Check the result with `dot doctor`.
 
    Any real file already in the way (e.g. a `~/.zshrc` from an installer) is
    moved to `~/.dotfiles-backup/<date-time>/`, never overwritten.
@@ -239,26 +241,41 @@ Files in `~` are links into the repo, so editing `~/.zshrc` edits
 Code, Pi) write through the links too. Every commit is scanned by gitleaks
 (`scripts/hooks/pre-commit`); a commit containing a secret is refused.
 
+### The `dot` command
+
+| Command | Does |
+|---|---|
+| `dot doctor` | Read-only health check: every file linked, no broken links, no link replaced by a plain file, Brewfile installed, gitleaks hook on, nothing uncommitted or unpushed |
+| `dot add <file>...` | Moves files from `~` into `home/` and links them back (start tracking a file) |
+| `dot stow` | Relinks `home/` into `~`; a real file in the way is backed up to `~/.dotfiles-backup/` |
+| `dot update` | `git pull`, `brew upgrade`, relink |
+| `dot init [--no-macos]` | Full setup on a new Mac |
+
 ```bash
-cd ~/.dotfiles
-git status                     # what changed
+dot add ~/.config/foo/config   # start tracking a file
+cd ~/.dotfiles && git status   # what changed
 git commit -am "..." && git push
-
-git pull                       # changes made on another Mac
-```
-
-**Tracking a new file:** move it into the same place under `home/`, then link it:
-
-```bash
-mkdir -p ~/.dotfiles/home/.config/foo
-mv ~/.config/foo/config ~/.dotfiles/home/.config/foo/
-~/.dotfiles/install.sh --no-macos      # or: stow --no-folding -d ~/.dotfiles -t ~ home
+dot doctor                     # all good?
 ```
 
 **Installing something new with Homebrew:** `brew install <tool>`, then add a
 line to `packages/Brewfile`. `brew bundle check --global --no-upgrade` confirms
 everything in it is installed.
 
-**Checking the links:** `find ~ -maxdepth 4 -type l -lname '*dotfiles*'` lists
-them; a link that turned into a plain file means an app replaced it, so move
-the file back into `home/` and rerun `install.sh`.
+## Credits
+
+- **[dmmulroy/.dotfiles](https://github.com/dmmulroy/.dotfiles)** by Dillon
+  Mulroy: the overall design of this repo. The `home/` folder mirroring `~`
+  with GNU Stow, `packages/Brewfile`, the `dot` command with `init`, `doctor`
+  and `update`, `AGENTS.md`, the global git ignore, the ripgrep config and
+  several git settings all follow his setup. The code here is written from
+  scratch for zsh and macOS's bash 3.2.
+- **[starship](https://starship.rs) Gruvbox Rainbow preset**: the base of the
+  prompt's look.
+- **Claude Code status line projects** such as
+  [kcchien/claude-code-statusline](https://github.com/kcchien/claude-code-statusline)
+  (gradient context bar) and
+  [sirmalloc/ccstatusline](https://github.com/sirmalloc/ccstatusline):
+  ideas for what to show.
+- **[fff](https://github.com/dmtrKovalenko/fff.nvim)** by Dmitriy Kovalenko:
+  fast file search for Claude Code and Pi.
