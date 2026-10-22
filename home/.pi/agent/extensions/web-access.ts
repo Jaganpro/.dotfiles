@@ -1,10 +1,20 @@
-// Pure web search/fetch logic. No Pi imports, so the tests can run outside the app.
+// web-access: web_search and web_fetch for Pi, free tiers first.
+// Search: Brave → Parallel → TinyFish. A missing key is skipped. Quota errors
+// try the next provider. A rejected key (401) stops. Every provider gets the
+// freshness and country.
+// Fetch: direct download first, then Parallel → TinyFish. Pages come back as Markdown.
+// The card shows the service, and calls remaining only when that response reported them.
+// Keys: macOS Keychain (web-brave, web-parallel, web-tinyfish) or BRAVE_API_KEY,
+// PARALLEL_API_KEY, TINYFISH_API_KEY. /web shows which keys are found.
 import { lookup } from "node:dns/promises";
 import { BlockList, isIP } from "node:net";
+import type { ExtensionAPI, Theme } from "@earendil-works/pi-coding-agent";
+import { type Component, Text, hyperlink } from "@earendil-works/pi-tui";
+import { Type } from "typebox";
 
-export type Provider = "brave" | "parallel" | "tinyfish";
+type Provider = "brave" | "parallel" | "tinyfish";
 
-export type Options = { n: number; freshness?: string; country?: string };
+type Options = { n: number; freshness?: string; country?: string };
 
 type Hit = { title: string; url: string; snippet: string; age?: string };
 
@@ -12,7 +22,7 @@ type Attempt = { via: string; error: string };
 
 const PROVIDERS: Provider[] = ["brave", "parallel", "tinyfish"];
 
-export const ENV_KEY: Record<Provider, string> = {
+const ENV_KEY: Record<Provider, string> = {
   brave: "BRAVE_API_KEY",
   parallel: "PARALLEL_API_KEY",
   tinyfish: "TINYFISH_API_KEY",
@@ -21,23 +31,23 @@ export const ENV_KEY: Record<Provider, string> = {
 const DIRECT_TIMEOUT_MS = 15_000;
 const SEARCH_TIMEOUT_MS = 45_000;
 const EXTRACT_TIMEOUT_MS = 150_000; // TinyFish asks clients to wait at least this long
-export const MAX_CHARS = 20_000;
-export const CONTENT_CHARS = 3_000;
-export const CONTENT_PAGES = 3;
+const MAX_CHARS = 20_000;
+const CONTENT_CHARS = 3_000;
+const CONTENT_PAGES = 3;
 const MAX_BYTES = 5_000_000;
 const PREVIEW_LINES = 12;
 
 // shortcut: 30-day month and 365-day year, upgrade if this must match Brave's windows
 const DAYS = new Map([["day", 1], ["week", 7], ["month", 30], ["year", 365]]);
 const RANGE = /^(\d{4}-\d{2}-\d{2})to(\d{4}-\d{2}-\d{2})$/;
-export const validFreshness = (f?: string) => !f || DAYS.has(f) || RANGE.test(f);
+const validFreshness = (f?: string) => !f || DAYS.has(f) || RANGE.test(f);
 const daysAgo = (n: number) => new Date(Date.now() - n * 86_400_000).toISOString().slice(0, 10);
 
-export class StopChain extends Error {
+class StopChain extends Error {
   name = "StopChain";
 }
 
-export function providerOrder(raw = process.env.WEB_SEARCH_ORDER): Provider[] {
+function providerOrder(raw = process.env.WEB_SEARCH_ORDER): Provider[] {
   // SAFETY: includes() only compares; TypeScript just won't accept a plain string there.
   const list = (raw ?? PROVIDERS.join(","))
     .split(",")
@@ -47,7 +57,7 @@ export function providerOrder(raw = process.env.WEB_SEARCH_ORDER): Provider[] {
   return list.length ? list : [...PROVIDERS];
 }
 
-export function cut(s: string, max: number): string {
+function cut(s: string, max: number): string {
   return s.length > max ? `${s.slice(0, max)}\n[cut at ${max} of ${s.length} characters]` : s;
 }
 
@@ -60,7 +70,7 @@ function cleanSnippet(s: string, max = 300): string {
     .slice(0, max);
 }
 
-export function clip(s: string, max: number): string {
+function clip(s: string, max: number): string {
   const t = s.replace(/\s+/g, " ").trim();
 
   return t.length > max ? `${t.slice(0, max - 1)}…` : t;
@@ -173,13 +183,13 @@ PRIVATE.addSubnet("fc00::", 7, "ipv6");
 
 PRIVATE.addSubnet("fe80::", 10, "ipv6");
 
-export function isPrivate(ip: string): boolean {
+function isPrivate(ip: string): boolean {
   const family = isIP(ip);
 
   return family !== 0 && PRIVATE.check(ip, family === 6 ? "ipv6" : "ipv4");
 }
 
-export async function checkPublic(url: URL) {
+async function checkPublic(url: URL) {
   if (!["http:", "https:"].includes(url.protocol)) throw new StopChain("only http and https links are allowed");
   const addresses = await lookup(url.hostname, { all: true });
 
@@ -189,7 +199,7 @@ export async function checkPublic(url: URL) {
 const CHALLENGE = /just a moment|enable javascript|cf-browser-verification|checking your browser|attention required/i;
 
 // Length alone is not a challenge. A short real page must not spend an extractor call.
-export function needsExtractor(text: string): boolean {
+function needsExtractor(text: string): boolean {
   const t = text.trim();
 
   if (!t) return true;
@@ -198,7 +208,7 @@ export function needsExtractor(text: string): boolean {
 }
 
 // Leaving the loop early (throw) cancels the stream, so the rest is never downloaded.
-export async function readCapped(res: Response, max = MAX_BYTES): Promise<string> {
+async function readCapped(res: Response, max = MAX_BYTES): Promise<string> {
   if (Number(res.headers.get("content-length")) > max) throw new Error("page too large");
   const chunks: Uint8Array[] = [];
   let total = 0;
@@ -224,7 +234,7 @@ const decode = (s: string) =>
     .replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCodePoint(parseInt(h, 16)))
     .replace(/&amp;/g, "&");
 
-export function htmlToMarkdown(html: string): string {
+function htmlToMarkdown(html: string): string {
   const main = html.match(/<(main|article)\b[\s\S]*<\/\1>/i)?.[0] ?? html;
 
   return decode(
@@ -245,7 +255,7 @@ export function htmlToMarkdown(html: string): string {
     .trim();
 }
 
-export type WebDetails = {
+type WebDetails = {
   kind: "search" | "fetch";
   query: string;
   via?: string;
@@ -258,20 +268,15 @@ export type WebDetails = {
   failed?: boolean;
 };
 
-export function previewOf(text: string) {
+function previewOf(text: string) {
   const lines = text.split("\n");
 
   return { preview: lines.slice(0, PREVIEW_LINES), moreLines: Math.max(0, lines.length - PREVIEW_LINES) };
 }
 
-// Pi's theme in the app; identity functions in tests. Every Color is a Pi theme colour.
-type Color = "accent" | "dim" | "error" | "warning" | "muted" | "toolOutput" | "toolTitle";
-
-export type Paint = { fg(color: Color, s: string): string; bold(s: string): string; link(s: string, url: string): string };
-
 const compact = new Intl.NumberFormat("en", { notation: "compact", maximumSignificantDigits: 2 });
 
-export function card(d: WebDetails, expanded: boolean, t: Paint): string {
+function card(d: WebDetails, expanded: boolean, t: Theme): string {
   const isFetch = d.kind === "fetch";
   const tool = t.fg("toolTitle", t.bold(isFetch ? "web fetch" : "web search"));
   const subject = isFetch ? shortUrl(d.query) : clip(d.query, 80);
@@ -279,7 +284,7 @@ export function card(d: WebDetails, expanded: boolean, t: Paint): string {
   const meta = (bits: string[]) => {
     const text = t.fg("dim", bits.join(" · "));
 
-    return isFetch ? t.link(text, d.query) : text;
+    return isFetch ? hyperlink(text, d.query) : text;
   };
 
   if (d.failed) {
@@ -299,7 +304,7 @@ export function card(d: WebDetails, expanded: boolean, t: Paint): string {
 
   if (!expanded) return lines.join("\n");
   hits.forEach((h, i) => {
-    lines.push(`${t.fg("dim", String(i + 1))}  ${t.link(t.fg("accent", h.title || shortUrl(h.url)), h.url)}`);
+    lines.push(`${t.fg("dim", String(i + 1))}  ${hyperlink(t.fg("accent", h.title || shortUrl(h.url)), h.url)}`);
     lines.push(t.fg("dim", [shortUrl(h.url, 48), h.age].filter(Boolean).join(" · ")));
 
     if (h.snippet) lines.push(t.fg("muted", cleanSnippet(h.snippet, 140)));
@@ -312,7 +317,7 @@ export function card(d: WebDetails, expanded: boolean, t: Paint): string {
   return lines.join("\n");
 }
 
-export function searchText(hits: Hit[], via: string, content?: (string | null)[]): string {
+function searchText(hits: Hit[], via: string, content?: (string | null)[]): string {
   const list = hits.map((h, i) => {
     const age = h.age ? ` (${h.age})` : "";
     const page = content?.[i];
@@ -329,7 +334,6 @@ type RunDeps = {
   key: (p: Provider) => Promise<string | null>;
   signal?: AbortSignal;
   onTry?: (via: string) => void;
-  assertPublic?: (url: URL) => Promise<void>;
 };
 
 type Failed = { ok: false; message: string; details: WebDetails };
@@ -370,7 +374,7 @@ async function firstOk<T>(providers: Provider[], deps: RunDeps, attempts: Attemp
   return undefined;
 }
 
-export async function runSearch(query: string, o: Options, deps: RunDeps): Promise<{ ok: true; hits: Hit[]; via: Provider; left?: number; attempts: Attempt[] } | Failed> {
+async function runSearch(query: string, o: Options, deps: RunDeps): Promise<{ ok: true; hits: Hit[]; via: Provider; left?: number; attempts: Attempt[] } | Failed> {
   const attempts: Attempt[] = [];
 
   const found = await firstOk(deps.order, deps, attempts, async (p, key) => {
@@ -384,11 +388,10 @@ export async function runSearch(query: string, o: Options, deps: RunDeps): Promi
 }
 
 async function directFetch(start: string, deps: RunDeps): Promise<string> {
-  const assertPublic = deps.assertPublic ?? checkPublic;
   let url = new URL(start);
 
   for (let hop = 0; hop < 5; hop++) {
-    await assertPublic(url);
+    await checkPublic(url);
 
     const res = await fetch(url, {
       redirect: "manual",
@@ -417,7 +420,7 @@ async function directFetch(start: string, deps: RunDeps): Promise<string> {
   throw new Error("too many redirects");
 }
 
-export async function runFetch(url: string, deps: RunDeps): Promise<{ ok: true; page: string; via: string; attempts: Attempt[] } | Failed> {
+async function runFetch(url: string, deps: RunDeps): Promise<{ ok: true; page: string; via: string; attempts: Attempt[] } | Failed> {
   const attempts: Attempt[] = [];
   const extractors = deps.order.filter((p) => extract[p]);
   deps.onTry?.("direct");
@@ -437,4 +440,143 @@ export async function runFetch(url: string, deps: RunDeps): Promise<{ ok: true; 
   const found = await firstOk(extractors, deps, attempts, async (p, key) => (await extract[p]!(url, key, deps.signal)).trim() || undefined);
 
   return found ? { ok: true, page: found.value, via: found.via, attempts } : failure("fetch", url, attempts);
+}
+
+const DEFAULT_COUNTRY = process.env.WEB_SEARCH_COUNTRY ?? "US";
+const FRESHNESS = "day, week, month, year, or YYYY-MM-DDtoYYYY-MM-DD";
+
+// Promises, not values: parallel page reads share one Keychain lookup per provider.
+const keys = new Map<Provider, Promise<string | null>>();
+const left = new Map<Provider, number>();
+
+type CallContext = { isPartial: boolean; durationMs?: number; lastComponent?: Component };
+
+type ResultContext = { lastComponent?: Component; isError: boolean };
+
+export default function (pi: ExtensionAPI) {
+  async function fromKeychain(p: Provider): Promise<string | null> {
+    const env = process.env[ENV_KEY[p]];
+
+    if (env) return env;
+    const found = await pi.exec("security", ["find-generic-password", "-s", `web-${p}`, "-w"]).catch(() => null);
+
+    return found?.code === 0 && found.stdout.trim() ? found.stdout.trim() : null;
+  }
+
+  function key(p: Provider): Promise<string | null> {
+    let k = keys.get(p);
+
+    if (!k) keys.set(p, (k = fromKeychain(p)));
+
+    return k;
+  }
+
+  function textOf(last: Component | undefined, value: string) {
+    const component = last instanceof Text ? last : new Text("", 0, 0);
+    component.setText(value);
+
+    return component;
+  }
+
+  function drawCall(label: string, raw: string | undefined, theme: Theme, context: CallContext) {
+    if (context.isPartial || context.durationMs !== undefined) return textOf(context.lastComponent, "");
+    // oxlint-disable-next-line anti-slop/no-runtime-typeof -- raw model JSON while streaming; Pi's own renderers check the same way
+    const subject = typeof raw === "string" && raw ? clip(raw, 80) : "…";
+
+    return textOf(context.lastComponent, `${theme.fg("toolTitle", theme.bold(label))}  ${theme.fg("dim", "…")}\n${theme.fg("dim", subject)}`);
+  }
+
+  function drawResult(
+    result: { content: Array<{ type: string; text?: string }>; details?: unknown },
+    { expanded }: { expanded: boolean },
+    theme: Theme,
+    context: ResultContext,
+  ) {
+    // SAFETY: details come from our own execute() (a WebDetails) or are empty when Pi reports a thrown error; the kind check below tells them apart.
+    const details = result.details as WebDetails | undefined;
+
+    if (!details?.kind) {
+      const raw = result.content.find((c) => c.type === "text")?.text ?? "";
+      const shown = expanded ? raw : clip(raw.split("\n").find((line) => line.trim()) ?? "", 120);
+
+      return textOf(context.lastComponent, theme.fg(context.isError ? "error" : "toolOutput", shown));
+    }
+
+    return textOf(context.lastComponent, card(details, expanded, theme));
+  }
+
+  const blank = [{ type: "text" as const, text: "" }];
+
+  pi.registerTool({
+    name: "web_search",
+    label: "Web search",
+    description: "Search the web; returns titles, URLs, snippets and age, optionally with page text.",
+    parameters: Type.Object({
+      query: Type.String({ description: "What to search for" }),
+      count: Type.Optional(Type.Number({ description: "Number of results, 1-10 (default 5)" })),
+      freshness: Type.Optional(Type.String({ description: FRESHNESS })),
+      country: Type.Optional(Type.String({ description: "Two-letter country code (default US)" })),
+      content: Type.Optional(Type.Boolean({ description: "Also read the top 3 pages (slower)" })),
+    }),
+    renderCall: (args, theme, context) => drawCall("web search", args?.query, theme, context),
+    renderResult: drawResult,
+    async execute(_id, { query, count, freshness, country, content }, signal, onUpdate) {
+      if (!validFreshness(freshness)) return { content: [{ type: "text", text: `freshness must be ${FRESHNESS}` }], details: {}, isError: true };
+      const o = { n: Math.min(Math.max(Math.round(count ?? 5), 1), 10), freshness, country: country ?? DEFAULT_COUNTRY };
+      const found = await runSearch(query, o, { order: providerOrder(), key, signal, onTry: (via) => onUpdate?.({ content: blank, details: { kind: "search", query, via } }) });
+
+      if (!found.ok) return { content: [{ type: "text", text: found.message }], details: found.details, isError: true };
+
+      if (found.left !== undefined) left.set(found.via, found.left);
+
+      const pages = content
+        ? await Promise.all(
+            found.hits.slice(0, CONTENT_PAGES).map(async (hit) => {
+              const read = await runFetch(hit.url, { order: providerOrder(), key, signal });
+
+              return read.ok ? cut(read.page, CONTENT_CHARS) : null;
+            }),
+          )
+        : undefined;
+
+      const details: WebDetails = { kind: "search", query, via: found.via, hits: found.hits, left: found.left, attempts: found.attempts };
+
+      return { content: [{ type: "text", text: searchText(found.hits, found.via, pages) }], details };
+    },
+  });
+
+  pi.registerTool({
+    name: "web_fetch",
+    label: "Web fetch",
+    description: "Read a public web page and return its main text as Markdown.",
+    parameters: Type.Object({ url: Type.String({ description: "http or https URL" }) }),
+    renderCall: (args, theme, context) => drawCall("web fetch", args?.url, theme, context),
+    renderResult: drawResult,
+    async execute(_id, { url }, signal, onUpdate) {
+      const found = await runFetch(url, { order: providerOrder(), key, signal, onTry: (via) => onUpdate?.({ content: blank, details: { kind: "fetch", query: url, via } }) });
+
+      if (!found.ok) return { content: [{ type: "text", text: found.message }], details: found.details, isError: true };
+      const text = cut(found.page, MAX_CHARS);
+      const details: WebDetails = { kind: "fetch", query: url, via: found.via, chars: found.page.length, attempts: found.attempts, ...previewOf(text) };
+
+      return { content: [{ type: "text", text: `${text}\n\n(via ${found.via})` }], details };
+    },
+  });
+
+  pi.registerCommand("web", {
+    description: "Show web search keys and provider order",
+    handler: async (_args, ctx) => {
+      const order = providerOrder();
+      const found = await Promise.all(order.map(key));
+
+      const lines = order.map((p, i) => {
+        const n = left.get(p);
+
+        return `${p.padEnd(10)}${found[i] ? "key" : "no key"}${n === undefined ? "" : ` · ${n.toLocaleString("en-US")} left`}`;
+      });
+
+      lines.push(`order     ${order.join(" → ")}`);
+      ctx.ui.notify(lines.join("\n"));
+    },
+  });
 }

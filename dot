@@ -107,7 +107,7 @@ cmd_init() {
   step "Lint tools (package.json)"
   (cd "$DOTFILES" && npm ci --no-fund --no-audit --loglevel=error)
 
-  step "Git hook: checks (lint, tests, shellcheck, secrets) run before every commit"
+  step "Git hook: checks (lint, shellcheck, secrets) run before every commit"
   git -C "$DOTFILES" config core.hooksPath scripts/hooks
   ok "pre-commit checks active"
 

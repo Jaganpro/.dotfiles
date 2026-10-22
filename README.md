@@ -12,7 +12,7 @@ each one into place. Built from scratch in October 2026, one tool at a time.
 ├── packages/Brewfile     every Homebrew tool and app
 ├── packages/app-skills   agent skills installed by apps (checked by dot doctor, not stored here)
 ├── scripts/macos-defaults.sh
-├── scripts/hooks/pre-commit   checks every commit: lint, tests, shellcheck, shell start-up, secrets
+├── scripts/hooks/pre-commit   checks every commit: lint, shellcheck, shell start-up, secrets
 ├── skills/               agent skills for Pi (via its settings) and Claude Code (linked into ~/.claude/skills)
 ├── scripts/vendor-skills.sh   copies Matt Pocock's skills into skills/ at a pinned commit
 ├── prompts/              slash commands for Pi (via its settings) and Claude Code (linked into ~/.claude/commands)
@@ -44,7 +44,7 @@ each one into place. Built from scratch in October 2026, one tool at a time.
 | `~/.claude/CLAUDE.md` | Instructions for every Claude Code session: prefer fff for file search |
 | `~/.claude/settings.json` | Claude Code preferences, hooks, status line; no commit/PR attribution |
 | `~/.pi/agent/settings.json` | Pi default model, the fff package, and the path to `skills/youtube-transcript` |
-| `~/.pi/agent/extensions/web` | Pi `web_search` (Brave → Parallel → TinyFish; freshness and country passed through; falls back on quota) and `web_fetch` (direct download first, then extractors). The card shows the service and, only when the provider reports it, calls remaining. Keys in the macOS Keychain. `/web` shows status |
+| `~/.pi/agent/extensions/web-access.ts` | Pi `web_search` (Brave → Parallel → TinyFish; freshness and country passed through; falls back on quota) and `web_fetch` (direct download first, then extractors). The card shows the service and, only when the provider reports it, calls remaining. Keys in the macOS Keychain. `/web` shows status |
 | `~/.pi/agent/extensions/git-guard.ts` | Pi: blocks commands that skip git hooks (`--no-verify`, `git commit -n`) and stops git opening an editor |
 | `~/.claude/hooks/git-guard.sh` | Claude Code: the same hook-skipping block, as a PreToolUse hook (registered in `settings.json`, which also sets `GIT_EDITOR=true`) |
 | `~/.pi/agent/extensions/muscle-memory.ts` | Claude Code command names work in Pi too: `/clear`, `/exit`, `/context`, `/rename`, `/effort` (our own, inspired by xRyul/pi-aliases) |
@@ -340,7 +340,7 @@ Files in `~` are links into the repo, so editing `~/.zshrc` edits
 Code, Pi) write through the links too.
 
 Every commit runs `scripts/hooks/pre-commit`: zsh syntax, shellcheck, a fresh
-login shell, `npm run lint`, the web extension tests and a gitleaks secret scan.
+login shell, `npm run lint` and a gitleaks secret scan.
 If one fails, the commit is refused. Agents can't skip these checks: git-guard
 blocks `--no-verify` and `git commit -n` in both Claude Code and Pi.
 
@@ -374,7 +374,7 @@ everything in it is installed.
 - `install-anti-slop` skill (Oxlint rules): [dmmulroy/anti-slop](https://github.com/dmmulroy/anti-slop) (MIT), vendored unmodified.
 - YouTube transcript skill: [badlogic/pi-skills](https://github.com/badlogic/pi-skills) (MIT).
 - git-guard idea: dmmulroy's git-interceptor (written from scratch).
-- `web` ideas: [badlogic/pi-skills](https://github.com/badlogic/pi-skills) brave-search, [tian.zuo/pi-web-search](https://www.npmjs.com/package/@tian.zuo/pi-web-search), [dmmulroy/pi-web-tools](https://github.com/dmmulroy/pi-web-tools), [pi-lab/websearch](https://www.npmjs.com/package/@pi-lab/websearch) (written from scratch).
+- `web-access.ts` ideas: [badlogic/pi-skills](https://github.com/badlogic/pi-skills) brave-search, [tian.zuo/pi-web-search](https://www.npmjs.com/package/@tian.zuo/pi-web-search), [dmmulroy/pi-web-tools](https://github.com/dmmulroy/pi-web-tools), [pi-lab/websearch](https://www.npmjs.com/package/@pi-lab/websearch) (written from scratch).
 - Pi command aliases idea: [xRyul/pi-aliases](https://github.com/xRyul/pi-aliases).
 - `/deslop` and `/ship` prompts: adapted from [earendil-works/pi](https://github.com/earendil-works/pi) (MIT).
 - Coding rules in `AGENTS.md`: adapted from [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) (MIT).

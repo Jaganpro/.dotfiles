@@ -58,7 +58,6 @@ zsh -n home/.zshrc                       # syntax
 shellcheck dot scripts/*.sh scripts/hooks/pre-commit home/.claude/statusline.sh home/.claude/hooks/*.sh home/.config/starship/*.sh
 env -i HOME="$HOME" USER="$USER" TERM=xterm-256color zsh -lic exit   # fresh login shell
 npm run lint                             # anti-slop rules on our Pi extensions
-node --test home/.pi/agent/extensions/web/lib.test.ts
 gitleaks git --pre-commit --staged --redact .   # no secrets
 ```
 

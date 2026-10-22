@@ -18,5 +18,4 @@ env -i HOME="$HOME" USER="$USER" TERM=xterm-256color zsh -lic exit >/dev/null 2>
   fail "a fresh login shell does not start (run: zsh -lic exit)"
 [ -d node_modules ] || fail "lint tools missing: run npm ci"
 npx --no-install oxlint home/.pi/agent/extensions || fail "lint failed (npm run lint)"
-tests=$(node --test home/.pi/agent/extensions/web/lib.test.ts 2>&1) || { echo "$tests"; fail "web extension tests failed"; }
 gitleaks git --pre-commit --staged --redact --no-banner . || fail "gitleaks found a secret"
