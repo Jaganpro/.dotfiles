@@ -2,6 +2,10 @@
 
 Pi reads this file directly; Claude Code imports it from ~/.claude/CLAUDE.md.
 
+## Skill tool
+
+Pi has no Skill tool. In Pi, when instructions say to call the Skill tool with a name, read that skill's SKILL.md. The path is in the injected skill list. Claude Code keeps its Skill tool.
+
 ## Python: use uv
 
 Never call `pip`, `python -m venv`, `poetry` or a bare `python` to install or
