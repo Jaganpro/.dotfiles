@@ -86,10 +86,19 @@ app_skills() {
     sed -E 's/[[:space:]]*\|[[:space:]]*/|/g'
 }
 
+# Homebrew 7 only loads third-party taps you trust; trust each `tap` in the Brewfile
+trust_taps() {
+  local tap
+  sed -n 's/^tap "\(.*\)".*/\1/p' "$DOTFILES/packages/Brewfile" | while read -r tap; do
+    brew trust --tap "$tap" >/dev/null
+  done
+}
+
 cmd_init() {
   command -v brew >/dev/null || { bad "Install Homebrew first: https://brew.sh"; exit 1; }
 
   step "Packages (packages/Brewfile)"
+  trust_taps
   brew bundle --file "$DOTFILES/packages/Brewfile" --no-upgrade
 
   step "Let zsh trust Homebrew's completion folders"
@@ -218,6 +227,7 @@ cmd_update() {
   git -C "$DOTFILES" pull --ff-only
   step "Homebrew"
   brew update
+  trust_taps
   brew bundle --file "$DOTFILES/packages/Brewfile" --no-upgrade
   brew upgrade
   install_skill_deps

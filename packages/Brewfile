@@ -1,3 +1,6 @@
+# Third-party taps (trusted once by `dot init` / `dot update` before brew bundle)
+tap "plannotator/tap"
+
 # CLI tools
 brew "ast-grep"  # structural code search (sg)
 brew "bat"       # cat with syntax highlighting
@@ -15,6 +18,7 @@ brew "git-delta" # readable git diffs (used as git's pager)
 brew "gitleaks"  # scan repos for committed secrets
 brew "gum"       # styled output and prompts for gwa/gwr
 brew "jq"        # JSON processor (newer than macOS's built-in)
+brew "plannotator/tap/plannotator-tui" # annotate an agent's plan or reply in the terminal
 brew "ripgrep"   # fast code search (rg)
 brew "shellcheck" # finds bugs in shell scripts
 brew "tree"      # folder tree (tree is aliased to eza --tree; use command tree)

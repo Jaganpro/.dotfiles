@@ -79,6 +79,7 @@ Never tracked: logins, tokens and app state (`~/.config/gh/hosts.yml`,
 | git-delta | Readable git diffs (git's pager) | `git show` |
 | gitleaks | Scans a repo's history for committed secrets | `gitleaks git --redact` |
 | gum | Styled output and prompts for `gwa` / `gwr` | `gum confirm "OK?"` |
+| plannotator-tui | Annotate an agent's plan or reply in the terminal (third-party tap `plannotator/tap`) | `plannotator-tui last` |
 | ffmpeg | Convert, trim and compress audio and video | `ffmpeg -i in.mov out.mp4` |
 | direnv | Loads a folder's `.envrc` (e.g. `export SF_TARGET_ORG=dev`) on `cd`, unloads on leave | `direnv allow` |
 | ast-grep | Search code by structure, not text | `sg -p 'console.log($A)'` |
@@ -149,6 +150,20 @@ own branch: work on two branches at once, or give an AI agent a sandbox.
 `gwr` refuses, before changing anything, if the worktree has uncommitted
 changes (including new files) or the branch has commits not merged into the
 main checkout's current branch.
+
+## Review a plan in the terminal
+
+`plannotator-tui` (from [plannotator/plannotator-tui](https://github.com/plannotator/plannotator-tui), MIT)
+reads Claude Code's and Pi's saved replies, so it needs no agent plugin.
+
+1. The agent writes a plan (or any reply worth reviewing).
+2. Open a Ghostty split (`⌘D`) and run `plannotator-tui last` (pick the reply), or
+   `plannotator-tui plan.md` for a plan file.
+3. Select text with the mouse or `v`, then `a` 👍 looks good · `c` 💬 comment · `d` ✗ delete.
+4. `E` copies the review as numbered feedback; paste it into the agent.
+
+`q` quits; annotations are saved as you go. One-key sending straight to the agent
+needs Herdr, which this setup doesn't use.
 
 ## Prompts (slash commands)
 
