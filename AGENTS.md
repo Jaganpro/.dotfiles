@@ -55,7 +55,7 @@ Never skip it (`--no-verify` is blocked anyway); fix the problem instead.
 
 ```bash
 zsh -n home/.zshrc                       # syntax
-shellcheck dot scripts/*.sh scripts/hooks/pre-commit home/.claude/statusline.sh home/.claude/hooks/*.sh home/.config/starship/*.sh
+shellcheck dot scripts/*.sh scripts/hooks/pre-commit home/.claude/statusline.sh home/.claude/hooks/*.sh home/.config/starship/*.sh home/.local/bin/annotate
 env -i HOME="$HOME" USER="$USER" TERM=xterm-256color zsh -lic exit   # fresh login shell
 npm run lint                             # anti-slop rules on our Pi extensions
 gitleaks git --pre-commit --staged --redact .   # no secrets

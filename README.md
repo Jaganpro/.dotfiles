@@ -51,6 +51,8 @@ each one into place. Built from scratch in October 2026, one tool at a time.
 | `~/.pi/agent/extensions/footer.ts` | Pi's footer: `~/path ⎇ branch · session` and a context bar with %, window size and model (written with Pi) |
 | `~/.pi/agent/extensions/run-stats.ts` | After each Pi run: `⚡ tokens/sec · ⏱ time · ✍️ written · 📖 read · 💾 from cache` (our own; clean-room rewrite) |
 | `~/.pi/agent/extensions/tasting-notes.ts` | While Pi works: a winemaking phrase (🍾 Uncorking…) in the working line and a French or Italian wine fact above the input box, every 7 seconds; 100 facts checked against sources; `/wine` for one on demand (our own; clean-room) |
+| `~/.pi/agent/extensions/annotate.ts` | `/annotate`: review Pi's newest reply (or `/annotate plan.md`) in a Ghostty split, via `~/.local/bin/annotate` |
+| `~/.local/bin/annotate` | Opens plannotator-tui in a Ghostty split to the right (AppleScript); in Claude Code run `! annotate` |
 | `~/.pi/agent/AGENTS.md` | Global instructions shared by Pi and Claude Code (Claude imports it from `~/.claude/CLAUDE.md`): use `uv` for Python; ponytail rules for code (smallest complete change, reuse, no slop) |
 
 Never tracked: logins, tokens and app state (`~/.config/gh/hosts.yml`,
@@ -157,13 +159,14 @@ main checkout's current branch.
 reads Claude Code's and Pi's saved replies, so it needs no agent plugin.
 
 1. The agent writes a plan (or any reply worth reviewing).
-2. Open a Ghostty split (`⌘D`) and run `plannotator-tui last` (pick the reply), or
-   `plannotator-tui plan.md` for a plan file.
+2. Open the review in a split next to it: `/annotate` in Pi, `! annotate` in Claude Code
+   (`annotate plan.md` for a file). Elsewhere: `plannotator-tui last` in a split you open.
 3. Select text with the mouse or `v`, then `a` 👍 looks good · `c` 💬 comment · `d` ✗ delete.
-4. `E` copies the review as numbered feedback; paste it into the agent.
+4. `S` sends: the numbered feedback is pasted into the agent and submitted, and the
+   split closes. (`E` only copies; it is sent when you then press `q`.)
 
-`q` quits; annotations are saved as you go. One-key sending straight to the agent
-needs Herdr, which this setup doesn't use.
+Quitting without sending sends nothing; annotations are saved as you go. Outside a
+Ghostty split, plannotator-tui only copies the feedback (its own sending needs Herdr).
 
 ## Prompts (slash commands)
 

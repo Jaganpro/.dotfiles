@@ -1,3 +1,11 @@
+# A review split from `annotate` runs its review instead of a shell, before anything
+# else loads (no prompt, no plugins, no splash). Unset first so nothing inherits it.
+if [[ -n ${ANNOTATE_REVIEW:-} ]]; then
+  review=$ANNOTATE_REVIEW
+  unset ANNOTATE_REVIEW
+  eval "exec $review"
+fi
+
 # History: 100k commands, saved immediately, new tabs see everything
 HISTFILE=~/.zsh_history
 HISTSIZE=100000
