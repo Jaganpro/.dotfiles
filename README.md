@@ -29,6 +29,7 @@ each one into place. Built from scratch in October 2026, one tool at a time.
 | File (in `~`, linked from `home/`) | What it holds |
 |---|---|
 | `~/.zprofile` | Homebrew and `~/.local/bin` on PATH; `JAVA_HOME`; points `brew bundle --global` at `packages/Brewfile`; `RIPGREP_CONFIG_PATH` |
+| `~/.hushlogin` | Empty on purpose: its existence hides macOS's "Last login: …" line in new terminals and review splits |
 | `~/.zshrc` | History, Gruvbox colours, fnm, fzf, eza shortcuts, direnv, autosuggestions, starship, fastfetch, syntax highlighting |
 | `~/.config/fastfetch/config.jsonc` | Compact, private fastfetch layout |
 | `~/.config/starship.toml` | Gruvbox powerline prompt |
