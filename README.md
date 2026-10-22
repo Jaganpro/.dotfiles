@@ -50,6 +50,7 @@ each one into place. Built from scratch in October 2026, one tool at a time.
 | `~/.pi/agent/extensions/muscle-memory.ts` | Claude Code command names work in Pi too: `/clear`, `/exit`, `/context`, `/rename`, `/effort` (our own, inspired by xRyul/pi-aliases) |
 | `~/.pi/agent/extensions/footer.ts` | Pi's footer: `~/path ⎇ branch · session` and a context bar with %, window size and model (written with Pi) |
 | `~/.pi/agent/extensions/run-stats.ts` | After each Pi run: `⚡ tokens/sec · ⏱ time · ✍️ written · 📖 read · 💾 from cache` (our own; clean-room rewrite) |
+| `~/.pi/agent/extensions/tasting-notes.ts` | While Pi works: a winemaking phrase (🍾 Uncorking…) in the working line and a French or Italian wine fact above the input box, every 7 seconds; 100 facts checked against sources; `/wine` for one on demand (our own; clean-room) |
 | `~/.pi/agent/AGENTS.md` | Global instructions shared by Pi and Claude Code (Claude imports it from `~/.claude/CLAUDE.md`): use `uv` for Python; ponytail rules for code (smallest complete change, reuse, no slop) |
 
 Never tracked: logins, tokens and app state (`~/.config/gh/hosts.yml`,
@@ -109,7 +110,7 @@ GitHub is used through `gh` only.
 | Tool | Notes |
 |---|---|
 | Claude Code | Settings tracked here; fff registered as an MCP server |
-| Pi | fff search; **muscle-memory** (`/clear`, `/exit`, `/context`, `/rename`, `/effort`); **footer** (path, branch, context bar, model); **run-stats** (speed and tokens after each run); **youtube-transcript** skill (`skills/youtube-transcript`, timestamps fixed; also linked into `~/.claude/skills/` for Claude Code) |
+| Pi | fff search; **muscle-memory** (`/clear`, `/exit`, `/context`, `/rename`, `/effort`); **footer** (path, branch, context bar, model); **run-stats** (speed and tokens after each run); **tasting-notes** (wine facts while Pi works, `/wine`); **youtube-transcript** skill (`skills/youtube-transcript`, timestamps fixed; also linked into `~/.claude/skills/` for Claude Code) |
 
 fff only works when Claude Code or Pi is started inside a project folder.
 It refuses to index the home folder on purpose.
@@ -375,6 +376,7 @@ everything in it is installed.
 - YouTube transcript skill: [badlogic/pi-skills](https://github.com/badlogic/pi-skills) (MIT).
 - git-guard idea: dmmulroy's git-interceptor (written from scratch).
 - `web-access.ts` ideas: [badlogic/pi-skills](https://github.com/badlogic/pi-skills) brave-search, [tian.zuo/pi-web-search](https://www.npmjs.com/package/@tian.zuo/pi-web-search), [dmmulroy/pi-web-tools](https://github.com/dmmulroy/pi-web-tools), [pi-lab/websearch](https://www.npmjs.com/package/@pi-lab/websearch) (written from scratch).
+- `tasting-notes.ts` idea: dmmulroy's whimsical.ts (written clean-room from a behaviour description).
 - Pi command aliases idea: [xRyul/pi-aliases](https://github.com/xRyul/pi-aliases).
 - `/deslop` and `/ship` prompts: adapted from [earendil-works/pi](https://github.com/earendil-works/pi) (MIT).
 - Coding rules in `AGENTS.md`: adapted from [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) (MIT).
