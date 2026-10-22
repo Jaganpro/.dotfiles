@@ -17,6 +17,7 @@ each one into place. Built from scratch in October 2026, one tool at a time.
 ├── scripts/vendor-skills.sh   copies Matt Pocock's skills into skills/ at a pinned commit
 ├── prompts/              slash commands for Pi (via its settings) and Claude Code (linked into ~/.claude/commands)
 ├── third_party/          licenses for code taken from other repos
+├── tools/oxlint/         anti-slop lint rules (vendored); `npm run lint`, config in oxlint.config.ts
 ├── dot                   the `dot` command: init, doctor, update, stow, add
 ├── AGENTS.md             how AI agents (Claude Code, Pi) should work in this repo
 ├── CLAUDE.md             points Claude Code at AGENTS.md
@@ -319,6 +320,9 @@ adds `oxlint` as a dev dependency there and enables the rules. Nothing is instal
   change the commit above. Never edit the copy by hand.
 - `~/.npmrc` has `min-release-age=3`: if the skill picks an `oxlint` release
   younger than 3 days, npm refuses it; pin the previous version instead.
+- **This repo uses it** on our own Pi extensions: `npm install` once, then
+  `npm run lint`. Config in `oxlint.config.ts`; provenance in
+  `tools/oxlint/anti-slop/UPSTREAM.md`.
 
 ## Installed by apps
 

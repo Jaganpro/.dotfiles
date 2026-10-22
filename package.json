@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint": "oxlint home/.pi/agent/extensions"
+  },
+  "devDependencies": {
+    "@oxlint/plugins": "1.88.0",
+    "oxlint": "1.88.0"
+  }
+}

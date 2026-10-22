@@ -12,6 +12,7 @@ scripts/macos-defaults.sh
 dot                      the `dot` command: init, doctor, update, stow, add
 skills/                  agent skills with npm deps (not stowed; Pi settings point here)
 third_party/             licenses of code taken from other repos
+tools/oxlint/anti-slop/  vendored Oxlint rules; `npm run lint` (oxlint.config.ts) checks our Pi extensions
 ```
 
 ## Editing rules
