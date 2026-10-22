@@ -52,14 +52,15 @@ export default function (pi: ExtensionAPI) {
   pi.registerCommand("effort", {
     description: `→ /thinking · Set thinking effort (${LEVELS.join(", ")})`,
     getArgumentCompletions: (prefix) =>
-      LEVELS.filter((l) => l.startsWith(prefix)).map((l) => ({ value: l, label: l })),
+      LEVELS.values().filter((l) => l.startsWith(prefix)).map((l) => ({ value: l, label: l })).toArray(),
     handler: async (args, ctx) => {
-      const level = args.trim().toLowerCase() as Level;
+      const input = args.trim().toLowerCase();
+      const level = LEVELS.find((l) => l === input);
 
-      if (!level) return ctx.ui.notify(`Effort: ${pi.getThinkingLevel()}`);
+      if (!input) return ctx.ui.notify(`Effort: ${pi.getThinkingLevel()}`);
 
-      if (!LEVELS.includes(level)) {
-        return ctx.ui.notify(`Unknown level "${level}". Use: ${LEVELS.join(", ")}`, "warning");
+      if (!level) {
+        return ctx.ui.notify(`Unknown level "${input}". Use: ${LEVELS.join(", ")}`, "warning");
       }
 
       pi.setThinkingLevel(level);

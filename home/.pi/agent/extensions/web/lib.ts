@@ -28,9 +28,9 @@ const MAX_BYTES = 5_000_000;
 const PREVIEW_LINES = 12;
 
 // shortcut: 30-day month and 365-day year, upgrade if this must match Brave's windows
-const DAYS: Record<string, number> = { day: 1, week: 7, month: 30, year: 365 };
+const DAYS = new Map([["day", 1], ["week", 7], ["month", 30], ["year", 365]]);
 const RANGE = /^(\d{4}-\d{2}-\d{2})to(\d{4}-\d{2}-\d{2})$/;
-export const validFreshness = (f?: string) => !f || f in DAYS || RANGE.test(f);
+export const validFreshness = (f?: string) => !f || DAYS.has(f) || RANGE.test(f);
 const daysAgo = (n: number) => new Date(Date.now() - n * 86_400_000).toISOString().slice(0, 10);
 
 export class StopChain extends Error {
@@ -38,6 +38,7 @@ export class StopChain extends Error {
 }
 
 export function providerOrder(raw = process.env.WEB_SEARCH_ORDER): Provider[] {
+  // SAFETY: includes() only compares; TypeScript just won't accept a plain string there.
   const list = (raw ?? PROVIDERS.join(","))
     .split(",")
     .map((p) => p.trim())
@@ -98,7 +99,7 @@ const search: Record<Provider, (q: string, o: Options, k: string, s?: AbortSigna
   async brave(q, o, k, s) {
     const p = new URLSearchParams({ q, count: String(o.n) });
 
-    if (o.freshness) p.set("freshness", DAYS[o.freshness] ? `p${o.freshness[0]}` : o.freshness);
+    if (o.freshness) p.set("freshness", DAYS.has(o.freshness) ? `p${o.freshness[0]}` : o.freshness);
 
     if (o.country) p.set("country", o.country.toUpperCase());
     const { data, left } = await call(`https://api.search.brave.com/res/v1/web/search?${p}`, { headers: jsonHeaders("X-Subscription-Token", k) }, SEARCH_TIMEOUT_MS, s);
@@ -107,11 +108,13 @@ const search: Record<Provider, (q: string, o: Options, k: string, s?: AbortSigna
     return { hits, left };
   },
   async parallel(q, o, k, s) {
-    const advanced: Record<string, unknown> = { max_results: o.n };
+    // JSON.stringify drops the undefined fields
+    const advanced = {
+      max_results: o.n,
+      location: o.country?.toLowerCase(),
+      source_policy: o.freshness ? { after_date: o.freshness.match(RANGE)?.[1] ?? daysAgo(DAYS.get(o.freshness) ?? 0) } : undefined,
+    };
 
-    if (o.country) advanced.location = o.country.toLowerCase();
-
-    if (o.freshness) advanced.source_policy = { after_date: o.freshness.match(RANGE)?.[1] ?? daysAgo(DAYS[o.freshness]) };
     const body = JSON.stringify({ objective: q, search_queries: [q], mode: "fast", advanced_settings: advanced });
     const { data } = await call("https://api.parallel.ai/v1/search", { method: "POST", headers: jsonHeaders("x-api-key", k), body }, SEARCH_TIMEOUT_MS, s);
 
@@ -127,7 +130,7 @@ const search: Record<Provider, (q: string, o: Options, k: string, s?: AbortSigna
       p.set("after_date", range[1]);
       p.set("before_date", range[2]);
     } else if (o.freshness) {
-      p.set("recency_minutes", String(DAYS[o.freshness] * 1440));
+      p.set("recency_minutes", String((DAYS.get(o.freshness) ?? 0) * 1440));
     }
 
     const { data } = await call(`https://api.search.tinyfish.ai?${p}`, { headers: jsonHeaders("X-API-Key", k) }, SEARCH_TIMEOUT_MS, s);
@@ -255,14 +258,16 @@ export type WebDetails = {
   failed?: boolean;
 };
 
-export function previewOf(text: string): { preview: string[]; moreLines: number } {
+export function previewOf(text: string) {
   const lines = text.split("\n");
 
   return { preview: lines.slice(0, PREVIEW_LINES), moreLines: Math.max(0, lines.length - PREVIEW_LINES) };
 }
 
-// Pi's theme in the app; identity functions in tests.
-export type Paint = { fg(color: string, s: string): string; bold(s: string): string; link(s: string, url: string): string };
+// Pi's theme in the app; identity functions in tests. Every Color is a Pi theme colour.
+type Color = "accent" | "dim" | "error" | "warning" | "muted" | "toolOutput" | "toolTitle";
+
+export type Paint = { fg(color: Color, s: string): string; bold(s: string): string; link(s: string, url: string): string };
 
 const compact = new Intl.NumberFormat("en", { notation: "compact", maximumSignificantDigits: 2 });
 
@@ -329,7 +334,8 @@ type RunDeps = {
 
 type Failed = { ok: false; message: string; details: WebDetails };
 
-const aborted = (e: unknown, signal?: AbortSignal) => signal?.aborted || (e instanceof Error && e.name === "AbortError");
+const messageOf = (cause: unknown) => (cause instanceof Error ? cause.message : String(cause));
+const aborted = (cause: unknown, signal?: AbortSignal) => signal?.aborted || (cause instanceof Error && cause.name === "AbortError");
 
 function failure(kind: "search" | "fetch", query: string, attempts: Attempt[]): Failed {
   const list = attempts.map((a) => `${a.via}: ${a.error}`).join("; ");
@@ -355,7 +361,7 @@ async function firstOk<T>(providers: Provider[], deps: RunDeps, attempts: Attemp
       attempts.push({ via: p, error: "empty" });
     } catch (e) {
       if (aborted(e, deps.signal)) throw e;
-      attempts.push({ via: p, error: (e as Error).message });
+      attempts.push({ via: p, error: messageOf(e) });
 
       if (e instanceof StopChain) return undefined;
     }
@@ -423,7 +429,7 @@ export async function runFetch(url: string, deps: RunDeps): Promise<{ ok: true; 
     attempts.push({ via: "direct", error: page ? "challenge page" : "empty" });
   } catch (e) {
     if (aborted(e, deps.signal)) throw e;
-    attempts.push({ via: "direct", error: (e as Error).message });
+    attempts.push({ via: "direct", error: messageOf(e) });
 
     if (e instanceof StopChain) return failure("fetch", url, attempts);
   }

@@ -7,7 +7,7 @@
 // Keys: macOS Keychain (web-brave, web-parallel, web-tinyfish) or BRAVE_API_KEY,
 // PARALLEL_API_KEY, TINYFISH_API_KEY. /web shows which keys are found.
 import type { ExtensionAPI, Theme } from "@earendil-works/pi-coding-agent";
-import { Text, hyperlink } from "@earendil-works/pi-tui";
+import { type Component, Text, hyperlink } from "@earendil-works/pi-tui";
 import { Type } from "typebox";
 import {
   CONTENT_CHARS,
@@ -15,6 +15,7 @@ import {
   ENV_KEY,
   MAX_CHARS,
   type Provider,
+  type Paint,
   type WebDetails,
   card,
   clip,
@@ -34,9 +35,9 @@ const FRESHNESS = "day, week, month, year, or YYYY-MM-DDtoYYYY-MM-DD";
 const keys = new Map<Provider, Promise<string | null>>();
 const left = new Map<Provider, number>();
 
-type CallContext = { isPartial: boolean; durationMs?: number; lastComponent?: unknown };
+type CallContext = { isPartial: boolean; durationMs?: number; lastComponent?: Component };
 
-type ResultContext = { lastComponent?: unknown; isError: boolean };
+type ResultContext = { lastComponent?: Component; isError: boolean };
 
 export default function (pi: ExtensionAPI) {
   async function lookup(p: Provider): Promise<string | null> {
@@ -56,21 +57,22 @@ export default function (pi: ExtensionAPI) {
     return k;
   }
 
-  const paint = (theme: Theme) => ({
-    fg: (color: string, s: string) => theme.fg(color as Parameters<Theme["fg"]>[0], s),
+  const paint = (theme: Theme): Paint => ({
+    fg: (color, s) => theme.fg(color, s),
     bold: (s: string) => theme.bold(s),
     link: hyperlink,
   });
 
-  function textOf(last: unknown, value: string) {
+  function textOf(last: Component | undefined, value: string) {
     const component = last instanceof Text ? last : new Text("", 0, 0);
     component.setText(value);
 
     return component;
   }
 
-  function drawCall(label: string, raw: unknown, theme: Theme, context: CallContext) {
+  function drawCall(label: string, raw: string | undefined, theme: Theme, context: CallContext) {
     if (context.isPartial || context.durationMs !== undefined) return textOf(context.lastComponent, "");
+    // oxlint-disable-next-line anti-slop/no-runtime-typeof -- raw model JSON while streaming; Pi's own renderers check the same way
     const subject = typeof raw === "string" && raw ? clip(raw, 80) : "…";
 
     return textOf(context.lastComponent, `${theme.fg("toolTitle", theme.bold(label))}  ${theme.fg("dim", "…")}\n${theme.fg("dim", subject)}`);
@@ -82,6 +84,7 @@ export default function (pi: ExtensionAPI) {
     theme: Theme,
     context: ResultContext,
   ) {
+    // SAFETY: details come from our own execute() (a WebDetails) or are empty when Pi reports a thrown error; the kind check below tells them apart.
     const details = result.details as WebDetails | undefined;
 
     if (!details?.kind) {

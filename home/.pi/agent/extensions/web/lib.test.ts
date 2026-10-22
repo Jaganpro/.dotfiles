@@ -18,9 +18,6 @@ const key = async () => "test-key";
 const plain = { fg: (_: string, s: string) => s, bold: (s: string) => s, link: (s: string) => s };
 const stubFetch = (impl: (input: string | URL | Request, init?: RequestInit) => Promise<Response>) => mock.method(globalThis, "fetch", impl);
 
-const json = (body: unknown, status = 200, headers: Record<string, string> = {}) =>
-  new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json", ...headers } });
-
 afterEach(() => {
   mock.restoreAll();
   mock.timers.reset();
@@ -69,6 +66,7 @@ test("freshness and country reach every provider", async () => {
   assert.equal(validFreshness("week"), true);
   assert.equal(validFreshness("2026-01-01to2026-06-01"), true);
   assert.equal(validFreshness("hour"), false);
+  assert.equal(validFreshness("toString"), false); // inherited object keys are not valid
 });
 
 test("chunked bodies stop at the size cap", async () => {
@@ -103,19 +101,28 @@ test("a rejected key stops the chain; a quota error tries the next provider", as
 
     if (String(input).includes("brave")) return new Response("slow down", { status: 429 });
 
-    return json({ results: [{ title: "Hit", url: "https://example.com/a", excerpts: ["snippet"] }] });
+    return Response.json({ results: [{ title: "Hit", url: "https://example.com/a", excerpts: ["snippet"] }] });
   });
   const fell = await runSearch("q", { n: 1 }, { order: ["brave", "parallel"], key });
   assert.equal(fell.ok && fell.via, "parallel");
   assert.equal(seen.length, 2);
 });
 
+test("a thrown non-Error still gives a readable attempt message", async () => {
+  stubFetch(async () => {
+    throw "socket hang up";
+  });
+  const result = await runSearch("q", { n: 1 }, { order: ["brave"], key });
+
+  if (!result.ok) assert.match(result.message, /brave: socket hang up/);
+  else assert.fail("expected a failure");
+});
+
 test("recorded Brave response maps hits and the monthly remaining count", async () => {
   stubFetch(async () =>
-    json(
+    Response.json(
       { web: { results: [{ title: "Tool rendering", url: "https://docs.example/extensions", description: "A tool's <b>renderCall</b>", age: "2 days ago" }] } },
-      200,
-      { "x-ratelimit-remaining": "0, 14523" },
+      { headers: { "x-ratelimit-remaining": "0, 14523" } },
     ),
   );
   const result = await runSearch("pi", { n: 2 }, { order: ["brave"], key });
@@ -152,7 +159,7 @@ test("a short page is not sent to an extractor; a challenge page is", async () =
     if (String(input).includes("parallel")) {
       extracts++;
 
-      return json({ results: [{ full_content: "The real article text." }] });
+      return Response.json({ results: [{ full_content: "The real article text." }] });
     }
 
     return new Response("<html><title>Just a moment...</title><body>Checking your browser</body></html>", { headers: { "content-type": "text/html" } });
@@ -238,7 +245,7 @@ test("live corpus", { skip: process.env.WEB_LIVE !== "1", timeout: 400_000 }, as
   const search = await runSearch("pi coding agent extensions", { n: 2, country: "us" }, { order, key: liveKey });
   assert.equal(search.ok, true, search.ok ? "" : search.message);
 
-  if (search.ok && search.via === "brave") assert.equal(typeof search.left, "number");
+  if (search.ok && search.via === "brave") assert.notEqual(search.left, undefined);
   const fresh = await runSearch("web search api", { n: 1, freshness: "day", country: "gb" }, { order, key: liveKey });
   assert.equal(fresh.ok, true, fresh.ok ? "" : fresh.message);
   const page = await runFetch("https://example.com", { order, key: liveKey });

@@ -161,7 +161,7 @@ function modelLine(theme: Theme, modelId: string | undefined, thinking: Thinking
 	return line;
 }
 
-function insets(width: number): { left: number; right: number; inner: number } {
+function insets(width: number) {
 	const left = Math.min(INSET, width);
 	const right = Math.min(INSET, Math.max(0, width - left));
 
