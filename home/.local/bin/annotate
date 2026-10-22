@@ -4,20 +4,23 @@
 #   annotate             Claude Code's newest reply (in Claude, run it as `! annotate`)
 #   annotate plan.md     a Markdown file
 #   annotate <args>      any plannotator-tui arguments (Pi's /annotate passes its session)
-# In the split: annotate, then S (send and close). The feedback is pasted into the agent's
-# pane and submitted, and the split closes. E only copies; it is sent when you press q.
-# Nothing is sent if you quit without sending.
+# In the split: annotate, then S sends the feedback to the agent and closes the split.
+# E sends a batch without closing; every batch reaches the agent when the split closes.
+# q asks before dropping unsent annotations; nothing is sent if you quit without sending.
 set -euo pipefail
 
-# Second half, running inside the split: review, then hand new feedback to the agent pane.
+# Second half, running inside the split: review, then hand the feedback to the agent pane.
 if [[ ${1:-} == --send-to ]]; then
   agent=$2
   shift 2
-  before=$(pbpaste)
+  started=$(mktemp)
   plannotator-tui "$@" || true
-  feedback=$(pbpaste)
-  # plannotator copies its feedback (outside Herdr, "send" means copy); only forward a new review
-  [[ $feedback != "$before" && $feedback == "# Annotations on "* ]] || exit 0
+  # Outside Herdr, plannotator's "send" (E or S) can only save a record and copy it. Forward
+  # every record from this review, oldest first: the clipboard holds only the last batch.
+  feedback=$(find ~/.plannotator/feedback -name '*.md' -newer "$started" 2>/dev/null | sort |
+    xargs awk 'FNR == 1 { body = 0 } /^# Annotations on / { body = 1 } body' || true)
+  rm -f "$started"
+  [[ -n $feedback ]] || exit 0
   osascript - "$agent" "$feedback" >/dev/null <<'APPLESCRIPT'
 on run {agentId, feedback}
   tell application "Ghostty"
@@ -37,6 +40,18 @@ if [[ ${TERM_PROGRAM:-} != ghostty ]]; then
 fi
 
 (( $# )) || set -- last --host claude --newest
+
+# Check there is something to review here, before the split opens: errors in the split vanish with it.
+if [[ $1 == last ]]; then
+  # shortcut: every failure reads as "no reply"; plannotator exits 0 on an unreadable transcript, so require output
+  if ! reply=$(plannotator-tui "$@" --print 2>/dev/null) || [[ -z $reply ]]; then
+    echo "Nothing to annotate yet: there's no reply in this session." >&2
+    exit 2 # nothing to review, not a failure: Pi's /annotate shows it as a warning
+  fi
+elif [[ ! -e $1 ]]; then
+  echo "annotate: no such file or folder: $1" >&2
+  exit 1
+fi
 
 # First half, in the agent's pane: remember this pane and open a split whose shell runs the
 # second half straight away (ANNOTATE_REVIEW, the first thing ~/.zshrc checks), so there is
@@ -58,3 +73,4 @@ on run argv
   end tell
 end run
 APPLESCRIPT
+echo "Annotate on the right, then press S to send it here and close. (E sends without closing; it arrives when you close.)"

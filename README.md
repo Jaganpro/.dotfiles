@@ -164,10 +164,10 @@ reads Claude Code's and Pi's saved replies, so it needs no agent plugin.
    (`annotate plan.md` for a file). Elsewhere: `plannotator-tui last` in a split you open.
 3. Select text with the mouse or `v`, then `a` 👍 looks good · `c` 💬 comment · `d` ✗ delete.
 4. `S` sends: the numbered feedback is pasted into the agent and submitted, and the
-   split closes. (`E` only copies; it is sent when you then press `q`.)
+   split closes. (`E` sends a batch without closing; every batch arrives when you close.)
 
-Quitting without sending sends nothing; annotations are saved as you go. Outside a
-Ghostty split, plannotator-tui only copies the feedback (its own sending needs Herdr).
+`q` asks before dropping unsent annotations; annotations are saved as you go. Outside a
+Ghostty split, plannotator-tui only saves and copies the feedback (its own sending needs Herdr).
 
 ## Prompts (slash commands)
 
