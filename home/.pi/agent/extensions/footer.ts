@@ -1,5 +1,5 @@
 // Quiet two-line footer: accented folder, context bar, model on the right.
-// Line 1: ~/path ⎇ branch · session   Line 2: ██░░░ 42% · 1M · auto   ✦ model · thinking
+// Line 1: ~/path ⎇ branch · session   Line 2: ██░░░ 42% · 1M   ✦ model · thinking
 // Written with Pi using the setFooter API from Pi's examples/extensions/custom-footer.ts.
 import { isAbsolute, relative, resolve, sep } from "node:path";
 import type { ThinkingLevel } from "@earendil-works/pi-agent-core";
@@ -112,16 +112,13 @@ function joinStats(
 	percent: number | null,
 	tokens: number | null,
 	window: number,
-	auto: boolean,
 	showWindow: boolean,
-	showAuto: boolean,
 ): string {
 	let line = `${contextBar(theme, percent)}  ${theme.fg(usageColor(percent), formatPercent(percent))}`;
 	if (showWindow && window > 0) {
 		const used = tokens === null ? "?" : formatWindow(tokens);
 		line += theme.fg("dim", ` · ${used}/${formatWindow(window)}`);
 	}
-	if (showAuto && auto) line += theme.fg("dim", " · auto");
 	return line;
 }
 
@@ -166,16 +163,14 @@ function renderStats(
 	percent: number | null,
 	tokens: number | null,
 	window: number,
-	auto: boolean,
 	modelId: string | undefined,
 	thinking: ThinkingLevel | undefined,
 	reasoning: boolean,
 ): string {
 	const ellipsis = theme.fg("dim", "…");
 	const lefts = [
-		joinStats(theme, percent, tokens, window, auto, true, true),
-		joinStats(theme, percent, tokens, window, auto, true, false),
-		joinStats(theme, percent, tokens, window, auto, false, false),
+		joinStats(theme, percent, tokens, window, true),
+		joinStats(theme, percent, tokens, window, false),
 	];
 	const rights = reasoning
 		? [modelLine(theme, modelId, thinking, true), modelLine(theme, modelId, thinking, false)]
@@ -220,7 +215,6 @@ export default function (pi: ExtensionAPI) {
 									usage?.percent ?? null,
 									usage?.tokens ?? null,
 									usage?.contextWindow ?? ctx.model?.contextWindow ?? 0,
-									pi.getSettings().compaction?.enabled !== false,
 									ctx.model?.id,
 									ctx.thinkingLevel ?? pi.getThinkingLevel(),
 									ctx.model?.reasoning === true,

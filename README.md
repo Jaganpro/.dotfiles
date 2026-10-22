@@ -14,6 +14,7 @@ each one into place. Built from scratch in October 2026, one tool at a time.
 ├── scripts/macos-defaults.sh
 ├── scripts/hooks/pre-commit   gitleaks blocks commits containing secrets
 ├── skills/               agent skills for Pi (via its settings) and Claude Code (linked into ~/.claude/skills)
+├── scripts/vendor-skills.sh   copies Matt Pocock's skills into skills/ at a pinned commit
 ├── prompts/              slash commands for Pi (via its settings) and Claude Code (linked into ~/.claude/commands)
 ├── third_party/          licenses for code taken from other repos
 ├── dot                   the `dot` command: init, doctor, update, stow, add
@@ -45,7 +46,6 @@ each one into place. Built from scratch in October 2026, one tool at a time.
 | `~/.pi/agent/extensions/web.ts` | Pi `web_search` (Brave → Parallel → TinyFish, falls back on errors/quota; freshness, country, result age, optional page text) and `web_fetch` (free direct download first, main content as Markdown); keys from the macOS Keychain; `/web` shows status |
 | `~/.pi/agent/extensions/git-guard.ts` | Pi: blocks commands that skip git hooks (`--no-verify`, `git commit -n`) and stops git opening an editor |
 | `~/.claude/hooks/git-guard.sh` | Claude Code: the same hook-skipping block, as a PreToolUse hook (registered in `settings.json`, which also sets `GIT_EDITOR=true`) |
-| `~/.pi/agent/extensions/notify.ts` | Desktop notification when Pi finishes (from mitsuhiko/agent-stuff, unmodified) |
 | `~/.pi/agent/extensions/aliases.ts` | Claude Code command names in Pi: `/clear`, `/exit`, `/context`, `/rename`, `/effort` (our own, inspired by xRyul/pi-aliases) |
 | `~/.pi/agent/extensions/footer.ts` | Pi's footer: `~/path ⎇ branch · session` and a context bar with %, window size and model (written with Pi) |
 | `~/.pi/agent/extensions/speed.ts` | After each Pi run: `⚡ tokens/sec · ⏱ time · ✍️ written · 📖 read · 💾 from cache` (adapted from earendil-works/pi tps.ts) |
@@ -109,7 +109,7 @@ GitHub is used through `gh` only.
 | Tool | Notes |
 |---|---|
 | Claude Code | Settings tracked here; fff registered as an MCP server |
-| Pi | fff search; **notify** extension (desktop notification when Pi finishes); **todos** extension (`/todos`, task list in `.pi/todos/`); **aliases** (`/clear`, `/exit`, `/context`, `/rename`, `/effort`); **footer** (path, branch, context bar, model); **speed** (tokens/sec after each run); **youtube-transcript** skill (`skills/youtube-transcript`, timestamps fixed; also linked into `~/.claude/skills/` for Claude Code) |
+| Pi | fff search; **todos** extension (`/todos`, task list in `.pi/todos/`); **aliases** (`/clear`, `/exit`, `/context`, `/rename`, `/effort`); **footer** (path, branch, context bar, model); **speed** (tokens/sec after each run); **youtube-transcript** skill (`skills/youtube-transcript`, timestamps fixed; also linked into `~/.claude/skills/` for Claude Code) |
 
 fff only works when Claude Code or Pi is started inside a project folder.
 It refuses to index the home folder on purpose.
@@ -243,7 +243,7 @@ runs it; it's safe to run again on its own after editing a line.
    sf autocomplete --refresh-cache   # Tab completion for sf; rerun after sf updates
    ```
 
-7. **Pi.** The notify extension and the YouTube skill come from this repo
+7. **Pi.** The YouTube skill comes from this repo
    (`dot init` installs the skill's dependencies); `pi update --extensions`
    installs the fff package listed in the tracked settings.
 
@@ -281,6 +281,32 @@ runs it; it's safe to run again on its own after editing a line.
       expected: accept it and commit the change.
     - These files aren't stored in this repo: tldraw offline is not open source,
       and this repo is public. `dot doctor` checks they exist and prints the fix.
+
+## Matt Pocock's skills (vendored)
+
+19 skills from [mattpocock/skills](https://github.com/mattpocock/skills) (MIT),
+copied unmodified into `skills/` and shared with Claude Code and Pi. The commit
+and the list live in `scripts/vendor-skills.sh`; `skills/` holds the copies.
+
+| Skill | Type | Use |
+|---|---|---|
+| `grill-me` (+ `grilling`) | you type `/grill-me` | Get interviewed about a plan before building |
+| `diagnosing-bugs` | auto | Structured loop for hard bugs and slow code |
+| `handoff` | `/handoff` | Compact a long session for a fresh agent |
+| `wait-what` | `/wait-what` | An answer didn't land: re-pitch it |
+| `teach` | `/teach` | Learn a concept inside your own project |
+| `research` | auto | Primary-source research saved as Markdown |
+| `writing-for-agents` | auto | Writing skills, AGENTS.md and CLAUDE.md well |
+| `tdd` | auto | Test-first, red-green-refactor |
+| `prototype` | auto | Throwaway prototype to answer a design question |
+| `domain-modeling` | auto | Glossary and decision records (ADRs) |
+| `wayfinder`, `grill-with-docs`, `to-spec`, `to-tickets`, `implement`, `code-review`, `retro` | mostly `/name` | Matt's full flow for big features (run `/setup-matt-pocock-skills` once per repo first) |
+
+- **Update:** `scripts/vendor-skills.sh <commit>` (e.g. main's latest), then
+  `git diff skills/` to review. Running it without a commit re-copies the pinned one.
+- **Never edit these copies by hand**: the next update overwrites them.
+- **In Claude Code,** the built-in `/code-review` takes precedence over Matt's
+  `code-review` (same name); Pi uses Matt's.
 
 ## Installed by apps
 
@@ -327,7 +353,8 @@ everything in it is installed.
 - Repo layout and the `dot` command are inspired by
   [dmmulroy/.dotfiles](https://github.com/dmmulroy/.dotfiles) by Dillon Mulroy.
 - File search for Claude Code and Pi: [fff](https://github.com/dmtrKovalenko/fff.nvim).
-- Pi notify and todos extensions: [mitsuhiko/agent-stuff](https://github.com/mitsuhiko/agent-stuff) (Apache-2.0).
+- Pi todos extension: [mitsuhiko/agent-stuff](https://github.com/mitsuhiko/agent-stuff) (Apache-2.0).
+- 19 engineering and productivity skills: [mattpocock/skills](https://github.com/mattpocock/skills) (MIT), vendored unmodified.
 - YouTube transcript skill: [badlogic/pi-skills](https://github.com/badlogic/pi-skills) (MIT).
 - git-guard idea: dmmulroy's git-interceptor (written from scratch).
 - `web.ts` ideas: [badlogic/pi-skills](https://github.com/badlogic/pi-skills) brave-search, [tian.zuo/pi-web-search](https://www.npmjs.com/package/@tian.zuo/pi-web-search), [dmmulroy/pi-web-tools](https://github.com/dmmulroy/pi-web-tools), [pi-lab/websearch](https://www.npmjs.com/package/@pi-lab/websearch) (written from scratch).
