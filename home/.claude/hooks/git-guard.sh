@@ -1,7 +1,7 @@
 #!/bin/bash
 # git-guard for Claude Code (PreToolUse hook on Bash): blocks commands that
-# skip git hooks (--no-verify, git commit -n), so the gitleaks pre-commit check
-# can't be bypassed silently. Same rule as ~/.pi/agent/extensions/git-guard.ts.
+# skip git hooks (--no-verify, git commit -n), so the pre-commit checks
+# (lint, tests, secrets) can't be bypassed silently. Same rule as ~/.pi/agent/extensions/git-guard.ts.
 cmd=$(jq -r '.tool_input.command // ""')
 
 # Ignore text inside quotes (commit messages), then look for hook-skipping flags

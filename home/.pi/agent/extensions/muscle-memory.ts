@@ -1,4 +1,5 @@
-// Claude Code command names in Pi: /clear /exit /context /rename /effort
+// muscle-memory: the Claude Code commands your fingers know work in Pi too:
+// /clear /exit /context /rename /effort
 // Inspired by xRyul/pi-aliases (https://github.com/xRyul/pi-aliases).
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 

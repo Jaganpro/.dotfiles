@@ -1,6 +1,6 @@
 // git-guard: keeps git safe when the agent runs it.
 //  1. Blocks commands that skip git hooks (--no-verify, git commit -n), so the
-//     gitleaks pre-commit check can't be bypassed silently.
+//     pre-commit checks (lint, tests, secrets) can't be bypassed silently.
 //  2. Stops git from opening an editor (commit without -m, rebase -i), which
 //     would leave the agent waiting forever.
 // Same rule as ~/.claude/hooks/git-guard.sh. Idea from dmmulroy's

@@ -47,9 +47,9 @@ each one into place. Built from scratch in October 2026, one tool at a time.
 | `~/.pi/agent/extensions/web` | Pi `web_search` (Brave → Parallel → TinyFish; freshness and country passed through; falls back on quota) and `web_fetch` (direct download first, then extractors). The card shows the service and, only when the provider reports it, calls remaining. Keys in the macOS Keychain. `/web` shows status |
 | `~/.pi/agent/extensions/git-guard.ts` | Pi: blocks commands that skip git hooks (`--no-verify`, `git commit -n`) and stops git opening an editor |
 | `~/.claude/hooks/git-guard.sh` | Claude Code: the same hook-skipping block, as a PreToolUse hook (registered in `settings.json`, which also sets `GIT_EDITOR=true`) |
-| `~/.pi/agent/extensions/aliases.ts` | Claude Code command names in Pi: `/clear`, `/exit`, `/context`, `/rename`, `/effort` (our own, inspired by xRyul/pi-aliases) |
+| `~/.pi/agent/extensions/muscle-memory.ts` | Claude Code command names work in Pi too: `/clear`, `/exit`, `/context`, `/rename`, `/effort` (our own, inspired by xRyul/pi-aliases) |
 | `~/.pi/agent/extensions/footer.ts` | Pi's footer: `~/path ⎇ branch · session` and a context bar with %, window size and model (written with Pi) |
-| `~/.pi/agent/extensions/speed.ts` | After each Pi run: `⚡ tokens/sec · ⏱ time · ✍️ written · 📖 read · 💾 from cache` (our own; clean-room rewrite) |
+| `~/.pi/agent/extensions/run-stats.ts` | After each Pi run: `⚡ tokens/sec · ⏱ time · ✍️ written · 📖 read · 💾 from cache` (our own; clean-room rewrite) |
 | `~/.pi/agent/AGENTS.md` | Global instructions shared by Pi and Claude Code (Claude imports it from `~/.claude/CLAUDE.md`): use `uv` for Python; ponytail rules for code (smallest complete change, reuse, no slop) |
 
 Never tracked: logins, tokens and app state (`~/.config/gh/hosts.yml`,
@@ -109,7 +109,7 @@ GitHub is used through `gh` only.
 | Tool | Notes |
 |---|---|
 | Claude Code | Settings tracked here; fff registered as an MCP server |
-| Pi | fff search; **aliases** (`/clear`, `/exit`, `/context`, `/rename`, `/effort`); **footer** (path, branch, context bar, model); **speed** (tokens/sec after each run); **youtube-transcript** skill (`skills/youtube-transcript`, timestamps fixed; also linked into `~/.claude/skills/` for Claude Code) |
+| Pi | fff search; **muscle-memory** (`/clear`, `/exit`, `/context`, `/rename`, `/effort`); **footer** (path, branch, context bar, model); **run-stats** (speed and tokens after each run); **youtube-transcript** skill (`skills/youtube-transcript`, timestamps fixed; also linked into `~/.claude/skills/` for Claude Code) |
 
 fff only works when Claude Code or Pi is started inside a project folder.
 It refuses to index the home folder on purpose.
