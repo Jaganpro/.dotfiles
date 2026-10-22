@@ -308,6 +308,18 @@ and the list live in `scripts/vendor-skills.sh`; `skills/` holds the copies.
 - **In Claude Code,** the built-in `/code-review` takes precedence over Matt's
   `code-review` (same name); Pi uses Matt's.
 
+## anti-slop (vendored)
+
+`skills/install-anti-slop` from [dmmulroy/anti-slop](https://github.com/dmmulroy/anti-slop)
+(MIT), copied unmodified at commit `13909c9`. In any JS/TS repo, ask Claude or Pi to
+"install anti-slop": it copies Dillon's Oxlint rules into that repo (`tools/oxlint/anti-slop/`),
+adds `oxlint` as a dev dependency there and enables the rules. Nothing is installed globally.
+
+- **Update:** re-copy `skills/install-anti-slop/` from a newer upstream commit and
+  change the commit above. Never edit the copy by hand.
+- `~/.npmrc` has `min-release-age=3`: if the skill picks an `oxlint` release
+  younger than 3 days, npm refuses it; pin the previous version instead.
+
 ## Installed by apps
 
 Some agent skills come from the apps themselves. This repo records **which**
@@ -355,6 +367,7 @@ everything in it is installed.
 - File search for Claude Code and Pi: [fff](https://github.com/dmtrKovalenko/fff.nvim).
 - Pi todos extension: [mitsuhiko/agent-stuff](https://github.com/mitsuhiko/agent-stuff) (Apache-2.0).
 - 19 engineering and productivity skills: [mattpocock/skills](https://github.com/mattpocock/skills) (MIT), vendored unmodified.
+- `install-anti-slop` skill (Oxlint rules): [dmmulroy/anti-slop](https://github.com/dmmulroy/anti-slop) (MIT), vendored unmodified.
 - YouTube transcript skill: [badlogic/pi-skills](https://github.com/badlogic/pi-skills) (MIT).
 - git-guard idea: dmmulroy's git-interceptor (written from scratch).
 - `web` ideas: [badlogic/pi-skills](https://github.com/badlogic/pi-skills) brave-search, [tian.zuo/pi-web-search](https://www.npmjs.com/package/@tian.zuo/pi-web-search), [dmmulroy/pi-web-tools](https://github.com/dmmulroy/pi-web-tools), [pi-lab/websearch](https://www.npmjs.com/package/@pi-lab/websearch) (written from scratch).

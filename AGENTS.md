@@ -29,6 +29,8 @@ third_party/             licenses of code taken from other repos
   license text to `third_party/`.
 - **Vendored skills** in `skills/` (Matt Pocock's 19, listed in `scripts/vendor-skills.sh`)
   are unmodified copies: update them with that script, never edit them by hand.
+  Same for `skills/install-anti-slop` (dmmulroy/anti-slop, commit in README):
+  update by re-copying it from upstream.
 - **App-installed skills** (e.g. tldraw's `tldraw-offline`) are not open source:
   never copy them into this repo. List them in `packages/app-skills` instead.
 - **Never track secrets or app state:** tokens, `auth.json`, `~/.claude.json`,
