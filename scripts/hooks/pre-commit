@@ -1,9 +1,22 @@
 #!/bin/sh
-# Block commits that contain secrets (API keys, tokens, passwords).
-# Enabled by `dot init`: git config core.hooksPath scripts/hooks
-# Skip once, only if it's a false alarm: git commit --no-verify
-if ! command -v gitleaks >/dev/null 2>&1; then
-  echo "pre-commit: gitleaks not installed (brew install gitleaks); skipping secret scan" >&2
-  exit 0
-fi
-exec gitleaks git --pre-commit --staged --redact --no-banner .
+# Checks run before every commit; any failure refuses the commit. git-guard
+# blocks --no-verify, so they always run. Enabled by `dot init`:
+# git config core.hooksPath scripts/hooks
+# `dot doctor` is not here: it checks this Mac (apps, links), not the code.
+# shortcut: checks the working tree, not only what is staged; fine for a one-person repo.
+cd "$(git rev-parse --show-toplevel)" || exit 1
+
+fail() {
+  echo "pre-commit: $1" >&2
+  exit 1
+}
+
+zsh -n home/.zshrc || fail "syntax error in home/.zshrc"
+shellcheck dot scripts/*.sh scripts/hooks/pre-commit home/.claude/statusline.sh home/.claude/hooks/*.sh home/.config/starship/*.sh ||
+  fail "shellcheck found problems"
+env -i HOME="$HOME" USER="$USER" TERM=xterm-256color zsh -lic exit >/dev/null 2>&1 ||
+  fail "a fresh login shell does not start (run: zsh -lic exit)"
+[ -d node_modules ] || fail "lint tools missing: run npm ci"
+npx --no-install oxlint home/.pi/agent/extensions || fail "lint failed (npm run lint)"
+tests=$(node --test home/.pi/agent/extensions/web/lib.test.ts 2>&1) || { echo "$tests"; fail "web extension tests failed"; }
+gitleaks git --pre-commit --staged --redact --no-banner . || fail "gitleaks found a secret"

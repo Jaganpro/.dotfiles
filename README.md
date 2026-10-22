@@ -12,7 +12,7 @@ each one into place. Built from scratch in October 2026, one tool at a time.
 ├── packages/Brewfile     every Homebrew tool and app
 ├── packages/app-skills   agent skills installed by apps (checked by dot doctor, not stored here)
 ├── scripts/macos-defaults.sh
-├── scripts/hooks/pre-commit   gitleaks blocks commits containing secrets
+├── scripts/hooks/pre-commit   checks every commit: lint, tests, shellcheck, shell start-up, secrets
 ├── skills/               agent skills for Pi (via its settings) and Claude Code (linked into ~/.claude/skills)
 ├── scripts/vendor-skills.sh   copies Matt Pocock's skills into skills/ at a pinned commit
 ├── prompts/              slash commands for Pi (via its settings) and Claude Code (linked into ~/.claude/commands)
@@ -338,16 +338,18 @@ files. `dot init` reminds you; `dot doctor` warns when one is missing.
 
 Files in `~` are links into the repo, so editing `~/.zshrc` edits
 `~/.dotfiles/home/.zshrc` directly. Apps that save their own settings (Claude
-Code, Pi) write through the links too. Every commit is scanned by gitleaks
-(`scripts/hooks/pre-commit`); a commit containing a secret is refused.
-Agents can't skip that check: git-guard blocks `--no-verify` and `git commit -n`
-in both Claude Code and Pi.
+Code, Pi) write through the links too.
+
+Every commit runs `scripts/hooks/pre-commit`: zsh syntax, shellcheck, a fresh
+login shell, `npm run lint`, the web extension tests and a gitleaks secret scan.
+If one fails, the commit is refused. Agents can't skip these checks: git-guard
+blocks `--no-verify` and `git commit -n` in both Claude Code and Pi.
 
 ### The `dot` command
 
 | Command | Does |
 |---|---|
-| `dot doctor` | Read-only health check: every file linked, no broken links, no link replaced by a plain file, Brewfile installed, gitleaks hook on, nothing uncommitted or unpushed |
+| `dot doctor` | Read-only health check: every file linked, no broken links, no link replaced by a plain file, Brewfile installed, pre-commit checks on, nothing uncommitted or unpushed |
 | `dot add <file>...` | Moves files from `~` into `home/` and links them back (start tracking a file) |
 | `dot stow` | Relinks `home/` into `~`; a real file in the way is backed up to `~/.dotfiles-backup/` |
 | `dot update` | `git pull`, `brew upgrade`, relink |

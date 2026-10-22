@@ -50,13 +50,20 @@ tools/oxlint/anti-slop/  vendored Oxlint rules; `npm run lint` (oxlint.config.ts
 
 ## Before committing
 
+`scripts/hooks/pre-commit` runs these on every commit and refuses it if one fails.
+Never skip it (`--no-verify` is blocked anyway); fix the problem instead.
+
 ```bash
 zsh -n home/.zshrc                       # syntax
-shellcheck dot scripts/*.sh home/.claude/statusline.sh home/.config/starship/*.sh
-dot doctor                               # links, packages, hook
+shellcheck dot scripts/*.sh scripts/hooks/pre-commit home/.claude/statusline.sh home/.claude/hooks/*.sh home/.config/starship/*.sh
 env -i HOME="$HOME" USER="$USER" TERM=xterm-256color zsh -lic exit   # fresh login shell
-gitleaks dir --redact .                  # no secrets (the pre-commit hook also checks)
+npm run lint                             # anti-slop rules on our Pi extensions
+node --test home/.pi/agent/extensions/web/lib.test.ts
+gitleaks git --pre-commit --staged --redact .   # no secrets
 ```
+
+Run `dot doctor` yourself after changing links or the Brewfile: it checks this
+Mac (links, packages, hook), not the code, so it is not in the hook.
 
 This repo is **public**: never add work paths, internal hostnames, company
 names or employer tooling, even when gitleaks wouldn't flag them.

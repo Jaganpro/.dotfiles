@@ -104,9 +104,12 @@ cmd_init() {
 
   install_skill_deps
 
-  step "Git hook: gitleaks blocks commits containing secrets"
+  step "Lint tools (package.json)"
+  (cd "$DOTFILES" && npm ci --no-fund --no-audit --loglevel=error)
+
+  step "Git hook: checks (lint, tests, shellcheck, secrets) run before every commit"
   git -C "$DOTFILES" config core.hooksPath scripts/hooks
-  ok "pre-commit hook active"
+  ok "pre-commit checks active"
 
   if [[ ${1:-} != --no-macos ]]; then
     step "macOS settings"
@@ -194,7 +197,7 @@ cmd_doctor() {
 
   step "Repo"
   if [[ $(git -C "$DOTFILES" config --get core.hooksPath || true) == scripts/hooks ]]; then
-    ok "gitleaks pre-commit hook active"
+    ok "pre-commit checks active"
   else
     bad "pre-commit hook off (run: dot init --no-macos)"; problems=$((problems + 1))
   fi
