@@ -24,6 +24,7 @@ export default function (pi: ExtensionAPI) {
           "Fix what the hook reported, or ask the user.",
       };
     }
+
     if (/\bgit\b/.test(bare)) event.input.command = NO_EDITOR + event.input.command;
   });
 }

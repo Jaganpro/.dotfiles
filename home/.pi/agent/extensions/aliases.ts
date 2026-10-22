@@ -3,6 +3,7 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 
 type Level = Parameters<ExtensionAPI["setThinkingLevel"]>[0];
+
 const LEVELS: Level[] = ["off", "minimal", "low", "medium", "high", "xhigh", "max"];
 
 // 620000 -> "620k", 1000000 -> "1M"
@@ -26,9 +27,11 @@ export default function (pi: ExtensionAPI) {
     description: "Show how full the context window is",
     handler: async (_args, ctx) => {
       const usage = ctx.getContextUsage();
+
       if (!usage || usage.tokens === null) {
         return ctx.ui.notify("Context usage isn't known yet. Send a message first.");
       }
+
       ctx.ui.notify(
         `Context: ${Math.round(usage.percent ?? 0)}% · ${short(usage.tokens)} of ${short(usage.contextWindow)} tokens`,
       );
@@ -39,6 +42,7 @@ export default function (pi: ExtensionAPI) {
     description: "→ /name · Rename this session",
     handler: async (args, ctx) => {
       const name = args.trim();
+
       if (!name) return ctx.ui.notify(`Session name: ${pi.getSessionName() ?? "(none)"}`);
       pi.setSessionName(name);
       ctx.ui.notify(`Session renamed to: ${name}`);
@@ -51,10 +55,13 @@ export default function (pi: ExtensionAPI) {
       LEVELS.filter((l) => l.startsWith(prefix)).map((l) => ({ value: l, label: l })),
     handler: async (args, ctx) => {
       const level = args.trim().toLowerCase() as Level;
+
       if (!level) return ctx.ui.notify(`Effort: ${pi.getThinkingLevel()}`);
+
       if (!LEVELS.includes(level)) {
         return ctx.ui.notify(`Unknown level "${level}". Use: ${LEVELS.join(", ")}`, "warning");
       }
+
       pi.setThinkingLevel(level);
       ctx.ui.notify(`Effort set to ${level}`);
     },
