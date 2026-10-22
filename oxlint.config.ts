@@ -1,14 +1,11 @@
 import { defineConfig } from "oxlint";
 
 // `npm run lint` checks our own Pi extensions only. Vendored code is never
-// edited by hand, so it is ignored: todos.ts (mitsuhiko), speed.ts (adapted
-// from Pi), skills/, and the anti-slop plugin itself.
+// edited by hand, so it is ignored: skills/ and the anti-slop plugin itself.
 export default defineConfig({
   ignorePatterns: [
     "skills/**",
     "tools/oxlint/anti-slop/**",
-    "home/.pi/agent/extensions/todos.ts",
-    "home/.pi/agent/extensions/speed.ts",
   ],
   jsPlugins: [{ name: "anti-slop", specifier: "./tools/oxlint/anti-slop/index.ts" }],
   rules: {

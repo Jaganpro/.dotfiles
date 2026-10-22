@@ -14,4 +14,4 @@
 - `npm run lint` checks only `home/.pi/agent/extensions/`. The upstream agent-folder
   ignores (`.claude/**`, `.pi/**`, ...) are not used: in this repo those folders are
   our own source.
-- Vendored code is ignored instead: `skills/**`, this plugin, `todos.ts`, `speed.ts`.
+- Vendored code is ignored instead: `skills/**` and this plugin.

@@ -35,7 +35,7 @@ each one into place. Built from scratch in October 2026, one tool at a time.
 | `~/.config/starship/sf-org.sh` | Finds the Salesforce target org for the prompt |
 | `~/.config/zsh/worktree.zsh` | `gwa` / `gwr` git worktree helpers (loaded by `.zshrc`) |
 | `~/.config/ripgrep/config` | ripgrep defaults: search hidden files, skip `.git/` and files over 5 MB |
-| `~/.config/git/ignore` | Global git ignore for every repo: `.DS_Store`, personal Claude files, `.env*` / `.envrc` (except `.env.example`), Pi's `.pi/todos/` |
+| `~/.config/git/ignore` | Global git ignore for every repo: `.DS_Store`, personal Claude files, `.env*` / `.envrc` (except `.env.example`) |
 | `~/.config/ghostty/config.ghostty` | Ghostty: Gruvbox Dark, font 14, Option-as-Alt, Quick Terminal, shortcuts, SSH terminfo, balanced padding, medium split dimming |
 | `~/.npmrc` | npm installs only versions at least 3 days old (supply-chain cooldown) |
 | `~/.pi/agent/npm/.npmrc` | No cooldown for Pi extensions (they all install in this folder) |
@@ -49,8 +49,7 @@ each one into place. Built from scratch in October 2026, one tool at a time.
 | `~/.claude/hooks/git-guard.sh` | Claude Code: the same hook-skipping block, as a PreToolUse hook (registered in `settings.json`, which also sets `GIT_EDITOR=true`) |
 | `~/.pi/agent/extensions/aliases.ts` | Claude Code command names in Pi: `/clear`, `/exit`, `/context`, `/rename`, `/effort` (our own, inspired by xRyul/pi-aliases) |
 | `~/.pi/agent/extensions/footer.ts` | Pi's footer: `~/path ⎇ branch · session` and a context bar with %, window size and model (written with Pi) |
-| `~/.pi/agent/extensions/speed.ts` | After each Pi run: `⚡ tokens/sec · ⏱ time · ✍️ written · 📖 read · 💾 from cache` (adapted from earendil-works/pi tps.ts) |
-| `~/.pi/agent/extensions/todos.ts` | `todo` tool and `/todos` screen: to-dos as Markdown files in a project's `.pi/todos/` (from mitsuhiko/agent-stuff, unmodified) |
+| `~/.pi/agent/extensions/speed.ts` | After each Pi run: `⚡ tokens/sec · ⏱ time · ✍️ written · 📖 read · 💾 from cache` (our own; clean-room rewrite) |
 | `~/.pi/agent/AGENTS.md` | Global instructions shared by Pi and Claude Code (Claude imports it from `~/.claude/CLAUDE.md`): use `uv` for Python; ponytail rules for code (smallest complete change, reuse, no slop) |
 
 Never tracked: logins, tokens and app state (`~/.config/gh/hosts.yml`,
@@ -110,7 +109,7 @@ GitHub is used through `gh` only.
 | Tool | Notes |
 |---|---|
 | Claude Code | Settings tracked here; fff registered as an MCP server |
-| Pi | fff search; **todos** extension (`/todos`, task list in `.pi/todos/`); **aliases** (`/clear`, `/exit`, `/context`, `/rename`, `/effort`); **footer** (path, branch, context bar, model); **speed** (tokens/sec after each run); **youtube-transcript** skill (`skills/youtube-transcript`, timestamps fixed; also linked into `~/.claude/skills/` for Claude Code) |
+| Pi | fff search; **aliases** (`/clear`, `/exit`, `/context`, `/rename`, `/effort`); **footer** (path, branch, context bar, model); **speed** (tokens/sec after each run); **youtube-transcript** skill (`skills/youtube-transcript`, timestamps fixed; also linked into `~/.claude/skills/` for Claude Code) |
 
 fff only works when Claude Code or Pi is started inside a project folder.
 It refuses to index the home folder on purpose.
@@ -371,14 +370,13 @@ everything in it is installed.
 - Repo layout and the `dot` command are inspired by
   [dmmulroy/.dotfiles](https://github.com/dmmulroy/.dotfiles) by Dillon Mulroy.
 - File search for Claude Code and Pi: [fff](https://github.com/dmtrKovalenko/fff.nvim).
-- Pi todos extension: [mitsuhiko/agent-stuff](https://github.com/mitsuhiko/agent-stuff) (Apache-2.0).
 - 19 engineering and productivity skills: [mattpocock/skills](https://github.com/mattpocock/skills) (MIT), vendored unmodified.
 - `install-anti-slop` skill (Oxlint rules): [dmmulroy/anti-slop](https://github.com/dmmulroy/anti-slop) (MIT), vendored unmodified.
 - YouTube transcript skill: [badlogic/pi-skills](https://github.com/badlogic/pi-skills) (MIT).
 - git-guard idea: dmmulroy's git-interceptor (written from scratch).
 - `web` ideas: [badlogic/pi-skills](https://github.com/badlogic/pi-skills) brave-search, [tian.zuo/pi-web-search](https://www.npmjs.com/package/@tian.zuo/pi-web-search), [dmmulroy/pi-web-tools](https://github.com/dmmulroy/pi-web-tools), [pi-lab/websearch](https://www.npmjs.com/package/@pi-lab/websearch) (written from scratch).
 - Pi command aliases idea: [xRyul/pi-aliases](https://github.com/xRyul/pi-aliases).
-- `/deslop` and `/ship` prompts, `speed.ts`: adapted from [earendil-works/pi](https://github.com/earendil-works/pi) (MIT).
+- `/deslop` and `/ship` prompts: adapted from [earendil-works/pi](https://github.com/earendil-works/pi) (MIT).
 - Coding rules in `AGENTS.md`: adapted from [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) (MIT).
 
 License texts for the copied code are in `third_party/`.
