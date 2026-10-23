@@ -1,0 +1,51 @@
+#!/bin/bash
+# beside: run a review TUI in a Ghostty split to the right of the agent. When it exits,
+# whatever it printed on stdout is typed into the agent's pane and submitted; nothing is
+# sent if it printed nothing. Used by annotate and review.
+#   beside <command> [args...]    (the command draws on the terminal, feedback on stdout)
+set -euo pipefail
+
+# Second half, running inside the split: run the review, then hand its stdout to the agent pane.
+if [[ ${1:-} == --send-to ]]; then
+  agent=$2
+  shift 2
+  feedback=$("$@" || true)
+  [[ -n $feedback ]] || exit 0
+  osascript - "$agent" "$feedback" >/dev/null <<'APPLESCRIPT'
+on run {agentId, feedback}
+  tell application "Ghostty"
+    set agent to terminal id agentId
+    input text feedback to agent
+    send key "enter" to agent
+    focus agent
+  end tell
+end run
+APPLESCRIPT
+  exit 0
+fi
+
+if [[ ${TERM_PROGRAM:-} != ghostty ]]; then
+  echo "Needs Ghostty: the review opens in a Ghostty split next to the agent." >&2
+  exit 1
+fi
+
+# First half, in the agent's pane: remember this pane and open a split whose shell runs the
+# second half straight away (BESIDE_RUN, the first thing ~/.zshrc checks), so there is no
+# prompt or splash and the split closes when the review ends. (A split opened with a
+# command instead waits for a key press after it exits.)
+osascript - "$0" "$PWD" "$@" >/dev/null <<'APPLESCRIPT'
+on run argv
+  set {selfPath, workDir} to {item 1 of argv, item 2 of argv}
+  tell application "Ghostty"
+    set agent to focused terminal of selected tab of front window
+    set cmd to quoted form of selfPath & " --send-to " & quoted form of (id of agent as text)
+    repeat with arg in items 3 thru -1 of argv
+      set cmd to cmd & " " & quoted form of (arg as text)
+    end repeat
+    set cfg to new surface configuration
+    set initial working directory of cfg to workDir
+    set environment variables of cfg to {"BESIDE_RUN=" & cmd}
+    split agent direction right with configuration cfg
+  end tell
+end run
+APPLESCRIPT

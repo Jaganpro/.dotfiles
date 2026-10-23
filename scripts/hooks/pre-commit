@@ -12,7 +12,7 @@ fail() {
 }
 
 zsh -n home/.zshrc || fail "syntax error in home/.zshrc"
-shellcheck dot scripts/*.sh scripts/hooks/pre-commit home/.claude/statusline.sh home/.claude/hooks/*.sh home/.config/starship/*.sh home/.local/bin/annotate ||
+shellcheck dot scripts/*.sh scripts/hooks/pre-commit home/.claude/statusline.sh home/.claude/hooks/*.sh home/.config/starship/*.sh home/.local/bin/annotate home/.local/bin/beside home/.local/bin/review ||
   fail "shellcheck found problems"
 env -i HOME="$HOME" USER="$USER" TERM=xterm-256color zsh -lic exit >/dev/null 2>&1 ||
   fail "a fresh login shell does not start (run: zsh -lic exit)"

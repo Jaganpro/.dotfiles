@@ -1,6 +1,6 @@
 #!/bin/bash
-# annotate: review an agent's reply or a plan file with plannotator-tui, in a Ghostty
-# split to the right of the agent, and send the feedback back to the agent.
+# annotate: review an agent's reply or a plan file with plannotator-tui in a Ghostty split
+# beside the agent (see beside), and send the feedback back to the agent.
 #   annotate             Claude Code's newest reply (in Claude, run it as `! annotate`)
 #   annotate plan.md     a Markdown file
 #   annotate <args>      any plannotator-tui arguments (Pi's /annotate passes its session)
@@ -9,34 +9,17 @@
 # q asks before dropping unsent annotations; nothing is sent if you quit without sending.
 set -euo pipefail
 
-# Second half, running inside the split: review, then hand the feedback to the agent pane.
-if [[ ${1:-} == --send-to ]]; then
-  agent=$2
-  shift 2
+# Runs inside the split. Outside Herdr, plannotator's "send" (E or S) can only save a record
+# and copy it, so print every record from this review, oldest first, for beside to forward
+# (the clipboard holds only the last batch).
+if [[ ${1:-} == --feedback ]]; then
+  shift
   started=$(mktemp)
-  plannotator-tui "$@" || true
-  # Outside Herdr, plannotator's "send" (E or S) can only save a record and copy it. Forward
-  # every record from this review, oldest first: the clipboard holds only the last batch.
-  feedback=$(find ~/.plannotator/feedback -name '*.md' -newer "$started" 2>/dev/null | sort |
-    xargs awk 'FNR == 1 { body = 0 } /^# Annotations on / { body = 1 } body' || true)
+  plannotator-tui "$@" >/dev/tty || true
+  find ~/.plannotator/feedback -name '*.md' -newer "$started" 2>/dev/null | sort |
+    xargs awk 'FNR == 1 { body = 0 } /^# Annotations on / { body = 1 } body' || true
   rm -f "$started"
-  [[ -n $feedback ]] || exit 0
-  osascript - "$agent" "$feedback" >/dev/null <<'APPLESCRIPT'
-on run {agentId, feedback}
-  tell application "Ghostty"
-    set agent to terminal id agentId
-    input text feedback to agent
-    send key "enter" to agent
-    focus agent
-  end tell
-end run
-APPLESCRIPT
   exit 0
-fi
-
-if [[ ${TERM_PROGRAM:-} != ghostty ]]; then
-  echo "annotate: needs Ghostty; run plannotator-tui ${*:-last} instead" >&2
-  exit 1
 fi
 
 (( $# )) || set -- last --host claude --newest
@@ -53,24 +36,5 @@ elif [[ ! -e $1 ]]; then
   exit 1
 fi
 
-# First half, in the agent's pane: remember this pane and open a split whose shell runs the
-# second half straight away (ANNOTATE_REVIEW, the first thing ~/.zshrc checks), so there is
-# no prompt or splash and the split closes when the review ends. (A split opened with a
-# command instead waits for a key press after it exits.)
-osascript - "$0" "$PWD" "$@" >/dev/null <<'APPLESCRIPT'
-on run argv
-  set {selfPath, workDir} to {item 1 of argv, item 2 of argv}
-  tell application "Ghostty"
-    set agent to focused terminal of selected tab of front window
-    set cmd to quoted form of selfPath & " --send-to " & quoted form of (id of agent as text)
-    repeat with arg in items 3 thru -1 of argv
-      set cmd to cmd & " " & quoted form of (arg as text)
-    end repeat
-    set cfg to new surface configuration
-    set initial working directory of cfg to workDir
-    set environment variables of cfg to {"ANNOTATE_REVIEW=" & cmd}
-    split agent direction right with configuration cfg
-  end tell
-end run
-APPLESCRIPT
+"$(dirname "$0")/beside" "$0" --feedback "$@"
 echo "Annotate on the right, then press S to send it here and close. (E sends without closing; it arrives when you close.)"

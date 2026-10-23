@@ -22,6 +22,7 @@ brew "plannotator/tap/plannotator-tui" # annotate an agent's plan or reply in th
 brew "ripgrep"   # fast code search (rg)
 brew "shellcheck" # finds bugs in shell scripts
 brew "tree"      # folder tree (tree is aliased to eza --tree; use command tree)
+brew "tuicr"     # review an agent's code changes in the terminal (/review)
 brew "uv"        # Python versions, packages and tools (uv, uvx)
 brew "vivid"     # LS_COLORS themes (Gruvbox Dark)
 brew "yq"        # YAML/XML/TOML processor, like jq

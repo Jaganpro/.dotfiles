@@ -1,0 +1,34 @@
+#!/bin/bash
+# review: review code with tuicr in a Ghostty split beside the agent (see beside), and send
+# your comments back to the agent.
+#   review                 uncommitted changes (in Claude, run it as `! review`)
+#   review -r main..HEAD   a commit range
+#   review --file src/     any file or folder, not just changes
+#   review <args>          any tuicr arguments
+# In the split: c comments a line, v selects a range, then :wq and y sends the comments.
+# Nothing is sent if you quit without comments or answer n.
+set -euo pipefail
+
+# Runs inside the split: tuicr draws on the terminal and prints the review on stdout for
+# beside to forward. It also keeps comments in its saved session, so clear them once sent,
+# or the next review would send them again (review marks stay).
+if [[ ${1:-} == --feedback ]]; then
+  shift
+  feedback=$(tuicr --stdout --no-update-check "$@" || true)
+  session=$(sed -n 's/^## Session: //p' <<<"$feedback")
+  [[ -z $session ]] || tuicr review clearc --session "$session" >/dev/null || true
+  printf '%s\n' "$feedback"
+  exit 0
+fi
+
+(( $# )) || set -- -w
+
+# Check there is something to review here, before the split opens: errors in the split vanish with it.
+# shortcut: outside a git repo this also reads as "no changes"
+if [[ $* == -w && -z $(git status --porcelain 2>/dev/null) ]]; then
+  echo "Nothing to review: there are no uncommitted changes here." >&2
+  exit 2 # nothing to review, not a failure: Pi's /review shows it as a warning
+fi
+
+"$(dirname "$0")/beside" "$0" --feedback "$@"
+echo "Review on the right: c comments a line, v selects a range, then :wq and y sends it here."
