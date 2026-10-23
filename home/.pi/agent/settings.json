@@ -3,7 +3,8 @@
   "defaultProvider": "xai",
   "defaultModel": "grok-4.7",
   "packages": [
-    "npm:@ff-labs/pi-fff"
+    "npm:@ff-labs/pi-fff",
+    "git:github.com/earendil-works/pi-claude-code@70abb65186592ca788b29b3db22c3160d629c41f"
   ],
   "skills": [
     "~/.dotfiles/skills"
