@@ -1,39 +1,45 @@
 #!/bin/bash
-# annotate: review an agent's reply or a plan file with plannotator-tui in a Ghostty split
-# beside the agent (see beside), and send the feedback back to the agent.
+# annotate: review an agent's reply or a plan file with plannotator-tui, and send the
+# feedback back to the agent. Pi's /annotate runs it full screen in Pi's own terminal;
+# in Claude Code it opens in a Ghostty split beside the agent (see beside).
 #   annotate             Claude Code's newest reply (in Claude, run it as `! annotate`)
 #   annotate plan.md     a Markdown file
 #   annotate <args>      any plannotator-tui arguments (Pi's /annotate passes its session)
-# In the split: annotate, then S sends the feedback to the agent and closes the split.
-# E sends a batch without closing; every batch reaches the agent when the split closes.
-# q asks before dropping unsent annotations; nothing is sent if you quit without sending.
+#   annotate --feedback  run the review in this terminal and print the feedback (Pi, beside)
+# In the review: annotate, then S sends the feedback and closes it. E sends a batch without
+# closing; every batch is sent when it closes. q asks before dropping unsent annotations.
 set -euo pipefail
 
-# Runs inside the split. Outside Herdr, plannotator's "send" (E or S) can only save a record
-# and copy it, so print every record from this review, oldest first, for beside to forward
-# (the clipboard holds only the last batch).
+here=
 if [[ ${1:-} == --feedback ]]; then
+  here=1
   shift
+fi
+
+(( $# )) || set -- last --host claude --newest
+
+# Check there is something to review before the review opens: errors in a split vanish with it.
+if [[ $1 == last ]]; then
+  # shortcut: every failure reads as "no reply"; plannotator exits 0 on an unreadable transcript, so require output
+  if ! reply=$(plannotator-tui "$@" --print 2>/dev/null) || [[ -z $reply ]]; then
+    echo "Nothing to annotate yet: there's no reply in this session." >&2
+    exit 2 # nothing to review, not a failure: Pi shows it as a warning
+  fi
+elif [[ ! -e $1 ]]; then
+  echo "annotate: no such file or folder: $1" >&2
+  exit 1
+fi
+
+# Review in this terminal. Outside Herdr, plannotator's "send" (E or S) can only save a
+# record and copy it, so print every record from this review, oldest first (the clipboard
+# holds only the last batch).
+if [[ -n $here ]]; then
   started=$(mktemp)
   plannotator-tui "$@" >/dev/tty || true
   find ~/.plannotator/feedback -name '*.md' -newer "$started" 2>/dev/null | sort |
     xargs awk 'FNR == 1 { body = 0 } /^# Annotations on / { body = 1 } body' || true
   rm -f "$started"
   exit 0
-fi
-
-(( $# )) || set -- last --host claude --newest
-
-# Check there is something to review here, before the split opens: errors in the split vanish with it.
-if [[ $1 == last ]]; then
-  # shortcut: every failure reads as "no reply"; plannotator exits 0 on an unreadable transcript, so require output
-  if ! reply=$(plannotator-tui "$@" --print 2>/dev/null) || [[ -z $reply ]]; then
-    echo "Nothing to annotate yet: there's no reply in this session." >&2
-    exit 2 # nothing to review, not a failure: Pi's /annotate shows it as a warning
-  fi
-elif [[ ! -e $1 ]]; then
-  echo "annotate: no such file or folder: $1" >&2
-  exit 1
 fi
 
 "$(dirname "$0")/beside" "$0" --feedback "$@"

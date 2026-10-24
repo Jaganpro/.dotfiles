@@ -1,33 +1,40 @@
 #!/bin/bash
-# review: review code with tuicr in a Ghostty split beside the agent (see beside), and send
-# your comments back to the agent.
+# review: review code with tuicr, and send your comments back to the agent. Pi's /review
+# runs it full screen in Pi's own terminal; in Claude Code it opens in a Ghostty split
+# beside the agent (see beside).
 #   review                 uncommitted changes (in Claude, run it as `! review`)
 #   review -r main..HEAD   a commit range
 #   review --file src/     any file or folder, not just changes
 #   review <args>          any tuicr arguments
-# In the split: c comments a line, v selects a range, then :wq and y sends the comments.
+#   review --feedback ...  run the review in this terminal and print the comments (Pi, beside)
+# In the review: c comments a line, v selects a range, then :wq and y sends the comments.
 # Nothing is sent if you quit without comments or answer n.
 set -euo pipefail
 
-# Runs inside the split: tuicr draws on the terminal and prints the review on stdout for
-# beside to forward. It also keeps comments in its saved session, so clear them once sent,
-# or the next review would send them again (review marks stay).
+here=
 if [[ ${1:-} == --feedback ]]; then
+  here=1
   shift
+fi
+
+(( $# )) || set -- -w
+
+# Check there is something to review before the review opens: errors in a split vanish with it.
+# shortcut: outside a git repo this also reads as "no changes"
+if [[ $* == -w && -z $(git status --porcelain 2>/dev/null) ]]; then
+  echo "Nothing to review: there are no uncommitted changes here." >&2
+  exit 2 # nothing to review, not a failure: Pi shows it as a warning
+fi
+
+# Review in this terminal: tuicr draws on the terminal and prints the review on stdout. It
+# also keeps comments in its saved session, so clear them once sent, or the next review
+# would send them again (review marks stay).
+if [[ -n $here ]]; then
   feedback=$(tuicr --stdout --no-update-check "$@" || true)
   session=$(sed -n 's/^## Session: //p' <<<"$feedback")
   [[ -z $session ]] || tuicr review clearc --session "$session" >/dev/null || true
   printf '%s\n' "$feedback"
   exit 0
-fi
-
-(( $# )) || set -- -w
-
-# Check there is something to review here, before the split opens: errors in the split vanish with it.
-# shortcut: outside a git repo this also reads as "no changes"
-if [[ $* == -w && -z $(git status --porcelain 2>/dev/null) ]]; then
-  echo "Nothing to review: there are no uncommitted changes here." >&2
-  exit 2 # nothing to review, not a failure: Pi's /review shows it as a warning
 fi
 
 "$(dirname "$0")/beside" "$0" --feedback "$@"

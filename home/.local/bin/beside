@@ -1,7 +1,8 @@
 #!/bin/bash
 # beside: run a review TUI in a Ghostty split to the right of the agent. When it exits,
 # whatever it printed on stdout is typed into the agent's pane and submitted; nothing is
-# sent if it printed nothing. Used by annotate and review.
+# sent if it printed nothing. Used by annotate and review in Claude Code (Pi runs them in
+# its own terminal instead).
 #   beside <command> [args...]    (the command draws on the terminal, feedback on stdout)
 set -euo pipefail
 

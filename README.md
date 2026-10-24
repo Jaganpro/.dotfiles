@@ -52,10 +52,10 @@ each one into place. Built from scratch in October 2026, one tool at a time.
 | `~/.pi/agent/extensions/footer.ts` | Pi's footer: `~/path ⎇ branch · session` and a context bar with %, window size and model (written with Pi) |
 | `~/.pi/agent/extensions/run-stats.ts` | After each Pi run: `⚡ tokens/sec · ⏱ time · ✍️ written · 📖 read · 💾 from cache` (our own; clean-room rewrite) |
 | `~/.pi/agent/extensions/tasting-notes.ts` | While Pi works: a winemaking phrase (🍾 Uncorking…) in the working line and a French or Italian wine fact above the input box, every 7 seconds; 100 facts checked against sources; `/wine` for one on demand (our own; clean-room) |
-| `~/.pi/agent/extensions/beside.ts` | `/annotate` (Pi's newest reply, or `/annotate plan.md`) and `/review` (code changes) in a Ghostty split, via the scripts below |
-| `~/.local/bin/beside` | Runs a review TUI in a Ghostty split to the right (AppleScript) and types what it prints into the agent |
-| `~/.local/bin/annotate` | plannotator-tui through `beside`; in Claude Code run `! annotate` |
-| `~/.local/bin/review` | tuicr through `beside`; in Claude Code run `! review` |
+| `~/.pi/agent/extensions/review.ts` | `/annotate` (Pi's newest reply, or `/annotate plan.md`) and `/review` (code changes) full screen in Pi's terminal, via the scripts below; the feedback becomes your next message |
+| `~/.local/bin/annotate` | plannotator-tui review; in Claude Code run `! annotate` (opens through `beside`) |
+| `~/.local/bin/review` | tuicr review; in Claude Code run `! review` (opens through `beside`) |
+| `~/.local/bin/beside` | Claude Code only: runs a review in a Ghostty split to the right (AppleScript) and types what it prints into the agent |
 | `~/.pi/agent/AGENTS.md` | Global instructions shared by Pi and Claude Code (Claude imports it from `~/.claude/CLAUDE.md`): use `uv` for Python; ponytail rules for code (smallest complete change, reuse, no slop) |
 
 Never tracked: logins, tokens and app state (`~/.config/gh/hosts.yml`,
@@ -163,33 +163,35 @@ main checkout's current branch.
 reads Claude Code's and Pi's saved replies, so it needs no agent plugin.
 
 1. The agent writes a plan (or any reply worth reviewing).
-2. Open the review in a split next to it: `/annotate` in Pi, `! annotate` in Claude Code
-   (`annotate plan.md` for a file). Elsewhere: `plannotator-tui last` in a split you open.
+2. Open the review: `/annotate` in Pi (full screen in Pi's terminal), `! annotate` in Claude
+   Code (a split beside it); `annotate plan.md` for a file. Elsewhere: `plannotator-tui last`.
 3. Select text with the mouse or `v`, then `a` 👍 looks good · `c` 💬 comment · `d` ✗ delete.
-4. `S` sends: the numbered feedback is pasted into the agent and submitted, and the
-   split closes. (`E` sends a batch without closing; every batch arrives when you close.)
+4. `S` sends: the review closes and the numbered feedback goes to the agent as your
+   next message. (`E` sends a batch without closing; every batch arrives when you close.)
 
-`q` asks before dropping unsent annotations; annotations are saved as you go. Outside a
-Ghostty split, plannotator-tui only saves and copies the feedback (its own sending needs Herdr).
+`q` asks before dropping unsent annotations; annotations are saved as you go. Run on its
+own, plannotator-tui only saves and copies the feedback (its own sending needs Herdr).
 
 ## Review code in the terminal
 
 The agent writes the code; you read and comment. [`tuicr`](https://github.com/agavra/tuicr) (MIT)
 shows the changes as a GitHub-style diff with vim keys.
 
-1. Open the review in a split next to the agent: `/review` in Pi, `! review` in Claude Code.
+1. Open the review: `/review` in Pi (full screen in Pi's terminal), `! review` in Claude Code
+   (a split beside it).
    That shows uncommitted changes; add `-r main..HEAD` for a commit range or `--file src/`
    to comment on any file or folder.
 2. `j`/`k` scroll, `{`/`}` jump between files, `c` comments a line, `v` selects a range.
-3. `:wq`, then `y`: the comments (`src/x.ts:42 - …`) are pasted into the agent and
-   submitted, and the split closes.
+3. `:wq`, then `y`: the review closes and the comments (`src/x.ts:42 - …`) go to the
+   agent as your next message.
 
 Quit without comments, or answer `n`, and nothing is sent. Sent comments are cleared from
 tuicr's saved session, so the next review starts clean.
 
-Both reviews run through `~/.local/bin/beside`: it opens the split and types whatever the
-review prints into the agent. Another review tool needs only a small script that prints
-its feedback.
+Both scripts follow one rule: the review draws on the terminal and prints its feedback
+on stdout. Pi hands over its terminal and sends that output; in Claude Code,
+`~/.local/bin/beside` opens the split and types it into the agent. Another review tool
+needs only a small script that follows the rule.
 
 ## Prompts (slash commands)
 
