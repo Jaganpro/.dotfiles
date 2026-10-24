@@ -1,7 +1,7 @@
 {
   "lastChangelogVersion": "1.4.0",
-  "defaultProvider": "xai",
-  "defaultModel": "grok-4.7",
+  "defaultProvider": "claude-code",
+  "defaultModel": "claude-opus-5-5",
   "packages": [
     "npm:@ff-labs/pi-fff",
     "git:github.com/earendil-works/pi-claude-code@70abb65186592ca788b29b3db22c3160d629c41f"
