@@ -45,6 +45,7 @@ each one into place. Built from scratch in October 2026, one tool at a time.
 | `~/.claude/CLAUDE.md` | Instructions for every Claude Code session: prefer fff for file search |
 | `~/.claude/settings.json` | Claude Code preferences, hooks, status line; no commit/PR attribution |
 | `~/.pi/agent/settings.json` | Pi default model, the fff package, pi-claude-code (Claude models through your Claude Code login; pinned to a reviewed commit, update with `pi install …@<commit>`), and the path to `skills/youtube-transcript` |
+| `~/.pi/agent/mcp.json` | Pi MCP servers: `superlogical` (Rex community MCP, HTTP). Sign in once per Mac with `pi mcp login superlogical`; the token stays in `~/.pi/agent/mcp-auth.json` (not tracked) |
 | `~/.pi/agent/extensions/web-access.ts` | Pi `web_search` (Brave → Parallel → TinyFish; freshness and country passed through; falls back on quota) and `web_fetch` (direct download first, then extractors). The card shows the service and, only when the provider reports it, calls remaining. Keys in the macOS Keychain. `/web` shows status |
 | `~/.pi/agent/extensions/git-guard.ts` | Pi: blocks commands that skip git hooks (`--no-verify`, `git commit -n`) and stops git opening an editor |
 | `~/.claude/hooks/git-guard.sh` | Claude Code: the same hook-skipping block, as a PreToolUse hook (registered in `settings.json`, which also sets `GIT_EDITOR=true`) |
@@ -59,7 +60,7 @@ each one into place. Built from scratch in October 2026, one tool at a time.
 | `~/.pi/agent/AGENTS.md` | Global instructions shared by Pi and Claude Code (Claude imports it from `~/.claude/CLAUDE.md`): use `uv` for Python; ponytail rules for code (smallest complete change, reuse, no slop) |
 
 Never tracked: logins, tokens and app state (`~/.config/gh/hosts.yml`,
-`~/.pi/agent/auth.json`, `~/.claude.json`, shell history, caches).
+`~/.pi/agent/auth.json`, `~/.pi/agent/mcp-auth.json`, `~/.claude.json`, shell history, caches).
 
 ## Tools
 
@@ -109,7 +110,8 @@ Never tracked: logins, tokens and app state (`~/.config/gh/hosts.yml`,
 1Password, Claude, CleanShot, Ghostty, Google Chrome, Granola, Grok Bot, Notion, Slack, Temurin 21 (Java), tldraw (offline),
 Vorssaint (menu bar: keep-awake, system monitor, volume mixer).
 
-Installed outside the Brewfile: Figma (by choice) and work-managed software.
+Installed outside the Brewfile: Figma (by choice), Rex (private beta; download after a Discord
+login: https://www.superlogical.com/rex/docs/installation) and work-managed software.
 GitHub is used through `gh` only.
 
 ### AI agents
@@ -289,11 +291,13 @@ runs it; it's safe to run again on its own after editing a line.
 
 7. **Pi.** The YouTube skill comes from this repo
    (`dot init` installs the skill's dependencies); `pi update --extensions`
-   installs the fff package listed in the tracked settings.
+   installs the fff package listed in the tracked settings. The Rex MCP server
+   (`mcp.json`) needs a browser sign-in once per Mac.
 
    ```bash
    curl -fsSL https://pi.dev/install.sh | sh
    pi update --extensions
+   pi mcp login superlogical
    ```
 
 8. **Web search keys for Pi** (optional; any of the three). Brave's free plan:
