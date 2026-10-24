@@ -38,6 +38,7 @@ each one into place. Built from scratch in October 2026, one tool at a time.
 | `~/.config/ripgrep/config` | ripgrep defaults: search hidden files, skip `.git/` and files over 5 MB |
 | `~/.config/git/ignore` | Global git ignore for every repo: `.DS_Store`, personal Claude files, `.env*` / `.envrc` (except `.env.example`) |
 | `~/.config/ghostty/config.ghostty` | Ghostty: Gruvbox Dark, font 14, Option-as-Alt, Quick Terminal, shortcuts, SSH terminfo, balanced padding, medium split dimming |
+| `~/.config/rex/themes/Gruvbox Dark` | Rex: the Gruvbox Dark theme file (Ghostty format), so importing it doesn't need Ghostty. See [Rex](#rex) |
 | `~/.npmrc` | npm installs only versions at least 3 days old (supply-chain cooldown) |
 | `~/.pi/agent/npm/.npmrc` | No cooldown for Pi extensions (they all install in this folder) |
 | `~/.claude/statusline.sh` | Claude Code status line (one line): ✨ model (effort) ⚡ │ 📁 path 🌿 git │ gradient context bar + tokens │ 💰 cost │ 🔥/❄️ prompt cache │ 🏷️ session │ 📦 version |
@@ -225,6 +226,19 @@ Shared by Claude Code and Pi from `prompts/`.
 
 Left Option acts as Alt (for fzf's Alt-C); right Option still types é, ü and
 other special characters.
+
+## Rex
+
+Rex (private beta) keeps its look in the app's settings, not in a file, so
+set it once per Mac:
+
+1. Settings → Rex Server → turn on **Remote Control**, then import the theme:
+   `rex do client.theme.import path="$HOME/.config/rex/themes/Gruvbox Dark"`
+   (safe to run again; Rex reuses the existing theme).
+2. Settings → Terminal: font size **14**, **Font smoothing off** (matches
+   Ghostty's thin text).
+3. Padding colour: **Background**, not Extend (Extend has open bugs).
+4. `rex skill setup` (see [Installed by apps](#installed-by-apps)).
 
 ## macOS settings
 
@@ -427,6 +441,7 @@ everything in it is installed.
 - `tasting-notes.ts` idea: dmmulroy's whimsical.ts (written clean-room from a behaviour description).
 - Pi command aliases idea: [xRyul/pi-aliases](https://github.com/xRyul/pi-aliases).
 - `/deslop` and `/ship` prompts: adapted from [earendil-works/pi](https://github.com/earendil-works/pi) (MIT).
+- Rex's Gruvbox Dark theme file: [mbadolato/iTerm2-Color-Schemes](https://github.com/mbadolato/iTerm2-Color-Schemes) (MIT), unmodified apart from a header.
 - Coding rules in `AGENTS.md`: adapted from [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) (MIT).
 
 License texts for the copied code are in `third_party/`.
