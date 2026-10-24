@@ -43,7 +43,7 @@ each one into place. Built from scratch in October 2026, one tool at a time.
 | `~/.claude/statusline.sh` | Claude Code status line (one line): ✨ model (effort) ⚡ │ 📁 path 🌿 git │ gradient context bar + tokens │ 💰 cost │ 🔥/❄️ prompt cache │ 🏷️ session │ 📦 version |
 | `~/.gitconfig` | Name/email (GitHub noreply), `gh` login, delta pager, pull = rebase, prune on fetch, newest branches first, rerere, `git fomo`, `git nuke` |
 | `~/.claude/CLAUDE.md` | Instructions for every Claude Code session: prefer fff for file search |
-| `~/.claude/settings.json` | Claude Code preferences, hooks, status line; no commit/PR attribution |
+| `~/.claude/settings.json` | Claude Code preferences, hooks, status line; no commit/PR attribution. The SessionStart hook is Rex's (`rex skill setup`): it tells Claude which Rex session and pane it runs in |
 | `~/.pi/agent/settings.json` | Pi default model, the fff package, pi-claude-code (Claude models through your Claude Code login; pinned to a reviewed commit, update with `pi install …@<commit>`), and the path to `skills/youtube-transcript` |
 | `~/.pi/agent/mcp.json` | Pi MCP servers: `superlogical` (Rex community MCP, HTTP). Sign in once per Mac with `pi mcp login superlogical`; the token stays in `~/.pi/agent/mcp-auth.json` (not tracked) |
 | `~/.pi/agent/extensions/web-access.ts` | Pi `web_search` (Brave → Parallel → TinyFish; freshness and country passed through; falls back on quota) and `web_fetch` (direct download first, then extractors). The card shows the service and, only when the provider reports it, calls remaining. Keys in the macOS Keychain. `/web` shows status |
@@ -380,6 +380,7 @@ files. `dot init` reminds you; `dot doctor` warns when one is missing.
 | Skill | Installed by | Where |
 |---|---|---|
 | `tldraw-offline` | tldraw offline → **Install Agent Skills** | `~/.claude/skills`, `~/.pi/agent/skills`, `~/skills/tldraw-offline` |
+| `rex` | `rex skill setup` (or **Install Rex for Agents** in Rex's command palette) | `~/.claude/skills/rex`, `~/.agents/skills/rex` (Pi reads it) |
 
 ## Everyday use
 

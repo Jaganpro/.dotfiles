@@ -4,3 +4,4 @@
 #
 # name | paths that must exist | how to install
 tldraw-offline | ~/.claude/skills/tldraw-offline ~/.pi/agent/skills/tldraw-offline | open tldraw offline and choose "Install Agent Skills" from its menu (after Claude Code and Pi are installed)
+rex | ~/.claude/skills/rex ~/.agents/skills/rex | run "rex skill setup" in a Rex terminal (installs the skill for Claude Code and Pi, and Claude's SessionStart hook in the tracked settings.json)
