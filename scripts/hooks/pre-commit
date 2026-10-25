@@ -16,6 +16,12 @@ shellcheck dot scripts/*.sh scripts/hooks/pre-commit home/.claude/statusline.sh 
   fail "shellcheck found problems"
 env -i HOME="$HOME" USER="$USER" TERM=xterm-256color zsh -lic exit >/dev/null 2>&1 ||
   fail "a fresh login shell does not start (run: zsh -lic exit)"
+# Rex: check init.lua when Rex is installed (`rex` is only on PATH inside Rex).
+rex=$(command -v rex || echo "$HOME/Library/Application Support/com.superlogical.rex/RexServer/Versions/Current/Rex Server.app/Contents/MacOS/rex")
+if [ -x "$rex" ]; then
+  "$rex" --autostart=false config check home/.config/rex/init.lua >/dev/null ||
+    fail "home/.config/rex/init.lua has errors (run: rex config check)"
+fi
 [ -d node_modules ] || fail "lint tools missing: run npm ci"
 npx --no-install oxlint home/.pi/agent/extensions || fail "lint failed (npm run lint)"
 gitleaks git --pre-commit --staged --redact --no-banner . || fail "gitleaks found a secret"

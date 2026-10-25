@@ -1,0 +1,13 @@
+-- Rex configuration (in ~/.dotfiles, linked by Stow).
+-- Docs: https://www.superlogical.com/rex/docs/customize/config
+--
+-- This file holds behaviour only: shortcuts (rex.bind), key modes (rex.mode)
+-- and custom actions (rex.action). Look and feel (theme, font, smoothing)
+-- can't be set here yet; scripts/rex-settings.sh sets those.
+--
+-- After editing:
+--   rex config check    find mistakes without loading anything
+--   rex config reload   load it (Rex doesn't watch this file)
+--   rex keymap          show what Rex actually loaded
+--
+-- Shortcuts set in the app (Settings -> Shortcuts) win over this file.

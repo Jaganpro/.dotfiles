@@ -58,6 +58,7 @@ zsh -n home/.zshrc                       # syntax
 shellcheck dot scripts/*.sh scripts/hooks/pre-commit home/.claude/statusline.sh home/.claude/hooks/*.sh home/.config/starship/*.sh home/.local/bin/annotate home/.local/bin/beside home/.local/bin/review
 env -i HOME="$HOME" USER="$USER" TERM=xterm-256color zsh -lic exit   # fresh login shell
 npm run lint                             # anti-slop rules on our Pi extensions
+rex config check home/.config/rex/init.lua   # Rex config (skipped when Rex isn't installed)
 gitleaks git --pre-commit --staged --redact .   # no secrets
 ```
 

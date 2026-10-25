@@ -39,6 +39,7 @@ each one into place. Built from scratch in October 2026, one tool at a time.
 | `~/.config/ripgrep/config` | ripgrep defaults: search hidden files, skip `.git/` and files over 5 MB |
 | `~/.config/git/ignore` | Global git ignore for every repo: `.DS_Store`, personal Claude files, `.env*` / `.envrc` (except `.env.example`) |
 | `~/.config/ghostty/config.ghostty` | Ghostty: Gruvbox Dark, font 14, Option-as-Alt, Quick Terminal, shortcuts, SSH terminfo, balanced padding, medium split dimming |
+| `~/.config/rex/init.lua` | Rex behaviour: shortcuts, key modes, custom actions (empty for now). `rex config reload` after editing; the pre-commit hook runs `rex config check` |
 | `~/.config/rex/themes/Gruvbox Dark` | Rex: the Gruvbox Dark theme file (Ghostty format), so importing it doesn't need Ghostty. See [Rex](#rex) |
 | `~/.npmrc` | npm installs only versions at least 3 days old (supply-chain cooldown) |
 | `~/.pi/agent/npm/.npmrc` | No cooldown for Pi extensions (they all install in this folder) |
@@ -243,6 +244,11 @@ installing Rex:
 2. Padding colour: leave it on **Background**, not Extend (Extend has open bugs).
 3. `rex skill setup` (see [Installed by apps](#installed-by-apps)).
 
+Behaviour (shortcuts, key modes, custom actions) lives in
+`~/.config/rex/init.lua`, which Stow links like any other file. Rex doesn't
+watch it: run `rex config reload` after editing, and `rex keymap` to see what
+loaded.
+
 The setting names are undocumented, so a Rex update may rename them; change a
 setting in the app and compare with `defaults read com.superlogical.rex`.
 
@@ -408,7 +414,7 @@ Files in `~` are links into the repo, so editing `~/.zshrc` edits
 `~/.dotfiles/home/.zshrc` directly. Apps that save their own settings (Claude
 Code, Pi) write through the links too.
 
-Every commit runs `scripts/hooks/pre-commit`: zsh syntax, shellcheck, a fresh
+Every commit runs `scripts/hooks/pre-commit`: zsh syntax, shellcheck, Rex's `init.lua` (when Rex is installed), a fresh
 login shell, `npm run lint` and a gitleaks secret scan.
 If one fails, the commit is refused. Agents can't skip these checks: git-guard
 blocks `--no-verify` and `git commit -n` in both Claude Code and Pi.
