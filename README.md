@@ -12,6 +12,7 @@ each one into place. Built from scratch in October 2026, one tool at a time.
 ├── packages/Brewfile     every Homebrew tool and app
 ├── packages/app-skills   agent skills installed by apps (checked by dot doctor, not stored here)
 ├── scripts/macos-defaults.sh
+├── scripts/rex-settings.sh   Rex app settings + theme import (run by hand, Rex quit)
 ├── scripts/hooks/pre-commit   checks every commit: lint, shellcheck, shell start-up, secrets
 ├── skills/               agent skills for Pi (via its settings) and Claude Code (linked into ~/.claude/skills)
 ├── scripts/vendor-skills.sh   copies Matt Pocock's skills into skills/ at a pinned commit
@@ -229,16 +230,20 @@ other special characters.
 
 ## Rex
 
-Rex (private beta) keeps its look in the app's settings, not in a file, so
-set it once per Mac:
+Rex (private beta) keeps its look in the app's preferences, not in a file, and
+can't set them from `init.lua` yet. `scripts/rex-settings.sh` writes them with
+`defaults write` (font 14, font smoothing off, always dark, Remote Control on,
+session naming on, ...) and imports the Gruvbox Dark theme. On a new Mac, after
+installing Rex:
 
-1. Settings → Rex Server → turn on **Remote Control**, then import the theme:
-   `rex do client.theme.import path="$HOME/.config/rex/themes/Gruvbox Dark"`
-   (safe to run again; Rex reuses the existing theme).
-2. Settings → Terminal: font size **14**, **Font smoothing off** (matches
-   Ghostty's thin text).
-3. Padding colour: **Background**, not Extend (Extend has open bugs).
-4. `rex skill setup` (see [Installed by apps](#installed-by-apps)).
+1. Quit Rex (Cmd+Q), then from another terminal (Ghostty) run
+   `~/.dotfiles/scripts/rex-settings.sh`. It refuses while Rex is open, because
+   Rex would overwrite the settings. Safe to run again.
+2. Padding colour: leave it on **Background**, not Extend (Extend has open bugs).
+3. `rex skill setup` (see [Installed by apps](#installed-by-apps)).
+
+The setting names are undocumented, so a Rex update may rename them; change a
+setting in the app and compare with `defaults read com.superlogical.rex`.
 
 ## macOS settings
 
