@@ -236,9 +236,10 @@ can't set them from `init.lua` yet. `scripts/rex-settings.sh` writes them with
 session naming on, ...) and imports the Gruvbox Dark theme. On a new Mac, after
 installing Rex:
 
-1. Quit Rex (Cmd+Q), then from another terminal (Ghostty) run
-   `~/.dotfiles/scripts/rex-settings.sh`. It refuses while Rex is open, because
-   Rex would overwrite the settings. Safe to run again.
+1. `dot init` runs `~/.dotfiles/scripts/rex-settings.sh` when Rex is installed.
+   It refuses while Rex is open, because Rex would overwrite the settings; then
+   quit Rex (Cmd+Q) and run it yourself from another terminal (Ghostty). Safe
+   to run again.
 2. Padding colour: leave it on **Background**, not Extend (Extend has open bugs).
 3. `rex skill setup` (see [Installed by apps](#installed-by-apps)).
 
@@ -420,7 +421,7 @@ blocks `--no-verify` and `git commit -n` in both Claude Code and Pi.
 | `dot add <file>...` | Moves files from `~` into `home/` and links them back (start tracking a file) |
 | `dot stow` | Relinks `home/` into `~`; a real file in the way is backed up to `~/.dotfiles-backup/` |
 | `dot update` | `git pull`, `brew upgrade`, relink |
-| `dot init [--no-macos]` | Full setup on a new Mac |
+| `dot init [--no-macos]` | Full setup on a new Mac (`--no-macos` skips the macOS and Rex settings) |
 
 ```bash
 dot add ~/.config/foo/config   # start tracking a file

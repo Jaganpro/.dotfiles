@@ -18,7 +18,7 @@ usage() {
   cat <<'EOF'
 Usage: dot <command>
 
-  init [--no-macos]  Set up this Mac: packages, links, git hook, macOS settings
+  init [--no-macos]  Set up this Mac: packages, links, git hook, macOS and Rex settings
   doctor             Check that everything is linked, installed and committed
   update             Pull the repo, upgrade Homebrew packages, relink
   stow               Relink home/ into ~ (after adding or renaming files)
@@ -123,6 +123,14 @@ cmd_init() {
   if [[ ${1:-} != --no-macos ]]; then
     step "macOS settings"
     "$DOTFILES/scripts/macos-defaults.sh"
+
+    step "Rex settings (scripts/rex-settings.sh)"
+    if [[ ! -d "/Applications/Rex Beta.app" ]]; then
+      warn "Rex not installed (private beta); after installing it, quit it and run: ~/.dotfiles/scripts/rex-settings.sh"
+    else
+      # Not fatal: it refuses while Rex is open, and the rest of init should still finish.
+      "$DOTFILES/scripts/rex-settings.sh" || warn "Rex settings not applied; quit Rex and run: ~/.dotfiles/scripts/rex-settings.sh"
+    fi
   fi
 
   local name paths how
