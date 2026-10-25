@@ -2,7 +2,8 @@
 
 macOS (Apple Silicon) setup. Shell is zsh, terminal is Rex (private beta;
 Ghostty stays installed as the fallback), theme is Gruvbox Dark everywhere.
-README.md is the human guide; keep it in sync.
+The human guide is README.md (short overview) plus `docs/` (details: setup,
+files, terminal, agents); keep both in sync. Credits go in CREDITS.md.
 
 ## Layout
 
@@ -12,6 +13,7 @@ packages/Brewfile        every Homebrew tool and app (brew bundle --global reads
 scripts/macos-defaults.sh
 dot                      the `dot` command: init, doctor, update, stow, add
 skills/                  agent skills with npm deps (not stowed; Pi settings point here)
+docs/                    detailed human guides (README.md links here)
 third_party/             licenses of code taken from other repos
 tools/oxlint/anti-slop/  vendored Oxlint rules; `npm run lint` (oxlint.config.ts) checks our Pi extensions
 ```
@@ -25,13 +27,14 @@ tools/oxlint/anti-slop/  vendored Oxlint rules; `npm run lint` (oxlint.config.ts
   `dot doctor` checks every link afterwards. Never stow without `--no-folding`, or
   whole folders like `~/.claude` (sessions, history) end up in git.
 - **New Homebrew tool:** add a commented line to `packages/Brewfile` and a row
-  to the matching README table.
+  to the matching table in `docs/terminal.md`.
+  New tracked file: a row in `docs/files.md`.
 - **Code from other repos:** only from openly licensed repos. Keep the
   original notice in a header comment, say what was changed, and add the
-  license text to `third_party/`.
+  license text to `third_party/` and a row to CREDITS.md.
 - **Vendored skills** in `skills/` (Matt Pocock's 19, listed in `scripts/vendor-skills.sh`)
   are unmodified copies: update them with that script, never edit them by hand.
-  Same for `skills/install-anti-slop` (dmmulroy/anti-slop, commit in README):
+  Same for `skills/install-anti-slop` (dmmulroy/anti-slop, commit in `docs/agents.md`):
   update by re-copying it from upstream.
 - **App-installed skills** (e.g. tldraw's `tldraw-offline`) are not open source:
   never copy them into this repo. List them in `packages/app-skills` instead.
