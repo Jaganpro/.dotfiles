@@ -1,12 +1,3 @@
-# A review split from `beside` (used by annotate and review) runs its review instead of a
-# shell, before anything else loads (no prompt, no plugins, no splash). Unset first so
-# nothing inherits it.
-if [[ -n ${BESIDE_RUN:-} ]]; then
-  review=$BESIDE_RUN
-  unset BESIDE_RUN
-  eval "exec $review"
-fi
-
 # History: 100k commands, saved immediately, new tabs see everything
 HISTFILE=~/.zsh_history
 HISTSIZE=100000

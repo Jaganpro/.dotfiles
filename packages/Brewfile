@@ -39,7 +39,7 @@ brew "zsh-fast-syntax-highlighting" # command colouring as you type
 cask "1password"     # password manager
 cask "claude"        # Claude desktop app
 cask "cleanshot"     # screenshots and screen recording
-cask "ghostty"       # terminal
+cask "ghostty"       # fallback terminal + Quick Terminal (main terminal: Rex, private beta, not in Homebrew)
 cask "google-chrome" # browser
 cask "granola"       # meeting notes
 cask "grok-bot"      # Grok Bot

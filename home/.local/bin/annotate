@@ -1,7 +1,7 @@
 #!/bin/bash
 # annotate: review an agent's reply or a plan file with plannotator-tui, and send the
 # feedback back to the agent. Pi's /annotate runs it full screen in Pi's own terminal;
-# in Claude Code it opens in a Ghostty split beside the agent (see beside).
+# in Claude Code it opens in a Rex split beside the agent (see beside).
 #   annotate             Claude Code's newest reply (in Claude, run it as `! annotate`)
 #   annotate plan.md     a Markdown file
 #   annotate <args>      any plannotator-tui arguments (Pi's /annotate passes its session)

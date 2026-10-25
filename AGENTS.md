@@ -1,7 +1,8 @@
 # .dotfiles: notes for AI agents
 
-macOS (Apple Silicon) setup. Shell is zsh, terminal is Ghostty, theme is
-Gruvbox Dark everywhere. README.md is the human guide; keep it in sync.
+macOS (Apple Silicon) setup. Shell is zsh, terminal is Rex (private beta;
+Ghostty stays installed as the fallback), theme is Gruvbox Dark everywhere.
+README.md is the human guide; keep it in sync.
 
 ## Layout
 

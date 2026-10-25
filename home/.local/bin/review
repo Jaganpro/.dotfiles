@@ -1,6 +1,6 @@
 #!/bin/bash
 # review: review code with tuicr, and send your comments back to the agent. Pi's /review
-# runs it full screen in Pi's own terminal; in Claude Code it opens in a Ghostty split
+# runs it full screen in Pi's own terminal; in Claude Code it opens in a Rex split
 # beside the agent (see beside).
 #   review                 uncommitted changes (in Claude, run it as `! review`)
 #   review -r main..HEAD   a commit range

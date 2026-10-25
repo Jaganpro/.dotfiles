@@ -38,7 +38,7 @@ each one into place. Built from scratch in October 2026, one tool at a time.
 | `~/.config/zsh/worktree.zsh` | `gwa` / `gwr` git worktree helpers (loaded by `.zshrc`) |
 | `~/.config/ripgrep/config` | ripgrep defaults: search hidden files, skip `.git/` and files over 5 MB |
 | `~/.config/git/ignore` | Global git ignore for every repo: `.DS_Store`, personal Claude files, `.env*` / `.envrc` (except `.env.example`) |
-| `~/.config/ghostty/config.ghostty` | Ghostty: Gruvbox Dark, font 14, Option-as-Alt, Quick Terminal, shortcuts, SSH terminfo, balanced padding, medium split dimming |
+| `~/.config/ghostty/config.ghostty` | Ghostty (fallback terminal, and its Quick Terminal): Gruvbox Dark, font 14, Option-as-Alt, Quick Terminal, shortcuts, SSH terminfo, balanced padding, medium split dimming |
 | `~/.config/rex/init.lua` | Rex behaviour: shortcuts, key modes, custom actions (empty for now). `rex config reload` after editing; the pre-commit hook runs `rex config check` |
 | `~/.config/rex/themes/Gruvbox Dark` | Rex: the Gruvbox Dark theme file (Ghostty format), so importing it doesn't need Ghostty. See [Rex](#rex) |
 | `~/.npmrc` | npm installs only versions at least 3 days old (supply-chain cooldown) |
@@ -59,7 +59,7 @@ each one into place. Built from scratch in October 2026, one tool at a time.
 | `~/.pi/agent/extensions/review.ts` | `/annotate` (Pi's newest reply, or `/annotate plan.md`) and `/review` (code changes) full screen in Pi's terminal, via the scripts below; the feedback becomes your next message |
 | `~/.local/bin/annotate` | plannotator-tui review; in Claude Code run `! annotate` (opens through `beside`) |
 | `~/.local/bin/review` | tuicr review; in Claude Code run `! review` (opens through `beside`) |
-| `~/.local/bin/beside` | Claude Code only: runs a review in a Ghostty split to the right (AppleScript) and types what it prints into the agent |
+| `~/.local/bin/beside` | Claude Code only: runs a review in a Rex split to the right (`rex split`) and pastes what it prints into the agent |
 | `~/.pi/agent/AGENTS.md` | Global instructions shared by Pi and Claude Code (Claude imports it from `~/.claude/CLAUDE.md`): use `uv` for Python; ponytail rules for code (smallest complete change, reuse, no slop) |
 
 Never tracked: logins, tokens and app state (`~/.config/gh/hosts.yml`,
@@ -134,7 +134,7 @@ It refuses to index the home folder on purpose.
 | Ctrl-R | Fuzzy-search command history |
 | Ctrl-T | Pick a file and paste its path |
 | Tab | Completion in fzf: type to filter, Enter picks. Case-insensitive (`cd desk` → `Desktop`) |
-| Alt-C | Jump into a folder (needs Ghostty's Option-as-Alt setting) |
+| Alt-C | Jump into a folder (needs Option to act as Alt: Rex's automatic Option-key setting, or Ghostty's Option-as-Alt) |
 | `**` + Tab | Fuzzy completion, e.g. `cd **<Tab>` |
 | → | Accept the grey autosuggestion |
 | `ls` | `eza` with icons |
@@ -169,7 +169,7 @@ reads Claude Code's and Pi's saved replies, so it needs no agent plugin.
 
 1. The agent writes a plan (or any reply worth reviewing).
 2. Open the review: `/annotate` in Pi (full screen in Pi's terminal), `! annotate` in Claude
-   Code (a split beside it); `annotate plan.md` for a file. Elsewhere: `plannotator-tui last`.
+   Code (a Rex split beside it); `annotate plan.md` for a file. Elsewhere: `plannotator-tui last`.
 3. Select text with the mouse or `v`, then `a` 👍 looks good · `c` 💬 comment · `d` ✗ delete.
 4. `S` sends: the review closes and the numbered feedback goes to the agent as your
    next message. (`E` sends a batch without closing; every batch arrives when you close.)
@@ -183,7 +183,7 @@ The agent writes the code; you read and comment. [`tuicr`](https://github.com/ag
 shows the changes as a GitHub-style diff with vim keys.
 
 1. Open the review: `/review` in Pi (full screen in Pi's terminal), `! review` in Claude Code
-   (a split beside it).
+   (a Rex split beside it).
    That shows uncommitted changes; add `-r main..HEAD` for a commit range or `--file src/`
    to comment on any file or folder.
 2. `j`/`k` scroll, `{`/`}` jump between files, `c` comments a line, `v` selects a range.
@@ -195,7 +195,7 @@ tuicr's saved session, so the next review starts clean.
 
 Both scripts follow one rule: the review draws on the terminal and prints its feedback
 on stdout. Pi hands over its terminal and sends that output; in Claude Code,
-`~/.local/bin/beside` opens the split and types it into the agent. Another review tool
+`~/.local/bin/beside` opens a Rex split and pastes it into the agent. Another review tool
 needs only a small script that follows the rule.
 
 ## Prompts (slash commands)
@@ -212,10 +212,14 @@ Shared by Claude Code and Pi from `prompts/`.
 - **History:** 100,000 commands in `~/.zsh_history`, saved as soon as each
   runs, with timestamps (`history -i`). Repeats keep only the latest copy.
   Start a command with a space to keep it out of history.
-- **Colours:** one theme, **Gruvbox Dark**, across Ghostty, starship, vivid
+- **Colours:** one theme, **Gruvbox Dark**, across Rex, Ghostty, starship, vivid
   (`LS_COLORS`), bat (`BAT_THEME`), `man` pages (shown through bat) and delta.
 
 ## Ghostty
+
+The fallback terminal while Rex is in beta: use it when Rex is down or being
+updated, to run `scripts/rex-settings.sh` (which needs Rex quit), and for the
+Quick Terminal (Rex has none yet). Remove it once Rex no longer needs a backup.
 
 | Keys | Does |
 |---|---|
@@ -231,7 +235,7 @@ other special characters.
 
 ## Rex
 
-Rex (private beta) keeps its look in the app's preferences, not in a file, and
+The main terminal. Rex (private beta) keeps its look in the app's preferences, not in a file, and
 can't set them from `init.lua` yet. `scripts/rex-settings.sh` writes them with
 `defaults write` (font 14, font smoothing off, always dark, Remote Control on,
 session naming on, ...) and imports the Gruvbox Dark theme. On a new Mac, after
