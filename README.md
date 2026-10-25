@@ -237,7 +237,7 @@ other special characters.
 
 The main terminal. Rex (private beta) keeps its look in the app's preferences, not in a file, and
 can't set them from `init.lua` yet. `scripts/rex-settings.sh` writes them with
-`defaults write` (font 14, font smoothing off, always dark, Remote Control on,
+`defaults write` (font 14, font smoothing off, always dark, tabs in a left sidebar, Remote Control on,
 session naming on, ...) and imports the Gruvbox Dark theme. On a new Mac, after
 installing Rex:
 

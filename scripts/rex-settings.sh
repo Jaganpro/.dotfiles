@@ -25,6 +25,8 @@ $d Workspace.terminalCopyOnSelect -bool true              # releasing a selectio
 $d Workspace.inactivePaneFadeMode -string both            # dim inactive panes
 $d Workspace.showsActivePaneBorder -bool true             # border around the focused pane
 $d Workspace.tabIconTintMode -string off                  # tab icons keep their own colours
+$d Workspace.tabStyle -string vertical                    # tabs in a sidebar, so Activity (Cmd+.) shows there
+$d Workspace.sidebarPosition -string left
 $d Workspace.usesStandardInactiveWindowPaneStyles -bool true
 $d rex.agents.names-sessions -bool true                   # agents name sessions after their task
 $d rex.client.remoteControl -bool true                    # lets `rex do` drive the app (needed below)
