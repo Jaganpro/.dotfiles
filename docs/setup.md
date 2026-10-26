@@ -38,7 +38,8 @@ The full walkthrough. The short version is in the [README](../README.md#-quick-s
 
 4. **Open a new terminal** so the shell config loads. Then run `nvim` once:
    LazyVim installs its plugins and Treesitter parsers by itself (about a
-   minute); quit with `:qa`. See [neovim.md](neovim.md).
+   minute); quit with `:qa`. New to Vim? Follow "Start here" in
+   [neovim.md](neovim.md): `:Tutor`, then the learning aids teach as you work.
 
 5. **Node** (needed for the Salesforce CLI):
 

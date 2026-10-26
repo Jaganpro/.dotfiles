@@ -114,6 +114,7 @@ Any real file already in the way is moved to `~/.dotfiles-backup/<date-time>/`, 
 | `nvim .` | Open a project in Neovim (LazyVim). Then `Space e` tree, `Space Space` find file, `Space /` search, `Space gg` lazygit, `Space h` the guide |
 
 Full lists: [docs/terminal.md](docs/terminal.md#shortcuts-and-aliases) (shell), [docs/neovim.md](docs/neovim.md#shortcuts) (Neovim).
+New to Vim? [docs/neovim.md](docs/neovim.md) starts with a five-step path for beginners.
 
 ## 🤖 Working with agents
 
