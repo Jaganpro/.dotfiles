@@ -48,6 +48,7 @@ cask "granola"       # meeting notes
 cask "grok-bot"      # Grok Bot
 cask "notion"        # notes and docs
 cask "slack"         # chat
+cask "superwhisper"  # voice dictation (speak instead of type, AI cleanup)
 cask "temurin@21"    # Java 21 (JDK) for Salesforce tooling; installer asks for password
 cask "tldraw"        # tldraw offline
 cask "vorssaint"     # menu bar: keep-awake, system monitor, volume mixer

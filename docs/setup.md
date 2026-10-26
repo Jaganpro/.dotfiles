@@ -96,3 +96,15 @@ The full walkthrough. The short version is in the [README](../README.md#-quick-s
       expected: accept it and commit the change.
     - These files aren't stored in this repo: tldraw offline is not open source,
       and this repo is public. `dot doctor` checks they exist and prints the fix.
+
+11. **Superwhisper** (voice dictation; the Brewfile installs it). Open it once
+    and follow its setup:
+
+    - Sign in (or enter a licence); its settings stay in the app, not in this repo.
+    - Click **Allow** for **Microphone** (records you) and **Accessibility**
+      (types the text into apps). Skipped one? System Settings → Privacy &
+      Security → Microphone / Accessibility.
+    - Pick the dictation key: **hold Right ⌘**, speak, let go, and the text
+      appears at the cursor. **⌥ Space** starts and stops hands-free.
+    - It works in any app, including the terminal, Claude Code and Pi.
+    - Guide: <https://superwhisper.com/docs/get-started/quickstart>
