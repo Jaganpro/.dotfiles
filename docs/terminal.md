@@ -154,7 +154,7 @@ runs it; it's safe to run again on its own after editing a line.
 
 | Area | Setting |
 |---|---|
-| Global | Show all file extensions; fast key repeat (after next login) |
+| Global | Show all file extensions; fast key repeat (after next login); Fn/Globe key alone does nothing (free for Superwhisper; emoji is Ctrl-⌘-Space) |
 | Finder | Path bar, column view, search the current folder, show hidden files |
 | Dock | Icon size 67, magnification up to 128 |
 | Screenshots | PNG, saved to `~/Pictures/Screenshots` |

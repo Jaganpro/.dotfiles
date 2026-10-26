@@ -113,6 +113,7 @@ The full walkthrough. The short version is in the [README](../README.md#-quick-s
       | Setting | Value |
       |---|---|
       | Dictation key | Fn (hold, speak, let go); ⌥ Space for hands-free |
+      | Fn key alone (macOS) | Do Nothing, so it doesn't also open emoji or dictation. Set by `scripts/macos-defaults.sh` (System Settings → Keyboard → "Press 🌐 key to"); emoji is still Ctrl-⌘-Space |
       | Mode | Default |
       | Launch at login | On |
       | Show in Dock | Off (menu bar only) |

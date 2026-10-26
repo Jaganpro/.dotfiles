@@ -7,6 +7,7 @@ set -euo pipefail
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true   # report.pdf, not report
 defaults write NSGlobalDomain KeyRepeat -int 2                    # fast key repeat
 defaults write NSGlobalDomain InitialKeyRepeat -int 15            # short delay before repeat
+defaults write com.apple.HIToolbox AppleFnUsageType -int 0         # Fn/Globe alone does nothing, so Superwhisper gets it (emoji: Ctrl-Cmd-Space)
 
 # --- Finder ---
 defaults write com.apple.finder ShowPathbar -bool true            # path bar at the bottom
