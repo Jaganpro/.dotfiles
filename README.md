@@ -68,7 +68,7 @@ Every folder and script in detail: [docs/files.md](docs/files.md#repo-layout).
 | Command | Does |
 |---|---|
 | `dot init [--no-macos]` | Full setup on a new Mac (`--no-macos` skips the macOS and Rex settings) |
-| `dot doctor` | Read-only health check: every file linked, no broken links, no link replaced by a plain file, Brewfile installed, pre-commit checks on, nothing uncommitted or unpushed |
+| `dot doctor` | Read-only health check: every file linked, no broken links, no link replaced by a plain file, Brewfile installed, Grok Bot set up, pre-commit checks on, nothing uncommitted or unpushed |
 | `dot add <file>...` | Moves files from `~` into `home/` and links them back (start tracking a file) |
 | `dot stow` | Relinks `home/` into `~`; a real file in the way is backed up to `~/.dotfiles-backup/` |
 | `dot update` | `git pull`, `brew upgrade`, relink |
@@ -157,6 +157,7 @@ in both Claude Code and Pi.
 | A link was replaced by a plain file | `dot stow` (the file is backed up first) |
 | Brew can't install over an app you downloaded | `brew install --cask --adopt <app>` in a real terminal |
 | Rex settings not applied | Quit Rex (<kbd>Cmd</kbd>+<kbd>Q</kbd>), then run `scripts/rex-settings.sh` from Ghostty |
+| Grok Bot settings not applied | Quit Grok Bot (<kbd>Cmd</kbd>+<kbd>Q</kbd>), then run `scripts/grokbot-settings.sh`; undo with the `settings.json.bak` it leaves in `~/.grokbot/` |
 | `ls` / `ll` print plain output | Expected in pipes and agent shells; eza is used only in a real terminal |
 | fff finds nothing | Start Claude Code or Pi inside a project folder; fff won't index `~` |
 

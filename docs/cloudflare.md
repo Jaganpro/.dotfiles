@@ -62,6 +62,16 @@ API keys (e.g. `XAI_API_KEY`) never go in `wrangler.jsonc` or the code.
 | On your Mac (`wrangler dev`) | A `.dev.vars` file next to `wrangler.jsonc`, one `NAME=value` per line. Git ignores it everywhere (global ignore) |
 | On Cloudflare | `npx wrangler secret put XAI_API_KEY` (asks for the value; deploys it straight away). `npx wrangler secret list` shows the names |
 
+**Keep the key in the Keychain instead of a file** (setup: [step 14](setup.md)):
+
+```bash
+security find-generic-password -s xai-api-key -w | npx wrangler secret put XAI_API_KEY   # publish it
+XAI_API_KEY="$(security find-generic-password -s xai-api-key -w)" CLOUDFLARE_INCLUDE_PROCESS_ENV=true npm run dev   # local, this run only
+```
+
+`CLOUDFLARE_INCLUDE_PROCESS_ENV=true` makes `wrangler dev` read secrets from the
+shell (Wrangler shows them as `(hidden)`), so no `.dev.vars` file is needed.
+
 In the Worker, a secret is `env.XAI_API_KEY`. To list required secret names in
 `wrangler.jsonc` (so a missing one fails early), see Cloudflare's
 [secrets guide](https://developers.cloudflare.com/workers/configuration/secrets/).

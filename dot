@@ -212,6 +212,16 @@ cmd_doctor() {
     if [[ -z $missing ]]; then ok "$name"; else warn "$name missing:$missing"; printf '    fix: %s\n' "$how"; fi
   done < <(app_skills)
 
+  step "Apps that need a sign-in"
+  # Grok Bot creates its settings file when you finish its first-launch setup.
+  if [[ ! -d "/Applications/Grok Bot.app" ]]; then
+    warn "Grok Bot not installed (brew bundle --global)"
+  elif [[ $(jq -r '.hasSeenOnboarding // false' "$HOME/.grokbot/settings.json" 2>/dev/null) == true ]]; then
+    ok "Grok Bot set up"
+  else
+    warn "Grok Bot not set up yet"; printf '    fix: open it, sign in, quit, run: ~/.dotfiles/scripts/grokbot-settings.sh (docs/setup.md)\n'
+  fi
+
   step "Repo"
   if [[ $(git -C "$DOTFILES" config --get core.hooksPath || true) == scripts/hooks ]]; then
     ok "pre-commit checks active"

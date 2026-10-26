@@ -133,3 +133,44 @@ The full walkthrough. The short version is in the [README](../README.md#-quick-s
     ```
 
     Everyday commands, secrets and tunnels: [cloudflare.md](cloudflare.md).
+
+13. **Grok Bot** (the Brewfile installs it). Open it, sign in and finish its
+    setup. Then quit it (Cmd+Q) and apply the general settings:
+
+    ```bash
+    ~/.dotfiles/scripts/grokbot-settings.sh
+    ```
+
+    The script changes only the general settings (auto-update, tool and network
+    permissions, passkeys, Messages off) in `~/.grokbot/settings.json` and keeps
+    a backup next to it. `dot doctor` checks the setup is done.
+
+    Work-specific settings are **not** in this public repo; re-add them in the app:
+
+    - **Connectors:** connect Gmail, Google Calendar, Plane and Slack, and give
+      each its custom instructions (which account each bot may use, and that
+      nothing is sent or posted without approval).
+    - **Auto-review:** turn it on and re-add the allow rules (4 of them: local
+      watcher scripts, pull requests to the private notes repo, cleaning the
+      mail Junk folder).
+
+14. **xAI (Grok API) key** for projects like sf-pi-durable (optional). Create a
+    key at <https://console.x.ai> (API Keys), then store it in the Keychain;
+    the command asks for it in a hidden prompt:
+
+    ```bash
+    security add-generic-password -s xai-api-key -a "$USER" -w
+    ```
+
+    Use it without saving it in a file (inside the project folder):
+
+    ```bash
+    # Published Worker: copied straight from the Keychain, never shown or saved
+    security find-generic-password -s xai-api-key -w | npx wrangler secret put XAI_API_KEY
+
+    # Local `npm run dev`: only for this one run
+    XAI_API_KEY="$(security find-generic-password -s xai-api-key -w)" CLOUDFLARE_INCLUDE_PROCESS_ENV=true npm run dev
+    ```
+
+    Replace the key later: rerun the first command with `-U` added.
+    Delete it: `security delete-generic-password -s xai-api-key`.

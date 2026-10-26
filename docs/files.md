@@ -55,6 +55,7 @@ Never tracked: logins, tokens and app state (`~/.config/gh/hosts.yml`,
 ├── packages/app-skills   agent skills installed by apps (checked by dot doctor, not stored here)
 ├── scripts/macos-defaults.sh
 ├── scripts/rex-settings.sh   Rex app settings + theme import (run by hand, Rex quit)
+├── scripts/grokbot-settings.sh  Grok Bot general settings (run by hand, Grok Bot quit; work-specific ones stay in the app)
 ├── scripts/hooks/pre-commit   checks every commit: lint, shellcheck, shell start-up, secrets
 ├── skills/               agent skills for Pi (via its settings) and Claude Code (linked into ~/.claude/skills)
 ├── scripts/vendor-skills.sh   copies Matt Pocock's skills into skills/ at a pinned commit
