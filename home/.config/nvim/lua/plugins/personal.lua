@@ -6,12 +6,12 @@ return {
   { "ellisonleao/gruvbox.nvim" },
   { "LazyVim/LazyVim", opts = { colorscheme = "gruvbox" } },
 
-  -- Faded "author, 3 days ago - message" at the end of the current line.
-  { "lewis6991/gitsigns.nvim", opts = { current_line_blame = true } },
-
   {
     "folke/snacks.nvim",
     opts = {
+      -- Pop-up messages (incl. the habit coach) stack from the bottom right,
+      -- so they don't cover the tips window in the top right.
+      notifier = { top_down = false },
       picker = {
         -- Finders (Space Space, Space /, ...) include dotfiles like .config/ and
         -- .zshrc, the same as our ripgrep config. .git/ stays excluded.

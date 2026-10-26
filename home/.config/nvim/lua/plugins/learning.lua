@@ -1,22 +1,7 @@
 -- Learning aids while you get used to Vim. Delete this file (then :Lazy clean)
 -- when you no longer need them. Guide: docs/neovim.md#learning-aids
+-- The tips window (Space uk) is our own code: lua/config/coach.lua.
 return {
-  -- precognition: faint hints showing where keys would jump. Above the current
-  -- line: w b e (words), 0 ^ $ (line start/end), % (matching bracket).
-  -- Beside the line numbers: gg G (top/end of file), { } (blank-line jumps).
-  -- Space uP turns them off and on.
-  {
-    "tris203/precognition.nvim",
-    event = "VeryLazy",
-    opts = {
-      -- Off: an f/t hint under almost every letter, too busy while learning.
-      targetedMotionHints = { enabled = false },
-    },
-    keys = {
-      { "<leader>uP", function() require("precognition").toggle() end, desc = "Toggle Motion Hints (precognition)" },
-    },
-  },
-
   -- hardtime: a coach. Spots slow habits (j j j j) and suggests the faster
   -- key (4j) in a notification. Set to hints only: it never blocks a key,
   -- and the mouse and arrow keys keep working.

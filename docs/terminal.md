@@ -102,7 +102,7 @@ main checkout's current branch.
 ## Neovim
 
 Neovim set up as [LazyVim](https://lazyvim.org): file tree, file tabs, fuzzy
-finder, git marks and blame, lazygit, Treesitter colours, Gruvbox. `nvim .` opens
+finder, git marks, a live Vim tips window, lazygit, Treesitter colours, Gruvbox. `nvim .` opens
 a folder; `Space` (wait) lists every shortcut. Also `$EDITOR`.
 
 Full guide, with a five-minute Vim intro, a code-review walkthrough and every

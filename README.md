@@ -94,7 +94,7 @@ Any real file already in the way is moved to `~/.dotfiles-backup/<date-time>/`, 
 |---|---|---|
 | 🐚 **Shell** | zsh, starship prompt, fzf + fzf-tab, autosuggestions, syntax highlighting, 100k history | [terminal.md](docs/terminal.md) |
 | 🖥️ **Terminal** | Rex (main, private beta), Ghostty (backup and Quick Terminal) | [terminal.md](docs/terminal.md#rex) |
-| ✏️ **Editor** | Neovim as LazyVim (Gruvbox, single-click file tree, git blame) + lazygit | [neovim.md](docs/neovim.md) |
+| ✏️ **Editor** | Neovim as LazyVim (Gruvbox, single-click file tree, a live Vim tips window) + lazygit | [neovim.md](docs/neovim.md) |
 | ☁️ **Cloudflare** | Wrangler (Workers, Durable Objects), cloudflared tunnels, secrets kept out of git | [cloudflare.md](docs/cloudflare.md) |
 | 🔧 **CLI tools** | ripgrep, fd, bat, eza, delta, jq, yq, ast-grep, gitleaks, uv, fnm, gh | [terminal.md](docs/terminal.md#command-line-tools) |
 | 🤖 **AI agents** | Claude Code and Pi: skills, prompts, review tools, Pi extensions | [agents.md](docs/agents.md) |

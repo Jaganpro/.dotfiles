@@ -18,7 +18,7 @@
 --   Space gb  git blame (line)     ]h [h     next/prev git change
 --   Shift-h / Shift-l  previous / next file tab    Space bd  close file tab
 --   Space l   plugin manager       :LazyExtras  turn on languages and extras
---   Space h   our guide            Space uP  motion hints on/off   :Screenkey  show keys
+--   Space h   our guide            Space uk  tips window on/off    :Screenkey  show keys
 --
 -- Full guide, with a Vim intro and every shortcut: ~/.dotfiles/docs/neovim.md
 

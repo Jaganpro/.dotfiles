@@ -8,9 +8,9 @@ was checked against this config.
 1. Read [Vim in five minutes](#vim-in-five-minutes) (modes, the ten first keys, how to quit).
 2. Run `nvim`, then `:Tutor`: Vim's own 20-minute hands-on lesson.
 3. Open a real project with `nvim .` and follow [A code-review session](#a-code-review-session).
-4. Leave the [learning aids](#learning-aids) on: the motion hints and the habit
-   coach teach as you work. Lost? Press `Space` and wait, or `Space h` for this guide.
-5. After a week or two, turn off what you no longer need (`Space uP`, `:Hardtime toggle`).
+4. Leave the [learning aids](#learning-aids) on: the tips window (top right) and
+   the habit coach teach as you work. Lost? Press `Space` and wait, or `Space h` for this guide.
+5. After a week or two, turn off what you no longer need (`Space uk`, `:Hardtime toggle`).
 
 - [What it is](#what-it-is)
 - [Vim in five minutes](#vim-in-five-minutes)
@@ -30,8 +30,8 @@ What you see after `nvim .`:
 
 ```
 ┌─ Explorer ──────┬─ main.ts ─ utils.ts ─ README.md ──────────────┐   ← open files (tabs)
-│ ▾ src           │  1  import { x } from "./utils"   You, 2 days │   ← faded git blame
-│     main.ts     │▎ 2  const y = x + 1                           │   ← ▎ = changed since last commit
+│ ▾ src           │  1  import { x } from "./utils"  ╭─ NORMAL ─╮│   ← tips window
+│     main.ts     │▎ 2  const y = x + 1            │ w b  word ││   ← ▎ = changed since last commit
 │     utils.ts    │  3                                            │
 │   README.md     │                                               │
 ├─────────────────┴───────────────────────────────────────────────┤
@@ -43,9 +43,10 @@ What you see after `nvim .`:
 
 | File | Change |
 |---|---|
-| `lua/plugins/learning.lua` | Learning aids: motion hints, a habit coach, a key display ([below](#learning-aids)) |
+| `lua/config/coach.lua` | The tips window: our own code ([below](#learning-aids)) |
+| `lua/plugins/learning.lua` | Learning aids: a habit coach and a key display ([below](#learning-aids)) |
 | `lua/config/keymaps.lua` | `Space h` opens this guide inside Neovim |
-| `lua/plugins/personal.lua` | Gruvbox colours; faded git blame on the current line; single click opens a file in the tree; finders include dotfolders like `.config/` (as our ripgrep config does) |
+| `lua/plugins/personal.lua` | Gruvbox colours; single click opens a file in the tree; pop-up messages in the bottom right; finders include dotfolders like `.config/` (as our ripgrep config does) |
 | `lua/config/options.lua` | Plain line numbers (LazyVim counts from the cursor by default); TypeScript uses TS 7's own fast server |
 | `lua/config/lazy.lua` | LazyVim's loader; Gruvbox while installing; no background update checks |
 | `lazy-lock.json` | Exact version of every plugin (commit it after updating) |
@@ -101,8 +102,7 @@ replaces the word under the cursor. Practice: `:Tutor` runs Vim's own 20-minute 
 5. **See what changed:** `Space gs` lists changed files. Inside a file, `]h` / `[h`
    jumps to the next / previous change, and `Space ghp` shows the old version of
    that change.
-6. **Who wrote this line?** It's shown faded at the end of the line. `Space gb`
-   shows the full commit.
+6. **Who wrote this line?** `Space gb` shows the commit that last changed it.
 7. **Commit or browse history:** `Space gg` opens lazygit full screen; `q` comes back.
 8. **Switch between open files:** click the tabs at the top, `Shift-h` / `Shift-l`,
    or `Space ,` for a list.
@@ -110,26 +110,39 @@ replaces the word under the cursor. Practice: `:Tutor` runs Vim's own 20-minute 
 
 ## Learning aids
 
-Helpers for while you're learning, all in `lua/plugins/learning.lua`. When you
-don't need them any more, delete that file and run `:Lazy clean`.
+Helpers for while you're learning. When you don't need them any more: `Space uk`
+hides the tips window (delete `lua/config/coach.lua` and its line in
+`lua/config/autocmds.lua` to remove it), and deleting `lua/plugins/learning.lua`
+(then `:Lazy clean`) removes the rest.
 
 | Helper | What you see | Control |
 |---|---|---|
+| **Tips window** (our own) | A small box in the top right with the keys that fit what you're doing: the mode, what's under the cursor, the file tree or a finder. In Normal mode it adds moving-around keys and a few always-useful ones | `Space uk` hides / shows |
 | **Key popup** (which-key, part of LazyVim) | Press `Space` (or `g`, `[`, `]`, `Ctrl-w`) and wait: a box lists what you can press next | Always on |
+| **Habit coach** (hardtime) | A message in the bottom right when you do something the slow way, e.g. `j` `j` `j` `j` → "Use countj or CTRL-D". Only hints: keys, arrows and the mouse keep working | `:Hardtime report` lists your habits, `:Hardtime toggle` turns it off |
+| **Key display** (screenkey) | A small box listing each key you press | `:Screenkey` shows / hides it (off by default) |
 | **This guide** | `Space h` opens this file in a read-only tab inside Neovim | `:tabclose` closes it |
-| **Motion hints** (precognition) | A faint line under the cursor line showing where `w` `b` `e` `0` `^` `$` `%` would jump; `gg` `G` `{` `}` beside the line numbers | `Space uP` hides / shows |
-| **Habit coach** (hardtime) | A popup when you do something the slow way, e.g. `j` `j` `j` `j` → "Use countj or CTRL-D". Only hints: keys, arrows and the mouse keep working | `:Hardtime report` lists your habits, `:Hardtime toggle` turns it off |
-| **Key display** (screenkey) | A small box at the bottom right listing each key you press | `:Screenkey` shows / hides it (off by default) |
 
-What the motion hints look like (cursor on line 27):
+What the tips window shows:
 
-```
-  27   dependencies = { "MunifTanjim/nui.nvim" },
-       0   ^          e w                    %$
-```
+| Where you are | Tips |
+|---|---|
+| Normal, on a word | `w` `b` next / prev word, `e` end, `ciw` change word, `dw`, `*` find this word |
+| Normal, on a bracket | `%` jump to its match, `ci(` / `di{` change / delete inside, `va{` select the block |
+| Normal, on a blank line | `o` `O` new line, `{` `}` prev / next block, `dd`, `p` |
+| Normal, after a search | `n` `N` next / prev match, `*` `#`, `cgn`, `Esc` clears the highlight |
+| After `d`, `c` or `y` (Vim waits for "on what?") | `w`, `iw`, `$`, `ip`, `i"` `i(`, the same key again for the whole line |
+| Insert | `Esc`, `Ctrl-w` delete word, `Ctrl-u`, `Ctrl-o` one Normal command, `Ctrl-s` save |
+| Visual (selecting) | `y` `d` `c`, `>` `<` indent, `gc` comment, `o` other end |
+| `:` command line | `Tab` complete, `↑` `↓` history, `Enter`, `Esc`, `:w` `:qa` |
+| File tree | `Enter` `l` open, `h` close folder, `a` new, `r` `d`, `H` `I`, `Ctrl-l` to the code |
+| A finder | type to filter, `Ctrl-j/k`, `Enter`, `Ctrl-v` split, `Alt-h` hidden files |
+| Always in Normal: **move** | `Shift-h/l` prev / next tab, `Ctrl-h/l` window left / right, `Ctrl-d/u` half page, `gg` `G`, `Ctrl-o` jump back |
+| Always in Normal: **always** | `i` `a` `o` start typing, `u` `Ctrl-r` undo / redo, `Space` all shortcuts |
 
-`w` jumps to the next word, `e` to the end of this one, `0` / `^` to the line
-start / first letter, `$` to the end, `%` to the matching bracket.
+It hides itself when Neovim is narrower than 100 columns (a narrow split), in
+pop-ups like lazygit, terminals and the start screen. To change a tip, edit the
+`TIPS`, `NAV` or `ALWAYS` lists at the top of `lua/config/coach.lua`.
 
 ## Shortcuts
 
@@ -280,7 +293,7 @@ Turn on others with `:LazyExtras` (below). Then:
 | `Space uC` | Try other colour schemes (until restart) |
 | `Ctrl-/` | Terminal at the bottom (same keys close it) |
 | `Space n` | Past notifications |
-| `Space uP` | Motion hints on / off ([learning aids](#learning-aids)) |
+| `Space uk` | Tips window on / off ([learning aids](#learning-aids)) |
 | `Space h` | This guide, inside Neovim |
 
 ## Looking after it
