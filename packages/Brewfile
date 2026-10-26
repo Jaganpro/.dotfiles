@@ -18,9 +18,11 @@ brew "git-delta" # readable git diffs (used as git's pager)
 brew "gitleaks"  # scan repos for committed secrets
 brew "gum"       # styled output and prompts for gwa/gwr
 brew "jq"        # JSON processor (newer than macOS's built-in)
+brew "neovim"    # editor: file tree + Gruvbox, for reading and reviewing code (nvim)
 brew "plannotator/tap/plannotator-tui" # annotate an agent's plan or reply in the terminal
 brew "ripgrep"   # fast code search (rg)
 brew "shellcheck" # finds bugs in shell scripts
+brew "tree-sitter-cli" # builds Neovim's Treesitter parsers (better syntax colours)
 brew "tree"      # folder tree (tree is aliased to eza --tree; use command tree)
 brew "tuicr"     # review an agent's code changes in the terminal (/review)
 brew "uv"        # Python versions, packages and tools (uv, uvx)

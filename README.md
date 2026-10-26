@@ -24,7 +24,7 @@ links each one into place. Built from scratch in October 2026, one tool at a tim
 - 🤖 **One setup for two agents:** Claude Code and Pi share skills, prompts and rules
 - 📝 **Reviews in the terminal:** `/annotate` for plans and `/review` for diffs; your feedback becomes the agent's next message
 - 🔒 **Checked commits:** shellcheck, lint and a gitleaks scan run on every commit, and agents can't skip them
-- 🎨 **One theme:** Gruvbox Dark in Rex, Ghostty, starship, bat, delta, eza and `man`
+- 🎨 **One theme:** Gruvbox Dark in Rex, Ghostty, starship, Neovim, bat, delta, eza and `man`
 
 ## 🚀 Quick start
 
@@ -94,6 +94,7 @@ Any real file already in the way is moved to `~/.dotfiles-backup/<date-time>/`, 
 |---|---|---|
 | 🐚 **Shell** | zsh, starship prompt, fzf + fzf-tab, autosuggestions, syntax highlighting, 100k history | [terminal.md](docs/terminal.md) |
 | 🖥️ **Terminal** | Rex (main, private beta), Ghostty (backup and Quick Terminal) | [terminal.md](docs/terminal.md#rex) |
+| ✏️ **Editor** | Neovim, IDE-style in one commented file: file tree, tabs, fuzzy finder, git blame, Treesitter | [terminal.md](docs/terminal.md#neovim) |
 | 🔧 **CLI tools** | ripgrep, fd, bat, eza, delta, jq, yq, ast-grep, gitleaks, uv, fnm, gh | [terminal.md](docs/terminal.md#command-line-tools) |
 | 🤖 **AI agents** | Claude Code and Pi: skills, prompts, review tools, Pi extensions | [agents.md](docs/agents.md) |
 | 📄 **Every tracked file** | What each file in `~` holds | [files.md](docs/files.md) |

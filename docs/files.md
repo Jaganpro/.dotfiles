@@ -4,7 +4,7 @@ Every file below lives in `home/` and is linked into `~` by `dot stow`.
 
 | File (in `~`, linked from `home/`) | What it holds |
 |---|---|
-| `~/.zprofile` | Homebrew and `~/.local/bin` on PATH; `JAVA_HOME`; points `brew bundle --global` at `packages/Brewfile`; `RIPGREP_CONFIG_PATH` |
+| `~/.zprofile` | Homebrew and `~/.local/bin` on PATH; `JAVA_HOME`; points `brew bundle --global` at `packages/Brewfile`; `EDITOR` / `VISUAL` = nvim; `RIPGREP_CONFIG_PATH` |
 | `~/.hushlogin` | Empty on purpose: its existence hides macOS's "Last login: …" line in new terminals and review splits |
 | `~/.zshrc` | History, Gruvbox colours, fnm, fzf, eza shortcuts, direnv, autosuggestions, starship, fastfetch, syntax highlighting |
 | `~/.config/fastfetch/config.jsonc` | Compact, private fastfetch layout |
@@ -14,6 +14,8 @@ Every file below lives in `home/` and is linked into `~` by `dot stow`.
 | `~/.config/ripgrep/config` | ripgrep defaults: search hidden files, skip `.git/` and files over 5 MB |
 | `~/.config/git/ignore` | Global git ignore for every repo: `.DS_Store`, personal Claude files, `.env*` / `.envrc` (except `.env.example`) |
 | `~/.config/ghostty/config.ghostty` | Ghostty (fallback terminal, and its Quick Terminal): Gruvbox Dark, font 14, Option-as-Alt, Quick Terminal, shortcuts, SSH terminfo, balanced padding, medium split dimming |
+| `~/.config/nvim/init.lua` | Neovim, IDE layout: file tree, file tabs, status bar, git marks + blame, fuzzy finder (fzf-lua), key hints (which-key), Treesitter colours; Gruvbox. Nine plugins via the built-in `vim.pack`. Key cheat sheet at the top; commented line by line |
+| `~/.config/nvim/nvim-pack-lock.json` | Neovim plugin versions, written by `vim.pack` on first launch and on `:lua vim.pack.update()`; don't edit by hand |
 | `~/.config/rex/init.lua` | Rex behaviour: shortcuts, key modes, custom actions (empty for now). `rex config reload` after editing; the pre-commit hook runs `rex config check` |
 | `~/.config/rex/themes/Gruvbox Dark` | Rex: the Gruvbox Dark theme file (Ghostty format), so importing it doesn't need Ghostty. See [Rex](terminal.md#rex) |
 | `~/.npmrc` | npm installs only versions at least 3 days old (supply-chain cooldown) |

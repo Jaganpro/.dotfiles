@@ -36,7 +36,9 @@ The full walkthrough. The short version is in the [README](../README.md#-quick-s
    brew install --cask --adopt <app> [<app> ...]
    ```
 
-4. **Open a new terminal** so the shell config loads.
+4. **Open a new terminal** so the shell config loads. Then run `nvim` once:
+   answer **Yes** to install its plugins, wait for the Treesitter parsers to
+   build (about a minute), and quit with `:qa`. See [Neovim](terminal.md#neovim).
 
 5. **Node** (needed for the Salesforce CLI):
 

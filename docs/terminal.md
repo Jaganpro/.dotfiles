@@ -11,6 +11,8 @@
 | uv | Python versions, packages and tools | `uvx <tool>`, `uv run script.py` |
 | ripgrep | Fast search through file contents | `rg "TODO"` |
 | jq | Read and edit JSON (newer than macOS's built-in) | `jq '.name' package.json` |
+| neovim | Small IDE-style editor for reading code: file tree, tabs, fuzzy finder, git marks and blame, Treesitter colours. Also `$EDITOR`. See [Neovim](#neovim) | `nvim .` |
+| tree-sitter-cli | Builds the Treesitter parsers Neovim uses for syntax colours | `:TSUpdate` in Neovim |
 | yq | Read and edit YAML, XML and TOML | `yq -p xml '.Package.types[].members' manifest/package.xml` |
 | fd | Fast, simple `find` | `fd zshrc ~` |
 | fzf | Fuzzy finder for history, files and folders | Ctrl-R, Ctrl-T |
@@ -91,7 +93,35 @@ main checkout's current branch.
   runs, with timestamps (`history -i`). Repeats keep only the latest copy.
   Start a command with a space to keep it out of history.
 - **Colours:** one theme, **Gruvbox Dark**, across Rex, Ghostty, starship, vivid
-  (`LS_COLORS`), bat (`BAT_THEME`), `man` pages (shown through bat) and delta.
+  (`LS_COLORS`), bat (`BAT_THEME`), `man` pages (shown through bat), delta and Neovim.
+
+## Neovim
+
+A small IDE-style editor for reading and reviewing code. `nvim .` opens a folder:
+file tree on the left, open files as tabs along the top, git change marks
+beside the line numbers, a status bar along the bottom, Treesitter syntax
+colours and faded git blame at the end of the current line. It's also `$EDITOR`
+(git commit messages etc.); agents set `GIT_EDITOR=true`, so they never open it.
+
+The whole config is one commented file, `~/.config/nvim/init.lua`, with a key
+cheat sheet at the top. Plugins come from Neovim's built-in `vim.pack` (no
+plugin manager to install); versions are pinned in `nvim-pack-lock.json`.
+
+| Keys | Does |
+|---|---|
+| Space e | Show / hide the file tree (click a file to open it, `g?` for tree keys) |
+| Space f / Space / | Find a file by name / search text in all files |
+| Space b / Space r / Space g | Open files / recent files / files changed in git |
+| Space (pause) | Popup listing every Space shortcut; Space ? searches all of them |
+| ]b [b · Space x | Next / previous file tab · close the tab |
+| ]c [c | Next / previous git change in the file |
+
+- **First launch on a new Mac:** Neovim asks to install the plugins (answer
+  Yes), then builds the Treesitter parsers in the background (about a minute).
+  Restart Neovim once afterwards.
+- **Update:** `:lua vim.pack.update()` (`:write` accepts, `:quit` cancels), then
+  `:TSUpdate`. Commit the changed `nvim-pack-lock.json`.
+- **More languages:** add the name to `languages` in `init.lua`.
 
 ## Ghostty
 
