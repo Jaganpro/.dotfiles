@@ -47,7 +47,7 @@ What you see after `nvim .`:
 | `lua/plugins/learning.lua` | Learning aids: a habit coach and a key display ([below](#learning-aids)) |
 | `lua/config/keymaps.lua` | `Space h` opens this guide inside Neovim |
 | `lua/plugins/personal.lua` | Gruvbox colours; single click opens a file in the tree; pop-up messages in the bottom right; finders include dotfolders like `.config/` (as our ripgrep config does) |
-| `lua/config/options.lua` | Plain line numbers (LazyVim counts from the cursor by default); TypeScript uses TS 7's own fast server |
+| `lua/config/options.lua` | TypeScript uses TS 7's own fast server |
 | `lua/config/lazy.lua` | LazyVim's loader; Gruvbox while installing; no background update checks |
 | `lazy-lock.json` | Exact version of every plugin (commit it after updating) |
 | `lazyvim.json` | LazyVim extras you've turned on: TypeScript and oxc |
