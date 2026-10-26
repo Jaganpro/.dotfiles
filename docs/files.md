@@ -15,7 +15,7 @@ Every file below lives in `home/` and is linked into `~` by `dot stow`.
 | `~/.config/git/ignore` | Global git ignore for every repo: `.DS_Store`, personal Claude files, `.env*` / `.envrc` (except `.env.example`) |
 | `~/.config/ghostty/config.ghostty` | Ghostty (fallback terminal, and its Quick Terminal): Gruvbox Dark, font 14, Option-as-Alt, Quick Terminal, shortcuts, SSH terminfo, balanced padding, medium split dimming |
 | `~/.config/nvim/init.lua` | Neovim = LazyVim: loads `lua/config/lazy.lua` (from the LazyVim starter). Header lists where everything lives and the keys worth knowing |
-| `~/.config/nvim/lua/config/*.lua` | `lazy.lua` (loads lazy.nvim + LazyVim; Gruvbox while installing; no background update checks), `options.lua` (plain line numbers), `keymaps.lua` and `autocmds.lua` (empty, with links to LazyVim's defaults) |
+| `~/.config/nvim/lua/config/*.lua` | `lazy.lua` (loads lazy.nvim + LazyVim; Gruvbox while installing; no background update checks; `:Tutor` kept), `options.lua` (plain line numbers), `keymaps.lua` and `autocmds.lua` (empty, with links to LazyVim's defaults) |
 | `~/.config/nvim/lua/plugins/personal.lua` | Our only plugin changes: Gruvbox, git blame on the current line, single-click in the file tree |
 | `~/.config/nvim/lazy-lock.json` | Exact plugin versions (lazy.nvim writes it); commit after `:Lazy update` |
 | `~/.config/nvim/lazyvim.json` | LazyVim extras turned on with `:LazyExtras` (none yet) |

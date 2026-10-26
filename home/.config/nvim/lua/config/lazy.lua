@@ -1,7 +1,7 @@
 -- Loads lazy.nvim (the plugin manager), then LazyVim and our own plugin files.
 -- From the LazyVim starter (Apache-2.0, LazyVim/starter@803bc18), see
 -- third_party/lazyvim-starter.LICENSE. Changed: comments rewritten; the start
--- colour scheme is Gruvbox; the update checker no longer runs in the background.
+-- colour scheme is Gruvbox; the update checker no longer runs in the background; :Tutor stays on.
 
 -- First launch: download lazy.nvim itself into ~/.local/share/nvim/lazy/.
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -38,12 +38,11 @@ require("lazy").setup({
   checker = { enabled = false },
   performance = {
     rtp = {
-      -- Built-in plugins nobody here uses (opening .gz/.tar/.zip files, the tutorial).
+      -- Built-in plugins nobody here uses (opening .gz/.tar/.zip files, HTML export).
       disabled_plugins = {
         "gzip",
         "tarPlugin",
         "tohtml",
-        "tutor",
         "zipPlugin",
       },
     },

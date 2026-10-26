@@ -94,7 +94,7 @@ Any real file already in the way is moved to `~/.dotfiles-backup/<date-time>/`, 
 |---|---|---|
 | 🐚 **Shell** | zsh, starship prompt, fzf + fzf-tab, autosuggestions, syntax highlighting, 100k history | [terminal.md](docs/terminal.md) |
 | 🖥️ **Terminal** | Rex (main, private beta), Ghostty (backup and Quick Terminal) | [terminal.md](docs/terminal.md#rex) |
-| ✏️ **Editor** | Neovim as LazyVim (Gruvbox, single-click file tree, git blame) + lazygit | [terminal.md](docs/terminal.md#neovim) |
+| ✏️ **Editor** | Neovim as LazyVim (Gruvbox, single-click file tree, git blame) + lazygit | [neovim.md](docs/neovim.md) |
 | 🔧 **CLI tools** | ripgrep, fd, bat, eza, delta, jq, yq, ast-grep, gitleaks, uv, fnm, gh | [terminal.md](docs/terminal.md#command-line-tools) |
 | 🤖 **AI agents** | Claude Code and Pi: skills, prompts, review tools, Pi extensions | [agents.md](docs/agents.md) |
 | 📄 **Every tracked file** | What each file in `~` holds | [files.md](docs/files.md) |
@@ -111,8 +111,9 @@ Any real file already in the way is moved to `~/.dotfiles-backup/<date-time>/`, 
 | <kbd>→</kbd> | Accept the grey autosuggestion |
 | `ll` / `lt` | Detailed list / two-level tree (eza) |
 | `gwa <branch>` / `gwr` | Create / remove a git worktree next to the repo |
+| `nvim .` | Open a project in Neovim (LazyVim). Then `Space e` tree, `Space Space` find file, `Space /` search, `Space gg` lazygit |
 
-Full list: [docs/terminal.md](docs/terminal.md#shortcuts-and-aliases).
+Full lists: [docs/terminal.md](docs/terminal.md#shortcuts-and-aliases) (shell), [docs/neovim.md](docs/neovim.md#shortcuts) (Neovim).
 
 ## 🤖 Working with agents
 

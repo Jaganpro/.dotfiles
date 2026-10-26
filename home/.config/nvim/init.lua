@@ -16,6 +16,8 @@
 --   Space ,   switch open file     Space fr  recent files    Space gg  lazygit
 --   Space gb  git blame (line)     ]h [h     next/prev git change
 --   Shift-h / Shift-l  previous / next file tab    Space bd  close file tab
---   Space l   plugin manager       Space x   LazyVim extras (:LazyExtras)
+--   Space l   plugin manager       :LazyExtras  turn on languages and extras
+--
+-- Full guide, with a Vim intro and every shortcut: ~/.dotfiles/docs/neovim.md
 
 require("config.lazy")

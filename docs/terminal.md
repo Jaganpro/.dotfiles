@@ -11,7 +11,7 @@
 | uv | Python versions, packages and tools | `uvx <tool>`, `uv run script.py` |
 | ripgrep | Fast search through file contents | `rg "TODO"` |
 | jq | Read and edit JSON (newer than macOS's built-in) | `jq '.name' package.json` |
-| neovim | Editor, set up as [LazyVim](#neovim): file tree, tabs, fuzzy finder, git, Treesitter. Also `$EDITOR` | `nvim .` |
+| neovim | Editor, set up as [LazyVim](neovim.md): file tree, tabs, fuzzy finder, git, Treesitter. Also `$EDITOR` | `nvim .` |
 | lazygit | Full-screen git: stage, commit, push, branches, history (also Space gg in Neovim) | `lazygit` |
 | tree-sitter-cli | Builds the Treesitter parsers Neovim uses for syntax colours | `:TSUpdate` in Neovim |
 | yq | Read and edit YAML, XML and TOML | `yq -p xml '.Package.types[].members' manifest/package.xml` |
@@ -98,36 +98,12 @@ main checkout's current branch.
 
 ## Neovim
 
-[LazyVim](https://lazyvim.org): a popular, ready-made Neovim setup, so we
-don't maintain our own. `nvim .` opens a folder: file tree, file tabs, status
-bar, fuzzy finder, git marks, Treesitter colours, key-hint popup, lazygit. It's
-also `$EDITOR` (git commit messages etc.); agents set `GIT_EDITOR=true`, so
-they never open it.
+Neovim set up as [LazyVim](https://lazyvim.org): file tree, file tabs, fuzzy
+finder, git marks and blame, lazygit, Treesitter colours, Gruvbox. `nvim .` opens
+a folder; `Space` (wait) lists every shortcut. Also `$EDITOR`.
 
-Our only changes are Gruvbox, plain line numbers, git blame on the current line
-and single-click in the file tree: `lua/config/options.lua` and
-`lua/plugins/personal.lua` in `~/.config/nvim/`. Everything else is LazyVim's
-default. Its own guide: <https://lazyvim.org/keymaps>.
-
-| Keys | Does |
-|---|---|
-| Space (pause) | Popup listing every shortcut |
-| Space e | File tree (click a file to open it, `?` for tree keys) |
-| Space ff / Space / | Find a file by name / search text in all files |
-| Space , / Space fr | Open files / recent files |
-| Shift-h / Shift-l · Space bd | Previous / next file tab · close the tab |
-| Space gg | lazygit: full-screen git (stage, commit, push, branches) |
-| Space gb · ]h [h | Git blame for the line · next / previous git change |
-| Space l · Space x | Plugin manager · LazyVim extras (e.g. TypeScript support) |
-
-- **First launch on a new Mac:** LazyVim installs its plugins and Treesitter
-  parsers by itself (no prompt, about a minute). Restart Neovim afterwards.
-- **Update:** `Space l` then `U` (or `:Lazy update`), then commit the changed
-  `lazy-lock.json`. To undo an update: `git checkout` the old
-  `lazy-lock.json`, then `:Lazy restore`.
-- **Language support** (go-to-definition, errors as you type): off apart from
-  Lua. Turn on a language with `:LazyExtras` (e.g. `lang.typescript`); that
-  writes `lazyvim.json`, so commit it.
+Full guide, with a five-minute Vim intro, a code-review walkthrough and every
+shortcut: **[docs/neovim.md](neovim.md)**.
 
 ## Ghostty
 
