@@ -104,7 +104,7 @@ The full walkthrough. The short version is in the [README](../README.md#-quick-s
     - Click **Allow** for **Microphone** (records you) and **Accessibility**
       (types the text into apps). Skipped one? System Settings → Privacy &
       Security → Microphone / Accessibility.
-    - Pick the dictation key: **hold Right ⌘**, speak, let go, and the text
+    - Pick the dictation key: **hold Fn** (the app suggests Right ⌘), speak, let go, and the text
       appears at the cursor. **⌥ Space** starts and stops hands-free.
     - It works in any app, including the terminal, Claude Code and Pi.
     - Our settings (set by hand in Superwhisper's Settings; not tracked, the
@@ -112,7 +112,7 @@ The full walkthrough. The short version is in the [README](../README.md#-quick-s
 
       | Setting | Value |
       |---|---|
-      | Dictation key | Right ⌘ (the default); ⌥ Space for hands-free |
+      | Dictation key | Fn (hold, speak, let go); ⌥ Space for hands-free |
       | Mode | Default |
       | Launch at login | On |
       | Show in Dock | Off (menu bar only) |
