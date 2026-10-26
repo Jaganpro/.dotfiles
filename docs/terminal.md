@@ -11,7 +11,8 @@
 | uv | Python versions, packages and tools | `uvx <tool>`, `uv run script.py` |
 | ripgrep | Fast search through file contents | `rg "TODO"` |
 | jq | Read and edit JSON (newer than macOS's built-in) | `jq '.name' package.json` |
-| neovim | Small IDE-style editor for reading code: file tree, tabs, fuzzy finder, git marks and blame, Treesitter colours. Also `$EDITOR`. See [Neovim](#neovim) | `nvim .` |
+| neovim | Editor, set up as [LazyVim](#neovim): file tree, tabs, fuzzy finder, git, Treesitter. Also `$EDITOR` | `nvim .` |
+| lazygit | Full-screen git: stage, commit, push, branches, history (also Space gg in Neovim) | `lazygit` |
 | tree-sitter-cli | Builds the Treesitter parsers Neovim uses for syntax colours | `:TSUpdate` in Neovim |
 | yq | Read and edit YAML, XML and TOML | `yq -p xml '.Package.types[].members' manifest/package.xml` |
 | fd | Fast, simple `find` | `fd zshrc ~` |
@@ -97,31 +98,36 @@ main checkout's current branch.
 
 ## Neovim
 
-A small IDE-style editor for reading and reviewing code. `nvim .` opens a folder:
-file tree on the left, open files as tabs along the top, git change marks
-beside the line numbers, a status bar along the bottom, Treesitter syntax
-colours and faded git blame at the end of the current line. It's also `$EDITOR`
-(git commit messages etc.); agents set `GIT_EDITOR=true`, so they never open it.
+[LazyVim](https://lazyvim.org): a popular, ready-made Neovim setup, so we
+don't maintain our own. `nvim .` opens a folder: file tree, file tabs, status
+bar, fuzzy finder, git marks, Treesitter colours, key-hint popup, lazygit. It's
+also `$EDITOR` (git commit messages etc.); agents set `GIT_EDITOR=true`, so
+they never open it.
 
-The whole config is one commented file, `~/.config/nvim/init.lua`, with a key
-cheat sheet at the top. Plugins come from Neovim's built-in `vim.pack` (no
-plugin manager to install); versions are pinned in `nvim-pack-lock.json`.
+Our only changes are Gruvbox, plain line numbers, git blame on the current line
+and single-click in the file tree: `lua/config/options.lua` and
+`lua/plugins/personal.lua` in `~/.config/nvim/`. Everything else is LazyVim's
+default. Its own guide: <https://lazyvim.org/keymaps>.
 
 | Keys | Does |
 |---|---|
-| Space e | Show / hide the file tree (click a file to open it, `g?` for tree keys) |
-| Space f / Space / | Find a file by name / search text in all files |
-| Space b / Space r / Space g | Open files / recent files / files changed in git |
-| Space (pause) | Popup listing every Space shortcut; Space ? searches all of them |
-| ]b [b · Space x | Next / previous file tab · close the tab |
-| ]c [c | Next / previous git change in the file |
+| Space (pause) | Popup listing every shortcut |
+| Space e | File tree (click a file to open it, `?` for tree keys) |
+| Space ff / Space / | Find a file by name / search text in all files |
+| Space , / Space fr | Open files / recent files |
+| Shift-h / Shift-l · Space bd | Previous / next file tab · close the tab |
+| Space gg | lazygit: full-screen git (stage, commit, push, branches) |
+| Space gb · ]h [h | Git blame for the line · next / previous git change |
+| Space l · Space x | Plugin manager · LazyVim extras (e.g. TypeScript support) |
 
-- **First launch on a new Mac:** Neovim asks to install the plugins (answer
-  Yes), then builds the Treesitter parsers in the background (about a minute).
-  Restart Neovim once afterwards.
-- **Update:** `:lua vim.pack.update()` (`:write` accepts, `:quit` cancels), then
-  `:TSUpdate`. Commit the changed `nvim-pack-lock.json`.
-- **More languages:** add the name to `languages` in `init.lua`.
+- **First launch on a new Mac:** LazyVim installs its plugins and Treesitter
+  parsers by itself (no prompt, about a minute). Restart Neovim afterwards.
+- **Update:** `Space l` then `U` (or `:Lazy update`), then commit the changed
+  `lazy-lock.json`. To undo an update: `git checkout` the old
+  `lazy-lock.json`, then `:Lazy restore`.
+- **Language support** (go-to-definition, errors as you type): off apart from
+  Lua. Turn on a language with `:LazyExtras` (e.g. `lang.typescript`); that
+  writes `lazyvim.json`, so commit it.
 
 ## Ghostty
 

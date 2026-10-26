@@ -1,0 +1,3 @@
+-- Our extra shortcuts. Loaded after plugins start.
+-- LazyVim's defaults: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
+-- Add one like: vim.keymap.set("n", "<leader>xx", "<cmd>SomeCommand<cr>", { desc = "Shown in the key popup" })

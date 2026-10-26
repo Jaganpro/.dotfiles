@@ -13,6 +13,7 @@ copied code are in [`third_party/`](third_party/).
 | [earendil-works/pi](https://github.com/earendil-works/pi) | `/deslop` and `/ship` prompts | Adapted | MIT |
 | [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) | Coding rules in `AGENTS.md` | Adapted | MIT |
 | [mbadolato/iTerm2-Color-Schemes](https://github.com/mbadolato/iTerm2-Color-Schemes) | Rex's Gruvbox Dark theme file | Unmodified apart from a header | MIT |
+| [LazyVim/starter](https://github.com/LazyVim/starter) | Neovim config (`init.lua`, `lua/config/`) | Adapted (comments, Gruvbox, no background update checks) | Apache-2.0 |
 
 ## Ideas and inspiration
 
@@ -33,3 +34,4 @@ copied code are in [`third_party/`](third_party/).
 | [agavra/tuicr](https://github.com/agavra/tuicr) | Code review in the terminal (MIT) |
 | [earendil-works/pi-claude-code](https://github.com/earendil-works/pi-claude-code) | Claude models in Pi through a Claude Code login |
 | [GNU Stow](https://www.gnu.org/software/stow/) | Links `home/` into `~` |
+| [LazyVim](https://github.com/LazyVim/LazyVim) | Neovim setup, loaded as a plugin (Apache-2.0) |

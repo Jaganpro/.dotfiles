@@ -14,8 +14,11 @@ Every file below lives in `home/` and is linked into `~` by `dot stow`.
 | `~/.config/ripgrep/config` | ripgrep defaults: search hidden files, skip `.git/` and files over 5 MB |
 | `~/.config/git/ignore` | Global git ignore for every repo: `.DS_Store`, personal Claude files, `.env*` / `.envrc` (except `.env.example`) |
 | `~/.config/ghostty/config.ghostty` | Ghostty (fallback terminal, and its Quick Terminal): Gruvbox Dark, font 14, Option-as-Alt, Quick Terminal, shortcuts, SSH terminfo, balanced padding, medium split dimming |
-| `~/.config/nvim/init.lua` | Neovim, IDE layout: file tree, file tabs, status bar, git marks + blame, fuzzy finder (fzf-lua), key hints (which-key), Treesitter colours; Gruvbox. Nine plugins via the built-in `vim.pack`. Key cheat sheet at the top; commented line by line |
-| `~/.config/nvim/nvim-pack-lock.json` | Neovim plugin versions, written by `vim.pack` on first launch and on `:lua vim.pack.update()`; don't edit by hand |
+| `~/.config/nvim/init.lua` | Neovim = LazyVim: loads `lua/config/lazy.lua` (from the LazyVim starter). Header lists where everything lives and the keys worth knowing |
+| `~/.config/nvim/lua/config/*.lua` | `lazy.lua` (loads lazy.nvim + LazyVim; Gruvbox while installing; no background update checks), `options.lua` (plain line numbers), `keymaps.lua` and `autocmds.lua` (empty, with links to LazyVim's defaults) |
+| `~/.config/nvim/lua/plugins/personal.lua` | Our only plugin changes: Gruvbox, git blame on the current line, single-click in the file tree |
+| `~/.config/nvim/lazy-lock.json` | Exact plugin versions (lazy.nvim writes it); commit after `:Lazy update` |
+| `~/.config/nvim/lazyvim.json` | LazyVim extras turned on with `:LazyExtras` (none yet) |
 | `~/.config/rex/init.lua` | Rex behaviour: shortcuts, key modes, custom actions (empty for now). `rex config reload` after editing; the pre-commit hook runs `rex config check` |
 | `~/.config/rex/themes/Gruvbox Dark` | Rex: the Gruvbox Dark theme file (Ghostty format), so importing it doesn't need Ghostty. See [Rex](terminal.md#rex) |
 | `~/.npmrc` | npm installs only versions at least 3 days old (supply-chain cooldown) |
