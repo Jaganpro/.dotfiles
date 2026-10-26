@@ -7,7 +7,8 @@
 --   lua/config/options.lua   our editor settings (LazyVim's defaults are listed in that file)
 --   lua/config/keymaps.lua   our extra shortcuts (none yet)
 --   lua/config/autocmds.lua  our automatic actions (none yet)
---   lua/plugins/*.lua        our plugin tweaks: every file here is loaded automatically
+--   lua/plugins/*.lua        our plugin tweaks (personal.lua) and learning aids (learning.lua);
+--                            every file here is loaded automatically
 --   lazyvim.json             LazyVim extras you turned on with :LazyExtras
 --   lazy-lock.json           exact plugin versions; commit it after :Lazy update
 --
@@ -17,6 +18,7 @@
 --   Space gb  git blame (line)     ]h [h     next/prev git change
 --   Shift-h / Shift-l  previous / next file tab    Space bd  close file tab
 --   Space l   plugin manager       :LazyExtras  turn on languages and extras
+--   Space h   our guide            Space uP  motion hints on/off   :Screenkey  show keys
 --
 -- Full guide, with a Vim intro and every shortcut: ~/.dotfiles/docs/neovim.md
 

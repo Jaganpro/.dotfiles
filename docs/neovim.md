@@ -6,6 +6,7 @@ was checked against this config.
 - [What it is](#what-it-is)
 - [Vim in five minutes](#vim-in-five-minutes)
 - [A code-review session](#a-code-review-session)
+- [Learning aids](#learning-aids)
 - [Shortcuts](#shortcuts)
 - [Looking after it](#looking-after-it)
 - [Troubleshooting](#troubleshooting)
@@ -33,6 +34,8 @@ What you see after `nvim .`:
 
 | File | Change |
 |---|---|
+| `lua/plugins/learning.lua` | Learning aids: motion hints, a habit coach, a key display ([below](#learning-aids)) |
+| `lua/config/keymaps.lua` | `Space h` opens this guide inside Neovim |
 | `lua/plugins/personal.lua` | Gruvbox colours; faded git blame on the current line; single click opens a file in the tree; finders include dotfolders like `.config/` (as our ripgrep config does) |
 | `lua/config/options.lua` | Plain line numbers (LazyVim counts from the cursor by default) |
 | `lua/config/lazy.lua` | LazyVim's loader; Gruvbox while installing; no background update checks |
@@ -95,6 +98,231 @@ replaces the word under the cursor. Practice: `:Tutor` runs Vim's own 20-minute 
 8. **Switch between open files:** click the tabs at the top, `Shift-h` / `Shift-l`,
    or `Space ,` for a list.
 9. **Quit:** `Space qq` (or `:qa`).
+
+## Learning aids
+
+Helpers for while you're learning, all in `lua/plugins/learning.lua`. When you
+don't need them any more, delete that file and run `:Lazy clean`.
+
+| Helper | What you see | Control |
+|---|---|---|
+| **Key popup** (which-key, part of LazyVim) | Press `Space` (or `g`, `[`, `]`, `Ctrl-w`) and wait: a box lists what you can press next | Always on |
+| **This guide** | `Space h` opens this file in a read-only tab inside Neovim | `:tabclose` closes it |
+| **Motion hints** (precognition) | A faint line under the cursor line showing where `w` `b` `e` `0` `^` `# ✏️ Neovim (LazyVim)
+
+The editor for reading and reviewing code in the terminal. Every shortcut below
+was checked against this config.
+
+- [What it is](#what-it-is)
+- [Vim in five minutes](#vim-in-five-minutes)
+- [A code-review session](#a-code-review-session)
+- [Learning aids](#learning-aids)
+- [Shortcuts](#shortcuts)
+- [Looking after it](#looking-after-it)
+- [Troubleshooting](#troubleshooting)
+
+## What it is
+
+[Neovim](https://neovim.io) set up as [LazyVim](https://lazyvim.org): a popular,
+ready-made setup of about 30 well-known plugins, maintained by someone else.
+We only list what differs from LazyVim's defaults.
+
+What you see after `nvim .`:
+
+```
+┌─ Explorer ──────┬─ main.ts ─ utils.ts ─ README.md ──────────────┐   ← open files (tabs)
+│ ▾ src           │  1  import { x } from "./utils"   You, 2 days │   ← faded git blame
+│     main.ts     │▎ 2  const y = x + 1                           │   ← ▎ = changed since last commit
+│     utils.ts    │  3                                            │
+│   README.md     │                                               │
+├─────────────────┴───────────────────────────────────────────────┤
+│ NORMAL │  main │ main.ts                         ts │ 2:5      │   ← status bar
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Our changes to LazyVim** (in `~/.config/nvim/`, i.e. `home/.config/nvim/` here):
+
+| File | Change |
+|---|---|
+| `lua/plugins/learning.lua` | Learning aids: motion hints, a habit coach, a key display ([below](#learning-aids)) |
+| `lua/config/keymaps.lua` | `Space h` opens this guide inside Neovim |
+| `lua/plugins/personal.lua` | Gruvbox colours; faded git blame on the current line; single click opens a file in the tree; finders include dotfolders like `.config/` (as our ripgrep config does) |
+| `lua/config/options.lua` | Plain line numbers (LazyVim counts from the cursor by default) |
+| `lua/config/lazy.lua` | LazyVim's loader; Gruvbox while installing; no background update checks |
+| `lazy-lock.json` | Exact version of every plugin (commit it after updating) |
+| `lazyvim.json` | LazyVim extras you've turned on (none yet) |
+
+Tools it uses (all in `packages/Brewfile`): `neovim`, `lazygit`, `tree-sitter-cli`,
+`fzf`, `ripgrep`, `fd`. Neovim is also `$EDITOR` (`~/.zprofile`), so git opens it for
+commit messages. Agents set `GIT_EDITOR=true`, so they never get stuck in it.
+
+## Vim in five minutes
+
+Vim is **modal**: keys do different things depending on the mode. The status bar
+shows the current one.
+
+| Mode | For | Get in | Get out |
+|---|---|---|---|
+| **Normal** | Moving around, running commands. The default | `Esc` | n/a |
+| **Insert** | Typing text, like any editor | `i` (before cursor), `a` (after), `o` (new line below) | `Esc` |
+| **Visual** | Selecting text | `v` (characters), `V` (whole lines) | `Esc` |
+| **Command** | Typed commands like `:w` | `:` | `Enter` runs it, `Esc` cancels |
+
+**The rule of thumb:** press `Esc` whenever you're unsure; it always gets you
+back to Normal mode. **Stuck?** `Esc` then `:qa!` `Enter` quits without saving.
+
+The ten things to learn first (in Normal mode):
+
+| Keys | Does |
+|---|---|
+| `h` `j` `k` `l` | Left, down, up, right (arrow keys and the mouse work too) |
+| `i` … `Esc` | Type text, then stop typing |
+| `u` / `Ctrl-r` | Undo / redo |
+| `Ctrl-s` or `:w` | Save |
+| `:q` / `:qa` | Close this window / quit Neovim (`!` on the end discards changes) |
+| `/word` `Enter`, then `n` / `N` | Find "word" in this file, next / previous match |
+| `yy` / `dd` / `p` | Copy line / cut line / paste (uses the macOS clipboard) |
+| `v` + move + `y` | Select, then copy |
+| `gg` / `G` / `:42` | Top of file / end of file / line 42 |
+| `Space` (wait) | Popup listing every shortcut; keep typing to narrow it down |
+
+Vim keys combine: **action + count/motion**. `d` deletes, `w` is "word", so `dw`
+deletes a word; `3dd` deletes three lines; `ciw` ("change inside word")
+replaces the word under the cursor. Practice: `:Tutor` runs Vim's own 20-minute interactive tutorial.
+
+## A code-review session
+
+1. `cd` into the project and run **`nvim .`**. The file tree opens on the left.
+2. **Look around:** click folders and files in the tree (or `j`/`k` and `Enter`).
+   `Space e` hides or shows it.
+3. **Jump to a file by name:** `Space Space` (or `Space ff`), type part of the
+   name, `Enter`.
+4. **Search the code:** `Space /`, type the text. Results update as you type,
+   with a preview; `Enter` opens the match.
+5. **See what changed:** `Space gs` lists changed files. Inside a file, `]h` / `[h`
+   jumps to the next / previous change, and `Space ghp` shows the old version of
+   that change.
+6. **Who wrote this line?** It's shown faded at the end of the line. `Space gb`
+   shows the full commit.
+7. **Commit or browse history:** `Space gg` opens lazygit full screen; `q` comes back.
+8. **Switch between open files:** click the tabs at the top, `Shift-h` / `Shift-l`,
+   or `Space ,` for a list.
+9. **Quit:** `Space qq` (or `:qa`).
+
+ `%` would jump; `gg` `G` `{` `}` beside the line numbers | `Space uP` hides / shows |
+| **Habit coach** (hardtime) | A popup when you do something the slow way, e.g. `j` `j` `j` `j` → "Use countj or CTRL-D". Only hints: keys, arrows and the mouse keep working | `:Hardtime report` lists your habits, `:Hardtime toggle` turns it off |
+| **Key display** (screenkey) | A small box at the bottom right listing each key you press | `:Screenkey` shows / hides it (off by default) |
+
+What the motion hints look like (cursor on line 27):
+
+```
+  27   dependencies = { "MunifTanjim/nui.nvim" },
+       0   ^          e w                    %$
+```
+
+`w` jumps to the next word, `e` to the end of this one, `0` / `^` to the line
+start / first letter, `# ✏️ Neovim (LazyVim)
+
+The editor for reading and reviewing code in the terminal. Every shortcut below
+was checked against this config.
+
+- [What it is](#what-it-is)
+- [Vim in five minutes](#vim-in-five-minutes)
+- [A code-review session](#a-code-review-session)
+- [Learning aids](#learning-aids)
+- [Shortcuts](#shortcuts)
+- [Looking after it](#looking-after-it)
+- [Troubleshooting](#troubleshooting)
+
+## What it is
+
+[Neovim](https://neovim.io) set up as [LazyVim](https://lazyvim.org): a popular,
+ready-made setup of about 30 well-known plugins, maintained by someone else.
+We only list what differs from LazyVim's defaults.
+
+What you see after `nvim .`:
+
+```
+┌─ Explorer ──────┬─ main.ts ─ utils.ts ─ README.md ──────────────┐   ← open files (tabs)
+│ ▾ src           │  1  import { x } from "./utils"   You, 2 days │   ← faded git blame
+│     main.ts     │▎ 2  const y = x + 1                           │   ← ▎ = changed since last commit
+│     utils.ts    │  3                                            │
+│   README.md     │                                               │
+├─────────────────┴───────────────────────────────────────────────┤
+│ NORMAL │  main │ main.ts                         ts │ 2:5      │   ← status bar
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Our changes to LazyVim** (in `~/.config/nvim/`, i.e. `home/.config/nvim/` here):
+
+| File | Change |
+|---|---|
+| `lua/plugins/learning.lua` | Learning aids: motion hints, a habit coach, a key display ([below](#learning-aids)) |
+| `lua/config/keymaps.lua` | `Space h` opens this guide inside Neovim |
+| `lua/plugins/personal.lua` | Gruvbox colours; faded git blame on the current line; single click opens a file in the tree; finders include dotfolders like `.config/` (as our ripgrep config does) |
+| `lua/config/options.lua` | Plain line numbers (LazyVim counts from the cursor by default) |
+| `lua/config/lazy.lua` | LazyVim's loader; Gruvbox while installing; no background update checks |
+| `lazy-lock.json` | Exact version of every plugin (commit it after updating) |
+| `lazyvim.json` | LazyVim extras you've turned on (none yet) |
+
+Tools it uses (all in `packages/Brewfile`): `neovim`, `lazygit`, `tree-sitter-cli`,
+`fzf`, `ripgrep`, `fd`. Neovim is also `$EDITOR` (`~/.zprofile`), so git opens it for
+commit messages. Agents set `GIT_EDITOR=true`, so they never get stuck in it.
+
+## Vim in five minutes
+
+Vim is **modal**: keys do different things depending on the mode. The status bar
+shows the current one.
+
+| Mode | For | Get in | Get out |
+|---|---|---|---|
+| **Normal** | Moving around, running commands. The default | `Esc` | n/a |
+| **Insert** | Typing text, like any editor | `i` (before cursor), `a` (after), `o` (new line below) | `Esc` |
+| **Visual** | Selecting text | `v` (characters), `V` (whole lines) | `Esc` |
+| **Command** | Typed commands like `:w` | `:` | `Enter` runs it, `Esc` cancels |
+
+**The rule of thumb:** press `Esc` whenever you're unsure; it always gets you
+back to Normal mode. **Stuck?** `Esc` then `:qa!` `Enter` quits without saving.
+
+The ten things to learn first (in Normal mode):
+
+| Keys | Does |
+|---|---|
+| `h` `j` `k` `l` | Left, down, up, right (arrow keys and the mouse work too) |
+| `i` … `Esc` | Type text, then stop typing |
+| `u` / `Ctrl-r` | Undo / redo |
+| `Ctrl-s` or `:w` | Save |
+| `:q` / `:qa` | Close this window / quit Neovim (`!` on the end discards changes) |
+| `/word` `Enter`, then `n` / `N` | Find "word" in this file, next / previous match |
+| `yy` / `dd` / `p` | Copy line / cut line / paste (uses the macOS clipboard) |
+| `v` + move + `y` | Select, then copy |
+| `gg` / `G` / `:42` | Top of file / end of file / line 42 |
+| `Space` (wait) | Popup listing every shortcut; keep typing to narrow it down |
+
+Vim keys combine: **action + count/motion**. `d` deletes, `w` is "word", so `dw`
+deletes a word; `3dd` deletes three lines; `ciw` ("change inside word")
+replaces the word under the cursor. Practice: `:Tutor` runs Vim's own 20-minute interactive tutorial.
+
+## A code-review session
+
+1. `cd` into the project and run **`nvim .`**. The file tree opens on the left.
+2. **Look around:** click folders and files in the tree (or `j`/`k` and `Enter`).
+   `Space e` hides or shows it.
+3. **Jump to a file by name:** `Space Space` (or `Space ff`), type part of the
+   name, `Enter`.
+4. **Search the code:** `Space /`, type the text. Results update as you type,
+   with a preview; `Enter` opens the match.
+5. **See what changed:** `Space gs` lists changed files. Inside a file, `]h` / `[h`
+   jumps to the next / previous change, and `Space ghp` shows the old version of
+   that change.
+6. **Who wrote this line?** It's shown faded at the end of the line. `Space gb`
+   shows the full commit.
+7. **Commit or browse history:** `Space gg` opens lazygit full screen; `q` comes back.
+8. **Switch between open files:** click the tabs at the top, `Shift-h` / `Shift-l`,
+   or `Space ,` for a list.
+9. **Quit:** `Space qq` (or `:qa`).
+
+ to the end, `%` to the matching bracket.
 
 ## Shortcuts
 
@@ -244,6 +472,8 @@ Then:
 | `Space uC` | Try other colour schemes (until restart) |
 | `Ctrl-/` | Terminal at the bottom (same keys close it) |
 | `Space n` | Past notifications |
+| `Space uP` | Motion hints on / off ([learning aids](#learning-aids)) |
+| `Space h` | This guide, inside Neovim |
 
 ## Looking after it
 

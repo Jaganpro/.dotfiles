@@ -111,7 +111,7 @@ Any real file already in the way is moved to `~/.dotfiles-backup/<date-time>/`, 
 | <kbd>→</kbd> | Accept the grey autosuggestion |
 | `ll` / `lt` | Detailed list / two-level tree (eza) |
 | `gwa <branch>` / `gwr` | Create / remove a git worktree next to the repo |
-| `nvim .` | Open a project in Neovim (LazyVim). Then `Space e` tree, `Space Space` find file, `Space /` search, `Space gg` lazygit |
+| `nvim .` | Open a project in Neovim (LazyVim). Then `Space e` tree, `Space Space` find file, `Space /` search, `Space gg` lazygit, `Space h` the guide |
 
 Full lists: [docs/terminal.md](docs/terminal.md#shortcuts-and-aliases) (shell), [docs/neovim.md](docs/neovim.md#shortcuts) (Neovim).
 
