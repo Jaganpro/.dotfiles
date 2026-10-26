@@ -123,3 +123,13 @@ The full walkthrough. The short version is in the [README](../README.md#-quick-s
       | Microphone | Chosen in the app (an external USB mic here, not the default device) |
 
     - Guide: <https://superwhisper.com/docs/get-started/quickstart>
+
+12. **Cloudflare** (the Brewfile installs `wrangler` and `cloudflared`). Sign in
+    once, with the login kept in the macOS Keychain:
+
+    ```bash
+    wrangler login --use-keyring
+    wrangler whoami
+    ```
+
+    Everyday commands, secrets and tunnels: [cloudflare.md](cloudflare.md).

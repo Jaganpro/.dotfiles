@@ -14,5 +14,8 @@ export HOMEBREW_BUNDLE_FILE_GLOBAL="$HOME/.dotfiles/packages/Brewfile"
 export EDITOR=nvim
 export VISUAL=nvim
 
+# Cloudflare Wrangler: no anonymous usage data
+export WRANGLER_SEND_METRICS=false
+
 # ripgrep reads its default options from here
 export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/config"

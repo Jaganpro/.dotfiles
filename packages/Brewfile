@@ -5,6 +5,8 @@ tap "plannotator/tap"
 brew "ast-grep"  # structural code search (sg)
 brew "bat"       # cat with syntax highlighting
 brew "btop"      # CPU, memory and process monitor
+brew "cloudflare-wrangler" # Cloudflare Workers CLI for use outside projects (projects pin their own; npx wrangler)
+brew "cloudflared" # Cloudflare Tunnel: share a local app on a public URL
 brew "stow"      # links ~/.dotfiles/home into ~
 brew "direnv"    # per-folder environment variables (.envrc)
 brew "eza"       # modern ls

@@ -46,10 +46,10 @@ What you see after `nvim .`:
 | `lua/plugins/learning.lua` | Learning aids: motion hints, a habit coach, a key display ([below](#learning-aids)) |
 | `lua/config/keymaps.lua` | `Space h` opens this guide inside Neovim |
 | `lua/plugins/personal.lua` | Gruvbox colours; faded git blame on the current line; single click opens a file in the tree; finders include dotfolders like `.config/` (as our ripgrep config does) |
-| `lua/config/options.lua` | Plain line numbers (LazyVim counts from the cursor by default) |
+| `lua/config/options.lua` | Plain line numbers (LazyVim counts from the cursor by default); TypeScript uses TS 7's own fast server |
 | `lua/config/lazy.lua` | LazyVim's loader; Gruvbox while installing; no background update checks |
 | `lazy-lock.json` | Exact version of every plugin (commit it after updating) |
-| `lazyvim.json` | LazyVim extras you've turned on (none yet) |
+| `lazyvim.json` | LazyVim extras you've turned on: TypeScript and oxc |
 
 Tools it uses (all in `packages/Brewfile`): `neovim`, `lazygit`, `tree-sitter-cli`,
 `fzf`, `ripgrep`, `fd`. Neovim is also `$EDITOR` (`~/.zprofile`), so git opens it for
@@ -254,8 +254,9 @@ The first time, it shows a welcome message: press `Enter`.
 ### Code (after turning on a language)
 
 LazyVim has language support (errors as you type, go to definition,
-autocomplete) but only Lua is on. Turn on others with `:LazyExtras` (below).
-Then:
+autocomplete). On: Lua and **TypeScript/JavaScript** (using the project's own
+TypeScript 7 and oxlint; see [cloudflare.md](cloudflare.md#editing-typescript-in-neovim)).
+Turn on others with `:LazyExtras` (below). Then:
 
 | Keys | Does |
 |---|---|
@@ -289,7 +290,7 @@ Then:
 | **First launch** on a new Mac | `nvim`: LazyVim installs everything by itself (about a minute). Restart once |
 | **Update plugins** | `Space l`, then `U`. Check nothing broke, then commit `home/.config/nvim/lazy-lock.json` |
 | **Undo an update** | `git checkout` the old `lazy-lock.json`, then `Space l` and `R` (restore) |
-| **Add a language** (e.g. TypeScript) | `:LazyExtras`, move to `lang.typescript`, press `x`, restart. Commit `lazyvim.json` |
+| **Add a language** (e.g. Python) | `:LazyExtras`, move to `lang.python`, press `x`, restart. Commit `lazyvim.json` |
 | **Change a setting** | Add a line to `lua/config/options.lua` (LazyVim's defaults are linked at its top) |
 | **Change a plugin** | Add a block to `lua/plugins/personal.lua`; only list what differs |
 | **Health check** | `:checkhealth` (or `:LazyHealth`); red lines say what's missing |

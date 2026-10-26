@@ -4,7 +4,7 @@ Every file below lives in `home/` and is linked into `~` by `dot stow`.
 
 | File (in `~`, linked from `home/`) | What it holds |
 |---|---|
-| `~/.zprofile` | Homebrew and `~/.local/bin` on PATH; `JAVA_HOME`; points `brew bundle --global` at `packages/Brewfile`; `EDITOR` / `VISUAL` = nvim; `RIPGREP_CONFIG_PATH` |
+| `~/.zprofile` | Homebrew and `~/.local/bin` on PATH; `JAVA_HOME`; points `brew bundle --global` at `packages/Brewfile`; `EDITOR` / `VISUAL` = nvim; `WRANGLER_SEND_METRICS=false`; `RIPGREP_CONFIG_PATH` |
 | `~/.hushlogin` | Empty on purpose: its existence hides macOS's "Last login: …" line in new terminals and review splits |
 | `~/.zshrc` | History, Gruvbox colours, fnm, fzf, eza shortcuts, direnv, autosuggestions, starship, fastfetch, syntax highlighting |
 | `~/.config/fastfetch/config.jsonc` | Compact, private fastfetch layout |
@@ -12,14 +12,14 @@ Every file below lives in `home/` and is linked into `~` by `dot stow`.
 | `~/.config/starship/sf-org.sh` | Finds the Salesforce target org for the prompt |
 | `~/.config/zsh/worktree.zsh` | `gwa` / `gwr` git worktree helpers (loaded by `.zshrc`) |
 | `~/.config/ripgrep/config` | ripgrep defaults: search hidden files, skip `.git/` and files over 5 MB |
-| `~/.config/git/ignore` | Global git ignore for every repo: `.DS_Store`, personal Claude files, `.env*` / `.envrc` (except `.env.example`) |
+| `~/.config/git/ignore` | Global git ignore for every repo: `.DS_Store`, personal Claude files, `.env*` / `.envrc` (except `.env.example`), Wrangler's `.dev.vars*` |
 | `~/.config/ghostty/config.ghostty` | Ghostty (fallback terminal, and its Quick Terminal): Gruvbox Dark, font 14, Option-as-Alt, Quick Terminal, shortcuts, SSH terminfo, balanced padding, medium split dimming |
 | `~/.config/nvim/init.lua` | Neovim = LazyVim: loads `lua/config/lazy.lua` (from the LazyVim starter). Header lists where everything lives and the keys worth knowing |
-| `~/.config/nvim/lua/config/*.lua` | `lazy.lua` (loads lazy.nvim + LazyVim; Gruvbox while installing; no background update checks; `:Tutor` kept), `options.lua` (plain line numbers), `keymaps.lua` (`Space h` opens docs/neovim.md), `autocmds.lua` (empty); both link to LazyVim's defaults |
+| `~/.config/nvim/lua/config/*.lua` | `lazy.lua` (loads lazy.nvim + LazyVim; Gruvbox while installing; no background update checks; `:Tutor` kept), `options.lua` (plain line numbers; TypeScript server = TS 7 `tsc`), `keymaps.lua` (`Space h` opens docs/neovim.md), `autocmds.lua` (empty); both link to LazyVim's defaults |
 | `~/.config/nvim/lua/plugins/learning.lua` | Learning aids: precognition (motion hints, `Space uP`), hardtime (habit coach, hints only, mouse kept), screenkey (`:Screenkey`). Delete when no longer needed |
 | `~/.config/nvim/lua/plugins/personal.lua` | Our only plugin changes: Gruvbox, git blame on the current line, single-click in the file tree, finders include dotfolders |
 | `~/.config/nvim/lazy-lock.json` | Exact plugin versions (lazy.nvim writes it); commit after `:Lazy update` |
-| `~/.config/nvim/lazyvim.json` | LazyVim extras turned on with `:LazyExtras` (none yet) |
+| `~/.config/nvim/lazyvim.json` | LazyVim extras turned on with `:LazyExtras`: TypeScript (TS 7 `tsc --lsp`) and oxc (the project's oxlint) |
 | `~/.config/rex/init.lua` | Rex behaviour: shortcuts, key modes, custom actions (empty for now). `rex config reload` after editing; the pre-commit hook runs `rex config check` |
 | `~/.config/rex/themes/Gruvbox Dark` | Rex: the Gruvbox Dark theme file (Ghostty format), so importing it doesn't need Ghostty. See [Rex](terminal.md#rex) |
 | `~/.npmrc` | npm installs only versions at least 3 days old (supply-chain cooldown) |

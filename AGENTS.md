@@ -3,7 +3,7 @@
 macOS (Apple Silicon) setup. Shell is zsh, terminal is Rex (private beta;
 Ghostty stays installed as the fallback), theme is Gruvbox Dark everywhere.
 The human guide is README.md (short overview) plus `docs/` (details: setup,
-files, terminal, neovim, agents); keep both in sync. Credits go in CREDITS.md.
+files, terminal, neovim, cloudflare, agents); keep both in sync. Credits go in CREDITS.md.
 
 ## Layout
 

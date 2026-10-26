@@ -26,6 +26,8 @@
 | gum | Styled output and prompts for `gwa` / `gwr` | `gum confirm "OK?"` |
 | plannotator-tui | Annotate an agent's plan or reply in the terminal (third-party tap `plannotator/tap`) | `plannotator-tui last` |
 | tuicr | Review an agent's code changes as a diff and comment, in the terminal | `tuicr -w` |
+| wrangler | Cloudflare Workers CLI, Mac-wide (projects pin their own: `npx wrangler`). See [cloudflare.md](cloudflare.md) | `wrangler whoami` |
+| cloudflared | Cloudflare Tunnel: a temporary public URL for a local app | `cloudflared tunnel --url http://localhost:8787` |
 | ffmpeg | Convert, trim and compress audio and video | `ffmpeg -i in.mov out.mp4` |
 | direnv | Loads a folder's `.envrc` (e.g. `export SF_TARGET_ORG=dev`) on `cd`, unloads on leave | `direnv allow` |
 | ast-grep | Search code by structure, not text | `sg -p 'console.log($A)'` |
