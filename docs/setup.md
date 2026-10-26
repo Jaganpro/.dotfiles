@@ -107,4 +107,18 @@ The full walkthrough. The short version is in the [README](../README.md#-quick-s
     - Pick the dictation key: **hold Right ⌘**, speak, let go, and the text
       appears at the cursor. **⌥ Space** starts and stops hands-free.
     - It works in any app, including the terminal, Claude Code and Pi.
+    - Our settings (set by hand in Superwhisper's Settings; not tracked, the
+      file also holds account data):
+
+      | Setting | Value |
+      |---|---|
+      | Dictation key | Right ⌘ (the default); ⌥ Space for hands-free |
+      | Mode | Default |
+      | Launch at login | On |
+      | Show in Dock | Off (menu bar only) |
+      | Mini recorder | Always shown |
+      | Meeting detection | Ask (prompt) |
+      | Sounds | Classic |
+      | Microphone | Chosen in the app (an external USB mic here, not the default device) |
+
     - Guide: <https://superwhisper.com/docs/get-started/quickstart>
