@@ -33,7 +33,7 @@ What you see after `nvim .`:
 
 | File | Change |
 |---|---|
-| `lua/plugins/personal.lua` | Gruvbox colours; faded git blame on the current line; single click opens a file in the tree |
+| `lua/plugins/personal.lua` | Gruvbox colours; faded git blame on the current line; single click opens a file in the tree; finders include dotfolders like `.config/` (as our ripgrep config does) |
 | `lua/config/options.lua` | Plain line numbers (LazyVim counts from the cursor by default) |
 | `lua/config/lazy.lua` | LazyVim's loader; Gruvbox while installing; no background update checks |
 | `lazy-lock.json` | Exact version of every plugin (commit it after updating) |
@@ -142,7 +142,8 @@ Inside the tree:
 | `Space sR` | Reopen the last search |
 
 Inside any finder window: type to filter, `Ctrl-j` / `Ctrl-k` or arrows to move,
-`Enter` opens, `Esc` closes.
+`Enter` opens, `Esc` closes. `Alt-h` hides / shows dotfiles (`.config/`, `.zshrc`),
+which we show by default; `Alt-i` adds git-ignored files.
 
 ### Open files (tabs) and windows
 
@@ -200,6 +201,7 @@ Inside any finder window: type to filter, `Ctrl-j` / `Ctrl-k` or arrows to move,
 | `Space gg` | **lazygit** (below) |
 
 **lazygit** (`Space gg`, or `lazygit` in any terminal): a full-screen git app.
+The first time, it shows a welcome message: press `Enter`.
 
 | Keys | Does |
 |---|---|

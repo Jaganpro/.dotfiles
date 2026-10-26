@@ -9,12 +9,19 @@ return {
   -- Faded "author, 3 days ago - message" at the end of the current line.
   { "lewis6991/gitsigns.nvim", opts = { current_line_blame = true } },
 
-  -- File tree (Space e): a single click opens a file or folder (default is double-click).
   {
     "folke/snacks.nvim",
     opts = {
       picker = {
+        -- Finders (Space Space, Space /, ...) include dotfiles like .config/ and
+        -- .zshrc, the same as our ripgrep config. .git/ stays excluded.
+        -- Alt-h inside a finder toggles them. (Each finder has its own default,
+        -- so it's set per finder.)
         sources = {
+          files = { hidden = true },
+          grep = { hidden = true },
+          -- File tree (Space e): a single click opens a file or folder
+          -- (default is double-click).
           explorer = {
             win = { list = { keys = { ["<LeftRelease>"] = "confirm" } } },
           },
