@@ -222,6 +222,17 @@ cmd_doctor() {
     warn "Grok Bot not set up yet"; printf '    fix: open it, sign in, quit, run: ~/.dotfiles/scripts/grokbot-settings.sh (docs/setup.md)\n'
   fi
 
+  # Tailscale keeps its sign-in in the app; "Stopped" means signed in but switched off.
+  if [[ ! -d /Applications/Tailscale.app ]]; then
+    warn "Tailscale not installed (brew bundle --global, in a normal terminal tab)"
+  else
+    case $(tailscale status --json 2>/dev/null | jq -r '.BackendState // empty') in
+      Running) ok "Tailscale connected" ;;
+      Stopped) ok "Tailscale signed in (switched off)" ;;
+      *) warn "Tailscale not signed in"; printf '    fix: menu bar Tailscale > Log in (docs/tailscale.md)\n' ;;
+    esac
+  fi
+
   step "Repo"
   if [[ $(git -C "$DOTFILES" config --get core.hooksPath || true) == scripts/hooks ]]; then
     ok "pre-commit checks active"

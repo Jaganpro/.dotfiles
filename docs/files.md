@@ -61,7 +61,7 @@ Never tracked: logins, tokens and app state (`~/.config/gh/hosts.yml`,
 ├── skills/               agent skills for Pi (via its settings) and Claude Code (linked into ~/.claude/skills)
 ├── scripts/vendor-skills.sh   copies Matt Pocock's skills into skills/ at a pinned commit
 ├── prompts/              slash commands for Pi (via its settings) and Claude Code (linked into ~/.claude/commands)
-├── docs/                 detailed guides (setup, files, terminal, agents)
+├── docs/                 detailed guides (setup, files, terminal, neovim, cloudflare, tailscale, agents)
 ├── third_party/          licenses for code taken from other repos
 ├── tools/oxlint/         anti-slop lint rules (vendored); `npm run lint`, config in oxlint.config.ts
 ├── dot                   the `dot` command: init, doctor, update, stow, add

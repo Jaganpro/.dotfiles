@@ -49,7 +49,7 @@
 ## Apps (Homebrew casks)
 
 1Password, Claude, CleanShot, Ghostty, Google Chrome, Granola, Grok Bot, Notion, Slack, Superwhisper (voice dictation),
-Temurin 21 (Java), tldraw (offline),
+Tailscale (private network to your phone; [tailscale.md](tailscale.md)), Temurin 21 (Java), tldraw (offline),
 Vorssaint (menu bar: keep-awake, system monitor, volume mixer).
 
 Installed outside the Brewfile: Figma (by choice), Rex (private beta; download after a Discord

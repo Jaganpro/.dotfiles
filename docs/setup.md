@@ -174,3 +174,15 @@ The full walkthrough. The short version is in the [README](../README.md#-quick-s
 
     Replace the key later: rerun the first command with `-U` added.
     Delete it: `security delete-generic-password -s xai-api-key`.
+
+15. **Tailscale** (the Brewfile installs it; its installer asks for your
+    password, so run `brew bundle --global` in a normal terminal tab). Open
+    Tailscale from the menu bar, allow the VPN, **Log in…** with your personal
+    login, then check:
+
+    ```bash
+    tailscale status   # lists this Mac and your other devices
+    ```
+
+    Use the same login on the phone. Phone access, the home-station settings and
+    what stays out of this repo: [tailscale.md](tailscale.md).
