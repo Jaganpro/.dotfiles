@@ -59,7 +59,7 @@ Shared by Claude Code and Pi from `prompts/`.
 
 ## Matt Pocock's skills (vendored)
 
-19 skills from [mattpocock/skills](https://github.com/mattpocock/skills) (MIT),
+27 skills from [mattpocock/skills](https://github.com/mattpocock/skills) (MIT),
 copied unmodified into `skills/` and shared with Claude Code and Pi. The commit
 and the list live in `scripts/vendor-skills.sh`; `skills/` holds the copies.
 
@@ -75,7 +75,14 @@ and the list live in `scripts/vendor-skills.sh`; `skills/` holds the copies.
 | `tdd` | auto | Test-first, red-green-refactor |
 | `prototype` | auto | Throwaway prototype to answer a design question |
 | `domain-modeling` | auto | Glossary and decision records (ADRs) |
-| `wayfinder`, `grill-with-docs`, `to-spec`, `to-tickets`, `implement`, `code-review`, `retro` | mostly `/name` | Matt's full flow for big features (run `/setup-matt-pocock-skills` once per repo first) |
+| `wayfinder`, `grill-with-docs`, `to-spec`, `to-tickets`, `implement`, `implement-spec`, `code-review`, `retro` | mostly `/name` | Matt's full flow for big features (run `/setup-matt-pocock-skills` once per repo first) |
+| `ask-matt` | `/ask-matt` | Which skill or flow fits this situation |
+| `triage` | `/triage` | Move incoming bug reports and requests through triage labels until agent-ready |
+| `improve-codebase-architecture` | `/improve-codebase-architecture` | Survey a codebase for deepening opportunities, every few days |
+| `codebase-design` | auto | Deep-module vocabulary (module, interface, seam) that `tdd` and architecture work use |
+| `to-questionnaire` | `/to-questionnaire` | Turn a question only someone else can answer into a questionnaire |
+| `pr` | auto | The shape of a pull request body |
+| `wizard` | auto | A bash wizard for steps only a human can do (credentials, dashboards) |
 
 - **Update:** `scripts/vendor-skills.sh <commit>` (e.g. main's latest), then
   `git diff skills/` to review. Running it without a commit re-copies the pinned one.

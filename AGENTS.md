@@ -32,7 +32,7 @@ tools/oxlint/anti-slop/  vendored Oxlint rules; `npm run lint` (oxlint.config.ts
 - **Code from other repos:** only from openly licensed repos. Keep the
   original notice in a header comment, say what was changed, and add the
   license text to `third_party/` and a row to CREDITS.md.
-- **Vendored skills** in `skills/` (Matt Pocock's 19, listed in `scripts/vendor-skills.sh`)
+- **Vendored skills** in `skills/` (Matt Pocock's 27, listed in `scripts/vendor-skills.sh`)
   are unmodified copies: update them with that script, never edit them by hand.
   Same for `skills/install-anti-slop` (dmmulroy/anti-slop, commit in `docs/agents.md`):
   update by re-copying it from upstream.

@@ -6,11 +6,13 @@
 set -euo pipefail
 
 REPO=mattpocock/skills
-COMMIT=${1:-5beb35b040e3de97e54fa9e386d7e42d15c295c2}
+COMMIT=${1:-4ae2317ddb22b046e26455e4f9c9b3aaaf62212d}
 SKILLS=(
   grill-me grilling diagnosing-bugs handoff wait-what teach research writing-for-agents
   tdd wayfinder grill-with-docs to-spec to-tickets implement code-review retro
   domain-modeling setup-matt-pocock-skills prototype
+  codebase-design triage improve-codebase-architecture ask-matt implement-spec pr
+  to-questionnaire wizard
 )
 
 dotfiles=$(cd "$(dirname "$0")/.." && pwd)
