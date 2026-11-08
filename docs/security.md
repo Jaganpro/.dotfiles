@@ -1,7 +1,8 @@
 # 🔐 Security checklist
 
 What protects the home server (Mac mini), the GL.iNet KVM and the accounts
-behind them. `[x]` is done, `[ ]` is still to do. **Checked** says how it was
+behind them. `[x]` is done, `[ ]` is still to do; open items stay here on purpose until
+they're done or dropped. **Checked** says how it was
 confirmed: *scan* = checked from the Mac with the commands at the bottom,
 *by hand* = done in an app or web console, not visible from the Mac.
 
@@ -58,6 +59,7 @@ Mac). So the real keys are:
 | [ ] | After any Grok Bot computer reset or image update: check Machines. The plugin rejoined **untagged** last time (full access) and had to be tagged by hand | by hand |
 | [ ] | If the KVM's LAN address changes (e.g. moved to Ethernet), update the address it's excluded by in the policy | by hand |
 | [ ] | Review the device list now and then; remove anything you don't recognise | by hand |
+| [ ] | **Tailnet Lock:** a new device can't talk to the others until a trusted device signs it, so a stolen GitHub login alone can't add one. Signing devices: Mac mini and iPhone. Its 10 disablement secrets go in 1Password (never here, never in a chat). After it's on, every new or reset device (Grok Bot's cloud computer after a reset, Rex's node, a new phone) must be signed before it connects | scan |
 
 ## Mac mini
 
@@ -78,7 +80,7 @@ Mac). So the real keys are:
 | [x] | Firewall allow list: `/usr/bin/python3` and `/usr/bin/ruby` removed (approved during old projects) | scan |
 | [x] | Media Sharing / Home Sharing off (3689) | scan |
 | [x] | Public folder share removed (no share points left), so turning File Sharing on later doesn't bring back guest access | scan |
-| [ ] | Mac password: long and unique, in 1Password | by hand |
+| [x] | Mac password: long and unique, in 1Password | by hand |
 | [ ] | SSH key for everyday logins (phone app key in `~/.ssh/authorized_keys`). Keep password login: the FileVault SSH unlock needs it | scan |
 
 Port 88 (Kerberos, `kdc`) stays open; it's part of macOS sharing logins.

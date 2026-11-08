@@ -30,13 +30,21 @@ runbook: what was set, what was tested, and what to do after a restart.
 
 | Path | Works when | Use it for |
 |---|---|---|
-| Rex app, SSH, Screen Sharing over Tailscale | macOS is unlocked | Everyday use from the phone |
+| Rex app, SSH over Tailscale (Screen Sharing too, if turned on) | macOS is unlocked | Everyday use from the phone |
 | SSH to the Mac's LAN address, through the KVM's subnet route | Mac at the FileVault screen (untested) | Unlocking after a restart from anywhere |
 | GL.iNet KVM in Safari | Always, but its screen is black at FileVault while the main monitor is connected | A frozen Mac; typing blind |
 | The desk | Always | When nothing else works |
 
 Rex on the phone can't unlock: it talks to the Rex server on the Mac, which
 starts only after the unlock.
+
+**KVM vs Screen Sharing:** Screen Sharing is software inside macOS. It shows the
+real desktop at full quality, but only once macOS is up, unlocked and on the
+network. The KVM is separate hardware: it still works when macOS is frozen,
+stuck, or (once the display is sorted) at the FileVault screen, and its subnet
+route is what makes the SSH unlock reachable from outside. Today it shows only
+the empty second display, so it's for emergencies, not everyday use. Screen
+Sharing is off; turn it on only if you want the desktop from the phone.
 
 ## Setup
 
@@ -165,7 +173,10 @@ In this order:
    System Settings > Displays (not documented to move the FileVault screen).
 4. **Power cut:** pull power for 30 seconds; it should start by itself and wait
    at FileVault.
-5. Optional: KVM on Ethernet (it's on Wi-Fi, with a fixed address reserved in
+5. Optional: a smart plug on the Mac's power. With "Start up when power is
+   connected: Always", switching it off and on is a remote hard restart for a
+   frozen Mac, which neither the KVM nor SSH can do.
+6. Optional: KVM on Ethernet (it's on Wi-Fi, with a fixed address reserved in
    UniFi). Moving it means a new reservation for the wired MAC and a new KVM
    address in the Tailscale policy. Security items: [security.md](security.md).
 
