@@ -54,7 +54,8 @@ Mac). So the real keys are:
 | [x] | KVM is not an exit node | scan |
 | [x] | **Access rules (grants):** your own devices reach everything; Grok Bot's cloud computer (`tag:grokbot`) reaches only the Mac's SSH and the home LAN, **not the KVM**. Applied; its built-in tests passed on save. It holds addresses: kept in the admin console, not here | scan |
 | [x] | Grok Bot's cloud computer rejoined and tagged `tag:grokbot` (the plugin joined untagged; tagged by hand in Machines > Edit ACL tags). The Mac accepts only port 22 from it | scan |
-| [ ] | Old untagged Grok Bot device removed from Machines (its key has expired, so it can't connect now, but it would get full access back if it signed in again) | scan |
+| [x] | Old untagged Grok Bot device removed from Machines | scan |
+| [ ] | After any Grok Bot computer reset or image update: check Machines. The plugin rejoined **untagged** last time (full access) and had to be tagged by hand | by hand |
 | [ ] | If the KVM's LAN address changes (e.g. moved to Ethernet), update the address it's excluded by in the policy | by hand |
 | [ ] | Review the device list now and then; remove anything you don't recognise | by hand |
 
