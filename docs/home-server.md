@@ -19,7 +19,8 @@ runbook: what was set, what was tested, and what to do after a restart.
 |---|---|
 | Mac: never sleeps, power-on, firewall, no auto-installed macOS | Done |
 | Mac: Ethernet, fixed LAN address in UniFi | Done |
-| Mac: Remote Login, Screen Sharing on; File Sharing off | Done |
+| Mac: Remote Login on; File Sharing, Remote Management, AirPlay Receiver off | Done |
+| Mac: Screen Sharing | Off since the port cleanup (see [security.md](security.md#mac-mini)) |
 | Mac: Tailscale and Rex start at login; Tailscale key expiry off | Done |
 | KVM: on the tailnet, key expiry off, admin password + 2FA | Done |
 | KVM: USB keyboard/mouse reach the Mac; subnet route approved | Done |
@@ -177,4 +178,5 @@ In this order:
 
 The tailnet name, `100.x.y.z` addresses, LAN addresses, MAC addresses, the KVM
 password and the UniFi login stay in Tailscale's console, UniFi and 1Password.
-See also [tailscale.md](tailscale.md#kept-out-of-this-repo).
+See also [tailscale.md](tailscale.md#kept-out-of-this-repo). Security settings and
+what's left to harden: [security.md](security.md).
