@@ -15,6 +15,7 @@ updates, or a new device on the tailnet.
 - [Mac mini](#mac-mini)
 - [GL.iNet KVM](#glinet-kvm)
 - [This repo](#this-repo)
+- [Tailnet Lock steps](#tailnet-lock-steps)
 - [Recheck](#recheck)
 
 ## The model
@@ -107,6 +108,29 @@ Port 88 (Kerberos, `kdc`) stays open; it's part of macOS sharing logins.
 | [x] | Public repo holds no tailnet name, `100.x` addresses, LAN or MAC addresses, passwords or the ACL file | by hand |
 | [x] | `gitleaks` scans every commit (pre-commit hook) | scan |
 | [x] | Keys and tokens live in the macOS Keychain or 1Password, not in files | by hand |
+
+## Tailnet Lock steps
+
+**Pending, parked 2026-11-08.** Not enabled yet. When you pick it up:
+
+1. Have 1Password open, ready for a new item. Tailscale shows **10 disablement
+   secrets once**; without one, Tailnet Lock can't be turned off normally. Never
+   paste them into a chat or this repo.
+2. Admin console > Settings > Device management > **Enable Tailnet Lock**.
+3. Signing nodes: the **Mac mini** and the **iPhone** (at least two).
+4. Leave "Send disablement secret to Tailscale support" **off**: a copy at
+   Tailscale is a second way to switch the lock off. Last resort if every
+   secret is lost: `tailscale lock local-disable` on each device.
+5. Copy the `tailscale lock init …` command and run it on the Mac, replacing
+   `tailscale` with `/Applications/Tailscale.app/Contents/MacOS/Tailscale`
+   (the CLI isn't on PATH).
+6. Save all 10 secrets in one 1Password item straight away.
+7. Check: `tailscale lock status` on each device lists the same signing keys,
+   and no device in Machines shows **Locked out**.
+
+Afterwards, a new or reset device stays **Locked out** until signed: Machines >
+the device > **Sign machine** > *Sign this node* on the Mac, or scan the QR with
+the iPhone. For Grok Bot's cloud computer, sign it **and** check its tag.
 
 ## Recheck
 
