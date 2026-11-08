@@ -52,7 +52,7 @@ Node, the Salesforce CLI, Pi, web-search keys and app-installed skills come next
 ├── dot              the `dot` command: init, doctor, update, stow, add
 ├── home/            mirrors ~ (linked by Stow; editing ~/.zshrc edits the repo)
 ├── packages/        Brewfile (every tool and app) and app-skills (skills installed by apps)
-├── scripts/         macOS defaults, Rex settings, skill vendoring, the pre-commit hook
+├── scripts/         macOS defaults, Rex settings, home server, skill vendoring, the pre-commit hook
 ├── skills/          agent skills for Pi and Claude Code
 ├── prompts/         slash commands for Pi and Claude Code
 ├── tools/oxlint/    vendored anti-slop lint rules (`npm run lint`)
@@ -97,6 +97,7 @@ Any real file already in the way is moved to `~/.dotfiles-backup/<date-time>/`, 
 | ✏️ **Editor** | Neovim as LazyVim (Gruvbox, single-click file tree, a live Vim tips window) + lazygit | [neovim.md](docs/neovim.md) |
 | ☁️ **Cloudflare** | Wrangler (Workers, Durable Objects), cloudflared tunnels, secrets kept out of git | [cloudflare.md](docs/cloudflare.md) |
 | 🔒 **Tailscale** | Private network: reach this Mac from your phone (web apps, SSH, Rex) | [tailscale.md](docs/tailscale.md) |
+| 🏠 **Home server** | The Mac mini at home: never sleeps, restarts after power cuts, unlocks through a GL.iNet KVM | [home-server.md](docs/home-server.md) |
 | 🔧 **CLI tools** | ripgrep, fd, bat, eza, delta, jq, yq, ast-grep, gitleaks, uv, fnm, gh | [terminal.md](docs/terminal.md#command-line-tools) |
 | 🤖 **AI agents** | Claude Code and Pi: skills, prompts, review tools, Pi extensions | [agents.md](docs/agents.md) |
 | 📄 **Every tracked file** | What each file in `~` holds | [files.md](docs/files.md) |

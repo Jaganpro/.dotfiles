@@ -84,16 +84,9 @@ VNC app on the phone with `vnc://<mac-name>`.
 
 ## Home station
 
-For a Mac that stays at home (the M5 Pro), after the normal sign-in:
-
-1. **Never ask to sign in again:** admin console
-   (<https://login.tailscale.com/admin/machines>) > the Mac's `…` menu >
-   **Disable key expiry**. Otherwise it drops off every 180 days until someone
-   signs in at the Mac.
-2. **Start with the Mac:** turn on the start-at-login option in Tailscale's settings.
-3. **Stay awake:** System Settings > Energy > **Prevent automatic sleeping when
-   the display is off** and **Wake for network access** on.
-4. **Remote Login** and/or **Screen Sharing** on, as above.
+The Mac mini that stays at home has its own runbook: [home-server.md](home-server.md)
+(never sleep, key expiry off, start at login, Remote Login, the KVM, unlocking
+after a restart).
 
 ## Kept out of this repo
 

@@ -3,7 +3,8 @@
 macOS (Apple Silicon) setup. Shell is zsh, terminal is Rex (private beta;
 Ghostty stays installed as the fallback), theme is Gruvbox Dark everywhere.
 The human guide is README.md (short overview) plus `docs/` (details: setup,
-files, terminal, neovim, cloudflare, tailscale, agents); keep both in sync. Credits go in CREDITS.md.
+files, terminal, neovim, cloudflare, tailscale, home-server, agents); keep both in sync.
+`scripts/home-server.sh` is for the Mac mini server only: never call it from `dot init`. Credits go in CREDITS.md.
 
 ## Layout
 
