@@ -15,6 +15,14 @@
       "args": [
         "mcp"
       ]
+    },
+    "salesforce-docs": {
+      "url": "https://mcp.docs.salesforce.com/",
+      "timeout": 180,
+      "headers": {
+        "Authorization": "!echo Bearer $(security find-generic-password -a \"$USER\" -s salesforce-docs-mcp -w)"
+      },
+      "description": "Official Salesforce, MuleSoft and Tableau documentation: prefer search + fetch for raw source text; answer/explain are slower RAG summaries"
     }
   }
 }
