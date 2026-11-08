@@ -95,7 +95,8 @@ Port 88 (Kerberos, `kdc`) stays open; it's part of macOS sharing logins.
 | [x] | Mouse Jiggle off; Microphone, Camera, Virtual Media off | by hand |
 | [ ] | SSH (port 22) still answers. The console has no switch for it (its Toolbox > Terminal uses it too), so the Tailscale access rules above are what limit who can reach it | scan |
 | [ ] | Firmware: check for updates monthly (version at the top right of the console) | by hand |
-| [ ] | On Ethernet instead of Wi-Fi, with its address reserved in UniFi | by hand |
+| [x] | Fixed address in UniFi for its **Wi-Fi** connection (the same address the Tailscale policy excludes) | by hand |
+| [ ] | Optional: on Ethernet instead of Wi-Fi. The wired port has its own MAC, so it needs a new UniFi reservation, and the policy's KVM address must change to match | by hand |
 
 ## This repo
 

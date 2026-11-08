@@ -50,6 +50,9 @@ Order matters: Remote Login has to be on **before** the first restart.
   for the Mac's **Ethernet** MAC address. macOS stays on DHCP. The Mac uses its
   real MAC on wired, so the reservation holds. Check with
   `ipconfig getifaddr en0`. The SSH unlock below depends on this address.
+- Same for the KVM, for the connection it actually uses (Wi-Fi here). The
+  Tailscale policy keeps Grok Bot off the KVM by its address, so it must not
+  move.
 - No port forwards on the router for SSH, Screen Sharing or the KVM:
   Tailscale covers remote access.
 
@@ -158,9 +161,9 @@ In this order:
    System Settings > Displays (not documented to move the FileVault screen).
 4. **Power cut:** pull power for 30 seconds; it should start by itself and wait
    at FileVault.
-5. Optional: KVM on Ethernet and reserved in UniFi (it's on Wi-Fi), GL.iNet
-   Cloud off (Settings > Cloud), 2FA on the account you sign in to Tailscale
-   with.
+5. Optional: KVM on Ethernet (it's on Wi-Fi, with a fixed address reserved in
+   UniFi). Moving it means a new reservation for the wired MAC and a new KVM
+   address in the Tailscale policy. Security items: [security.md](security.md).
 
 ## Choices and why
 
