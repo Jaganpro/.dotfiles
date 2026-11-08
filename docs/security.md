@@ -19,7 +19,13 @@ updates, or a new device on the tailnet.
 ## The model
 
 Nothing is reachable from the internet: no router port forwards. Everything
-remote goes through Tailscale. So the real keys are:
+remote goes through Tailscale.
+
+Two Grok Bots: the **app** on the Mac mini (already local, Tailscale rules don't
+apply to it) and Grok Bot's **cloud computer**, a Linux machine at Cursor that
+its Tailscale plugin puts on the tailnet. Decided: the cloud computer may SSH
+to the Mac and reach the home LAN, but never the KVM (it would type on the
+Mac). So the real keys are:
 
 1. **The account you sign in to Tailscale with (GitHub).** It can add a device
    to the tailnet, and the tailnet reaches the Mac, the KVM and (through the
@@ -46,7 +52,9 @@ remote goes through Tailscale. So the real keys are:
 | [x] | Key expiry off for the Mac and the KVM | scan |
 | [x] | KVM subnet route approved (home LAN reachable from the tailnet; needed for the SSH unlock) | scan |
 | [x] | KVM is not an exit node | scan |
-| [ ] | **Access rules (ACL):** only the phone and the Mac reach the KVM, the home subnet and the Mac's SSH. Today every tailnet device can, including the Grok Bot Linux server. The rules file holds your email: keep it in the admin console, not here | by hand |
+| [ ] | **Access rules (grants):** your own devices reach everything; Grok Bot's cloud computer (`tag:grokbot`) reaches only the Mac's SSH and the home LAN, **not the KVM**. Policy written, not yet applied. It holds addresses: keep it in the admin console, not here | by hand |
+| [ ] | Grok Bot's cloud computer rejoined with `tag:grokbot` (Grok Bot > Plugins > Tailscale > Remove, then Authenticate) and the old untagged device deleted | by hand |
+| [ ] | If the KVM's LAN address changes (e.g. moved to Ethernet), update the address it's excluded by in the policy | by hand |
 | [ ] | Review the device list now and then; remove anything you don't recognise | by hand |
 
 ## Mac mini
