@@ -13,7 +13,7 @@
     "pr": "",
     "sessionUrl": false
   },
-  "model": "opus",
+  "model": "opus[1m]",
   "hooks": {
     "SubagentStart": [
       {
