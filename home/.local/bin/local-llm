@@ -1,0 +1,26 @@
+#!/bin/bash
+# local-llm: ask the local uncensored model through Pi. The model runs in the llama.cpp
+# router (LaunchAgent app.llama.router, 127.0.0.1:8080, models in ~/models), so nothing
+# leaves the Mac. Meant for Grok Bot and scripts; in Pi itself just pick it with /model.
+#   local-llm "prompt"                 plain answer, no tools
+#   cat notes.txt | local-llm "prompt" stdin is added to the prompt
+#   local-llm --agent "prompt"         Pi agent with its tools (read, bash, edit, write) in $PWD
+#   LOCAL_LLM_THINKING=off local-llm "prompt"   skip thinking: faster, weaker (default medium,
+#                                               which is the model's own maximum, xhigh)
+# The first call after 15 minutes idle loads the model (about 10 s).
+set -euo pipefail
+# Grok Bot runs commands with a bare PATH; pi and node live in Homebrew.
+PATH="/opt/homebrew/bin:$PATH"
+
+model="llama.cpp/${LOCAL_LLM_MODEL:-qwen3.8-27b-abliterated}:${LOCAL_LLM_THINKING:-medium}"
+tools=(--no-tools --no-context-files --no-skills)
+if [[ ${1:-} == --agent ]]; then
+  tools=()
+  shift
+fi
+if [[ $# -eq 0 ]]; then
+  echo "usage: local-llm [--agent] \"prompt\"   (stdin is added to the prompt)" >&2
+  exit 2
+fi
+
+exec pi --no-session --model "$model" ${tools[@]+"${tools[@]}"} -p "$*"

@@ -41,6 +41,7 @@ Every file below lives in `home/` and is linked into `~` by `dot stow`.
 | `~/.pi/agent/extensions/review.ts` | `/annotate` (Pi's newest reply, or `/annotate plan.md`) and `/review` (code changes) full screen in Pi's terminal, via the scripts below; the feedback becomes your next message |
 | `~/.local/bin/annotate` | plannotator-tui review; in Claude Code run `! annotate` (opens through `beside`) |
 | `~/.local/bin/review` | tuicr review; in Claude Code run `! review` (opens through `beside`) |
+| `~/.local/bin/local-llm` | ask the local model through Pi; for Grok Bot and scripts. Setup and undo: [local-llm.md](local-llm.md) |
 | `~/.local/bin/beside` | Claude Code only: runs a review in a Rex split to the right (`rex split`) and pastes what it prints into the agent |
 | `~/.pi/agent/AGENTS.md` | Global instructions shared by Pi and Claude Code (Claude imports it from `~/.claude/CLAUDE.md`): use `uv` for Python; ponytail rules for code (smallest complete change, reuse, no slop) |
 
@@ -58,6 +59,7 @@ Never tracked: logins, tokens and app state (`~/.config/gh/hosts.yml`,
 ├── scripts/rex-settings.sh   Rex app settings + theme import (run by hand, Rex quit)
 ├── scripts/grokbot-settings.sh  Grok Bot general settings (run by hand, Grok Bot quit; work-specific ones stay in the app)
 ├── scripts/home-server.sh     Mac mini home server: never sleep, power-on, no auto restarts, firewall (run by hand; not in dot init)
+├── scripts/local-llm.sh       local model for Pi and Grok Bot: download, Keychain password, presets, LaunchAgent, Pi setup (run by hand; docs/local-llm.md)
 ├── scripts/hooks/pre-commit   checks every commit: lint, shellcheck, shell start-up, secrets
 ├── skills/               agent skills for Pi (via its settings) and Claude Code (linked into ~/.claude/skills)
 ├── scripts/vendor-skills.sh   copies Matt Pocock's skills into skills/ at a pinned commit

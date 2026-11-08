@@ -24,7 +24,7 @@ runbook: what was set, what was tested, and what to do after a restart.
 | Mac: Tailscale and Rex start at login; Tailscale key expiry off | Done |
 | KVM: on the tailnet, key expiry off, admin password + 2FA | Done |
 | KVM: USB keyboard/mouse reach the Mac; subnet route approved | Done |
-| Unlock after a restart, remotely | **Not working yet.** First test: the KVM screen stayed black at FileVault, unlocked at the desk. See [Still to try](#still-to-try) |
+| Unlock after a restart, remotely | **Parked 2026-11-08, not working yet.** First test: the KVM screen stayed black at FileVault, unlocked at the desk. Resume at [Still to try](#still-to-try), step 1 |
 
 ## How you get in
 
@@ -147,6 +147,10 @@ Phone app: **Moshi** (or Termius), a separate connection just for this:
 4. Wait a minute, then use Rex as usual.
 
 ## Still to try
+
+**Parked on 2026-11-08.** Everything below is set up; nothing is tested yet.
+Pick up at step 1 (no restart needed for its first half). Until then, a
+restart means unlocking at the desk.
 
 In this order:
 

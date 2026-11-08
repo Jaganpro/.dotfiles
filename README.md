@@ -100,6 +100,7 @@ Any real file already in the way is moved to `~/.dotfiles-backup/<date-time>/`, 
 | 🏠 **Home server** | The Mac mini at home: never sleeps, restarts after power cuts, GL.iNet KVM on Tailscale; remote unlock after a restart still being tested | [home-server.md](docs/home-server.md) |
 | 🔐 **Security** | Checklist for the server, KVM, Tailscale and accounts: what's done, what's left, how to recheck | [security.md](docs/security.md) |
 | 🔧 **CLI tools** | ripgrep, fd, bat, eza, delta, jq, yq, ast-grep, gitleaks, uv, fnm, gh | [terminal.md](docs/terminal.md#command-line-tools) |
+| 🧠 **Local LLM** | Uncensored model on this Mac (llama.cpp) for Pi and Grok Bot: decisions, setup steps, undo | [local-llm.md](docs/local-llm.md) |
 | 🤖 **AI agents** | Claude Code and Pi: skills, prompts, review tools, Pi extensions | [agents.md](docs/agents.md) |
 | 📄 **Every tracked file** | What each file in `~` holds | [files.md](docs/files.md) |
 | 🍏 **macOS** | Finder, Dock, key repeat, screenshots | [terminal.md](docs/terminal.md#macos-settings) |

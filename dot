@@ -233,6 +233,18 @@ cmd_doctor() {
     esac
   fi
 
+  # Local LLM (docs/local-llm.md): only checked once its setup script has run on this Mac.
+  if [[ -f "$HOME/Library/LaunchAgents/app.llama.router.plist" ]]; then
+    step "Local LLM"
+    if curl -sf -m 2 127.0.0.1:8080/health >/dev/null; then ok "llama.cpp router running"
+    else warn "llama.cpp router not answering"; printf '    fix: ~/.dotfiles/scripts/local-llm.sh (log: /tmp/llama-router.log)\n'; fi
+    if [[ $(jq -r '."llama.cpp".key // empty' "$HOME/.pi/agent/auth.json" 2>/dev/null) == "$(security find-generic-password -s llama-api-key -w 2>/dev/null)" ]]; then
+      ok "Pi has the router password"
+    else
+      warn "Pi's llama.cpp password missing or different from the Keychain"; printf '    fix: ~/.dotfiles/scripts/local-llm.sh\n'
+    fi
+  fi
+
   step "Repo"
   if [[ $(git -C "$DOTFILES" config --get core.hooksPath || true) == scripts/hooks ]]; then
     ok "pre-commit checks active"

@@ -21,6 +21,7 @@ brew "gitleaks"  # scan repos for committed secrets
 brew "gum"       # styled output and prompts for gwa/gwr
 brew "jq"        # JSON processor (newer than macOS's built-in)
 brew "lazygit"   # full-screen git in the terminal (Space gg in Neovim)
+brew "llama.cpp" # local models: router runs as LaunchAgent app.llama.router (docs/files.md)
 brew "neovim"    # editor, set up as LazyVim (home/.config/nvim)
 brew "plannotator/tap/plannotator-tui" # annotate an agent's plan or reply in the terminal
 brew "ripgrep"   # fast code search (rg)
