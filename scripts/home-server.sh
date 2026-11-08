@@ -43,5 +43,5 @@ else
   warn "Tailscale doesn't start at login: Tailscale menu > Settings, or Login Items"
 fi
 if fdesetup isactive >/dev/null 2>&1; then
-  ok "FileVault on: after every restart, unlock through the KVM (docs/home-server.md)"
+  ok "FileVault on: after every restart, unlock it (docs/home-server.md#after-a-restart-unlock)"
 fi
