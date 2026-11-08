@@ -4,7 +4,7 @@
   "defaultModel": "claude-opus-5-5",
   "packages": [
     "npm:@ff-labs/pi-fff",
-    "git:github.com/earendil-works/pi-claude-code@70abb65186592ca788b29b3db22c3160d629c41f"
+    "git:github.com/earendil-works/pi-claude-code@d5b5e04c314d3452d357174d16d10dda34daa2d2"
   ],
   "skills": [
     "~/.dotfiles/skills"

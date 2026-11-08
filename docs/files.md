@@ -4,7 +4,7 @@ Every file below lives in `home/` and is linked into `~` by `dot stow`.
 
 | File (in `~`, linked from `home/`) | What it holds |
 |---|---|
-| `~/.zprofile` | Homebrew and `~/.local/bin` on PATH; `JAVA_HOME`; points `brew bundle --global` at `packages/Brewfile`; `EDITOR` / `VISUAL` = nvim; `WRANGLER_SEND_METRICS=false`; `RIPGREP_CONFIG_PATH` |
+| `~/.zprofile` | Homebrew and `~/.local/bin` on PATH; `JAVA_HOME`; points `brew bundle --global` at `packages/Brewfile`; `EDITOR` / `VISUAL` = nvim; `WRANGLER_SEND_METRICS=false`; `RIPGREP_CONFIG_PATH`; `PI_CLAUDE_CODE_ALLOW_USAGE_CREDITS=1` (pi-claude-code may bill usage credits) |
 | `~/.hushlogin` | Empty on purpose: its existence hides macOS's "Last login: …" line in new terminals and review splits |
 | `~/.zshrc` | History, Gruvbox colours, fnm, fzf, eza shortcuts, direnv, autosuggestions, starship, fastfetch, syntax highlighting |
 | `~/.config/fastfetch/config.jsonc` | Compact, private fastfetch layout |
@@ -29,8 +29,8 @@ Every file below lives in `home/` and is linked into `~` by `dot stow`.
 | `~/.gitconfig` | Name/email (GitHub noreply), `gh` login, delta pager, pull = rebase, prune on fetch, newest branches first, rerere, `git fomo`, `git nuke` |
 | `~/.claude/CLAUDE.md` | Instructions for every Claude Code session: prefer fff for file search |
 | `~/.claude/settings.json` | Claude Code preferences, hooks, status line; no commit/PR attribution. The SessionStart hook is Rex's (`rex skill setup`): it tells Claude which Rex session and pane it runs in, and to name the session after its task (session naming, on) |
-| `~/.pi/agent/settings.json` | Pi default model, the fff package, pi-claude-code (Claude models through your Claude Code login; pinned to a reviewed commit, update with `pi install …@<commit>`), and the path to `skills/youtube-transcript` |
-| `~/.pi/agent/mcp.json` | Pi MCP servers: `superlogical` (Rex community MCP, HTTP). Sign in once per Mac with `pi mcp login superlogical`; the token stays in `~/.pi/agent/mcp-auth.json` (not tracked) |
+| `~/.pi/agent/settings.json` | Pi default model, the fff package, pi-claude-code (Claude models through your Claude Code login; pinned to a reviewed commit, `d5b5e04`; update with `pi install …@<commit>`), and the path to `skills/youtube-transcript` |
+| `~/.pi/agent/mcp.json` | Pi MCP servers: `superlogical` (Rex community MCP, HTTP), `radius` (Pi's web search and Radius API, HTTP) and `rea` (reverse engineering, local; needs `npm install -g rea-agents`). Sign in once per Mac with `pi mcp login superlogical` and `pi mcp login radius`; tokens stay in `~/.pi/agent/mcp-auth.json` (not tracked) |
 | `~/.pi/agent/extensions/web-access.ts` | Pi `web_search` (Brave → Parallel → TinyFish; freshness and country passed through; falls back on quota) and `web_fetch` (direct download first, then extractors). The card shows the service and, only when the provider reports it, calls remaining. Keys in the macOS Keychain. `/web` shows status |
 | `~/.pi/agent/extensions/git-guard.ts` | Pi: blocks commands that skip git hooks (`--no-verify`, `git commit -n`) and stops git opening an editor |
 | `~/.claude/hooks/git-guard.sh` | Claude Code: the same hook-skipping block, as a PreToolUse hook (registered in `settings.json`, which also sets `GIT_EDITOR=true`) |

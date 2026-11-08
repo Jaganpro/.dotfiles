@@ -19,3 +19,6 @@ export WRANGLER_SEND_METRICS=false
 
 # ripgrep reads its default options from here
 export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/config"
+
+# pi-claude-code: let a turn bill Claude usage credits instead of stopping
+export PI_CLAUDE_CODE_ALLOW_USAGE_CREDITS=1

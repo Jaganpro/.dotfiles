@@ -2,6 +2,19 @@
   "mcpServers": {
     "superlogical": {
       "url": "https://www.superlogical.com/rex/community-mcp"
+    },
+    "radius": {
+      "url": "https://radius.pi.dev/mcp",
+      "auth": {
+        "provider": "radius"
+      }
+    },
+    "rea": {
+      "type": "stdio",
+      "command": "/opt/homebrew/bin/rea",
+      "args": [
+        "mcp"
+      ]
     }
   }
 }
