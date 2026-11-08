@@ -5,7 +5,7 @@ behind them. `[x]` is done, `[ ]` is still to do. **Checked** says how it was
 confirmed: *scan* = checked from the Mac with the commands at the bottom,
 *by hand* = done in an app or web console, not visible from the Mac.
 
-Last full review: 2026-11-07. Repeat it after macOS upgrades, KVM firmware
+Last full review: 2026-11-08. Repeat it after macOS upgrades, KVM firmware
 updates, or a new device on the tailnet.
 
 - [The model](#the-model)
@@ -52,8 +52,9 @@ Mac). So the real keys are:
 | [x] | Key expiry off for the Mac and the KVM | scan |
 | [x] | KVM subnet route approved (home LAN reachable from the tailnet; needed for the SSH unlock) | scan |
 | [x] | KVM is not an exit node | scan |
-| [ ] | **Access rules (grants):** your own devices reach everything; Grok Bot's cloud computer (`tag:grokbot`) reaches only the Mac's SSH and the home LAN, **not the KVM**. Policy written, not yet applied. It holds addresses: keep it in the admin console, not here | by hand |
-| [ ] | Grok Bot's cloud computer rejoined with `tag:grokbot` (Grok Bot > Plugins > Tailscale > Remove, then Authenticate) and the old untagged device deleted | by hand |
+| [x] | **Access rules (grants):** your own devices reach everything; Grok Bot's cloud computer (`tag:grokbot`) reaches only the Mac's SSH and the home LAN, **not the KVM**. Applied; its built-in tests passed on save. It holds addresses: kept in the admin console, not here | scan |
+| [x] | Grok Bot's cloud computer rejoined and tagged `tag:grokbot` (the plugin joined untagged; tagged by hand in Machines > Edit ACL tags). The Mac accepts only port 22 from it | scan |
+| [ ] | Old untagged Grok Bot device removed from Machines (its key has expired, so it can't connect now, but it would get full access back if it signed in again) | scan |
 | [ ] | If the KVM's LAN address changes (e.g. moved to Ethernet), update the address it's excluded by in the policy | by hand |
 | [ ] | Review the device list now and then; remove anything you don't recognise | by hand |
 
