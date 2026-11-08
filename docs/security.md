@@ -74,11 +74,11 @@ Mac). So the real keys are:
 | [x] | AirPlay Receiver (5000, 7000) off | scan |
 | [x] | File Sharing (SMB, 445) off | scan |
 | [ ] | Screen Sharing (5900) is **off** since the port cleanup. Fine if intended (Rex and SSH cover remote use); turn it back on if you want the desktop from the phone | scan |
-| [ ] | Firewall stealth mode on (System Settings > Network > Firewall > Options) | scan |
-| [ ] | Firewall allow list: remove `/usr/bin/python3` and `/usr/bin/ruby` (approved during old projects) and anything else you don't recognise | scan |
-| [ ] | Lock screen: require password **immediately** (now 5 minutes) | scan |
-| [ ] | Media Sharing / Home Sharing off (3689) unless you stream from this Mac (System Settings > General > Sharing > Media Sharing) | scan |
-| [ ] | Public folder: guest access off (File Sharing ⓘ > Public folder > Everyone: No Access). Harmless while File Sharing is off | scan |
+| [x] | Firewall stealth mode on (System Settings > Network > Firewall > Options) | scan |
+| [ ] | Firewall allow list: remove `/usr/bin/python3` and `/usr/bin/ruby` (approved during old projects). Still listed on 2026-11-08: the removal didn't save. Low risk: these rules only matter if they listen for connections | scan |
+| [ ] | Lock screen: **your call** on a headless Mac. Locking doesn't stop Rex, SSH or Tailscale. It stops someone at the desk, or someone who gets into the KVM, from using the logged-in session. It also blocks Grok Bot computer use on this Mac. Now: locks after 5 minutes | scan |
+| [x] | Media Sharing / Home Sharing off (3689) | scan |
+| [ ] | Public folder share removed. File Sharing is off, so nothing serves it, but the share record still has guest access and would come back if File Sharing were turned on | scan |
 | [ ] | Mac password: long and unique, in 1Password | by hand |
 | [ ] | SSH key for everyday logins (phone app key in `~/.ssh/authorized_keys`). Keep password login: the FileVault SSH unlock needs it | scan |
 
