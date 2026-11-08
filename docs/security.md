@@ -75,10 +75,10 @@ Mac). So the real keys are:
 | [x] | File Sharing (SMB, 445) off | scan |
 | [ ] | Screen Sharing (5900) is **off** since the port cleanup. Fine if intended (Rex and SSH cover remote use); turn it back on if you want the desktop from the phone | scan |
 | [x] | Firewall stealth mode on (System Settings > Network > Firewall > Options) | scan |
-| [ ] | Firewall allow list: remove `/usr/bin/python3` and `/usr/bin/ruby` (approved during old projects). Still listed on 2026-11-08: the removal didn't save. Low risk: these rules only matter if they listen for connections | scan |
-| [ ] | Lock screen: **your call** on a headless Mac. Locking doesn't stop Rex, SSH or Tailscale. It stops someone at the desk, or someone who gets into the KVM, from using the logged-in session. It also blocks Grok Bot computer use on this Mac. Now: locks after 5 minutes | scan |
+| [x] | Firewall allow list: `/usr/bin/python3` and `/usr/bin/ruby` removed (approved during old projects) | scan |
+| [ ] | Lock screen: **your call** on a headless Mac. Locking doesn't stop Rex, SSH or Tailscale. It stops someone at the desk, or someone who gets into the KVM, from using the logged-in session. It probably also blocks Grok Bot computer use on this Mac (untested). Now: locks after 5 minutes | scan |
 | [x] | Media Sharing / Home Sharing off (3689) | scan |
-| [ ] | Public folder share removed. File Sharing is off, so nothing serves it, but the share record still has guest access and would come back if File Sharing were turned on | scan |
+| [x] | Public folder share removed (no share points left), so turning File Sharing on later doesn't bring back guest access | scan |
 | [ ] | Mac password: long and unique, in 1Password | by hand |
 | [ ] | SSH key for everyday logins (phone app key in `~/.ssh/authorized_keys`). Keep password login: the FileVault SSH unlock needs it | scan |
 
