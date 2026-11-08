@@ -48,7 +48,7 @@
 
 ## Apps (Homebrew casks)
 
-1Password, Claude, CleanShot, Ghostty, Google Chrome, Granola, Grok Bot, Notion, Slack, Superwhisper (voice dictation),
+1Password, Claude, Claude Code (the `claude` CLI, stable channel; `brew upgrade claude-code`), CleanShot, Ghostty, Google Chrome, Granola, Grok Bot, Notion, Slack, Superwhisper (voice dictation),
 Tailscale (private network to your phone; [tailscale.md](tailscale.md)), Temurin 21 (Java), tldraw (offline),
 Vorssaint (menu bar: keep-awake, system monitor, volume mixer).
 

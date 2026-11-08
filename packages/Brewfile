@@ -43,6 +43,7 @@ brew "zsh-fast-syntax-highlighting" # command colouring as you type
 # Apps
 cask "1password"     # password manager
 cask "claude"        # Claude desktop app
+cask "claude-code"   # Claude Code CLI, stable channel (brew upgrade to update; not the desktop app)
 cask "cleanshot"     # screenshots and screen recording
 cask "ghostty"       # fallback terminal + Quick Terminal (main terminal: Rex, private beta, not in Homebrew)
 cask "google-chrome" # browser
