@@ -97,7 +97,7 @@ Console (`https://glkvm.local` at home; accept the self-signed certificate):
 | Apps Center > Tailscale > Exit Node | Off | Would route the phone's internet traffic through the KVM |
 | Settings > Security | Strong admin password, **2FA** on | It answers SSH and types on the Mac: a key to the house |
 | Settings > USB Devices | Mouse and Keyboard on; Microphone, Camera, Virtual Media off; Device Identity: GLKVM Default | Fewer fake devices on the Mac; changing identity changes the EDID |
-| Session > Mouse | **Mouse Jiggle off**; Mouse Mode Absolute (Relative if the pointer sticks) | The Mac never sleeps; jiggle only blocks the lock screen |
+| Session > Mouse | **Mouse Jiggle off**; Mouse Mode Absolute (Relative if the pointer sticks) | The Mac never sleeps, so jiggle isn't needed |
 | Session > Video | Latency Mode **Lowest Latency**; EDID left at default | Snappier input; a new EDID makes macOS forget the display layout |
 | Session > Keyboard | **Show Virtual Keyboard** on when using the phone; Swap Command and Ctrl only from a non-Mac keyboard | The phone keyboard has no ⌘, Return, Esc |
 

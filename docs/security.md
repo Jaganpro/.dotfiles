@@ -76,7 +76,6 @@ Mac). So the real keys are:
 | [ ] | Screen Sharing (5900) is **off** since the port cleanup. Fine if intended (Rex and SSH cover remote use); turn it back on if you want the desktop from the phone | scan |
 | [x] | Firewall stealth mode on (System Settings > Network > Firewall > Options) | scan |
 | [x] | Firewall allow list: `/usr/bin/python3` and `/usr/bin/ruby` removed (approved during old projects) | scan |
-| [ ] | Lock screen: **your call** on a headless Mac. Locking doesn't stop Rex, SSH or Tailscale. It stops someone at the desk, or someone who gets into the KVM, from using the logged-in session. It probably also blocks Grok Bot computer use on this Mac (untested). Now: locks after 5 minutes | scan |
 | [x] | Media Sharing / Home Sharing off (3689) | scan |
 | [x] | Public folder share removed (no share points left), so turning File Sharing on later doesn't bring back guest access | scan |
 | [ ] | Mac password: long and unique, in 1Password | by hand |
@@ -118,7 +117,6 @@ lsof -nP -iTCP -sTCP:LISTEN | awk 'NR>1 {print $1, $9}' | sort -u
 fdesetup status; csrutil status; spctl --status
 /usr/libexec/ApplicationFirewall/socketfilterfw --getglobalstate --getstealthmode
 /usr/libexec/ApplicationFirewall/socketfilterfw --listapps
-sysadminctl -screenLock status
 sharing -l
 
 # Tailscale devices, key expiry and routes
