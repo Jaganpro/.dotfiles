@@ -13,6 +13,9 @@
     "pr": "",
     "sessionUrl": false
   },
+  "permissions": {
+    "defaultMode": "auto"
+  },
   "model": "opus[1m]",
   "hooks": {
     "SubagentStart": [
@@ -56,9 +59,10 @@
   "outputStyle": "Learning",
   "modelSettings": {
     "claude-opus-5-5": {
-      "effortLevel": "high"
+      "effortLevel": "xhigh"
     }
   },
   "fastMode": true,
-  "theme": "auto"
+  "theme": "auto",
+  "verbose": false
 }

@@ -23,6 +23,16 @@
         "Authorization": "!echo Bearer $(security find-generic-password -a \"$USER\" -s salesforce-docs-mcp -w)"
       },
       "description": "Official Salesforce, MuleSoft and Tableau documentation: prefer search + fetch for raw source text; answer/explain are slower RAG summaries"
+    },
+    "granola": {
+      "url": "https://mcp.granola.ai/mcp"
+    },
+    "slack": {
+      "url": "https://mcp.slack.com/mcp",
+      "oauth": {
+        "clientId": "1601185624273.8899143856786",
+        "callbackUrl": "http://localhost:3118/callback"
+      }
     }
   }
 }
