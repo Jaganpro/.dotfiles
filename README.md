@@ -131,7 +131,7 @@ New to Vim? [docs/neovim.md](docs/neovim.md) starts with a five-step path for be
 | `/deslop` | `/deslop` | Simplify finished work without changing what it does |
 
 Also included: 27 skills from Matt Pocock, the anti-slop lint installer, and Pi extensions for web search,
-the footer, run stats and git-guard. See [docs/agents.md](docs/agents.md).
+X search (via your Grok subscription), the footer, run stats and git-guard. See [docs/agents.md](docs/agents.md).
 
 ## 🔄 Day to day
 
