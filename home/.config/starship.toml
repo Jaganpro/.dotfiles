@@ -1,12 +1,13 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
 # Gruvbox Dark powerline prompt:
-#  Apple icon (user over SSH) > folder > git > languages > Salesforce org > slow-command time > clock
+#  Apple icon (user + red host segment over SSH) > folder > git > languages > Salesforce org > slow-command time > clock
 # and the arrow on its own line.
 format = """
 [](color_orange)\
 $os\
 $username\
+$hostname\
 [](bg:color_yellow fg:color_orange)\
 $directory\
 [](fg:color_yellow bg:color_aqua)\
@@ -52,6 +53,12 @@ Macos = "󰀵"
 style_user = "bg:color_orange fg:color_fg0"
 style_root = "bg:color_orange fg:color_fg0"
 format = '[$user ]($style)'
+
+# Only shown over SSH, in red so remote shells stand out. It brings its own
+# separators (orange > red > orange) because the format line can't add them conditionally.
+[hostname]
+ssh_only = true
+format = '[](fg:color_orange bg:color_red)[ 󰒋 $hostname ](fg:color_fg0 bg:color_red)[](fg:color_red bg:color_orange)'
 
 [directory]
 style = "fg:color_fg0 bg:color_yellow"
